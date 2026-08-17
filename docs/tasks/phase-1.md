@@ -1,7 +1,7 @@
 # Phase 1 — Foundation & Access Page
 
-**Status:** 🔄 In Progress  
-**Goal:** Scaffold the project, set up the R3F ocean canvas system, build the Access page (`/`)
+**Status:** ✅ Completed  
+**Goal:** Scaffold the project, set up the R3F ocean canvas system, build the Access page (`/`) with clean architecture.
 
 ---
 
@@ -30,20 +30,19 @@
 
 ---
 
-## Access Page (`/`)
+## Access Page (`/`) — Clean Architecture
 
 - `[x]` `src/app/page.tsx` — Route entry, exports metadata
-- `[x]` `src/components/pages/AccessPage.tsx` — Full page component
-  - `[x]` Glassmorphism login card (secret input + "Dive In" button)
-  - `[x]` Feature bullets sidebar (desktop only)
-  - `[x]` Gradient "Let's Go" logo text + tagline
-  - `[x]` State: **idle** — empty input, button disabled
-  - `[x]` State: **typing** — button brightens
-  - `[x]` State: **loading** — spinner, input disabled, "Diving in..."
-  - `[x]` State: **error** — red border, shake animation, error message with `aria-live`
-  - `[x]` State: **success** — glow pulse, "Let's Go!", redirect to `/home`
-  - `[x]` Hard-coded secrets for UI testing (`agam-secret`, `diva-secret`)
-- `[x]` `src/components/pages/AccessPage.module.css` — Page styles
+- `[x]` `src/hooks/useAccessForm.ts` — **UI & State Logic Hook**:
+  - Manages secret input, state machine (`idle`, `typing`, `loading`, `error`, `success`)
+  - Input focus control, error messages, and temporary validation
+- `[x]` `src/components/pages/AccessPage.tsx` — **Pure Presentation UI**:
+  - Consumes `useAccessForm`
+  - Glassmorphism login card
+  - Feature bullets sidebar (desktop only)
+  - Gradient "Let's Go" logo text + tagline
+  - Fully accessible ARIA attributes
+- `[x]` `src/components/pages/AccessPage.module.css` — Scoped page styles
 
 ---
 
@@ -75,6 +74,8 @@ src/
 │   ├── globals.css              ✅ Design system
 │   ├── layout.tsx               ✅ Root layout + OceanCanvas
 │   └── page.tsx                 ✅ Access route
+├── hooks/
+│   └── useAccessForm.ts         ✅ UI logic hook for Access form
 └── components/
     ├── ocean/
     │   ├── OceanCanvas.tsx      ✅ Root R3F canvas
@@ -90,6 +91,6 @@ src/
     │       ├── useSceneQuality.ts  ✅ Quality preset
     │       └── useReducedMotion.ts ✅ Motion pref
     └── pages/
-        ├── AccessPage.tsx       ✅ Access page component
-        └── AccessPage.module.css✅ Page styles
+        ├── AccessPage.tsx       ✅ Pure Presentational View
+        └── AccessPage.module.css✅ Scoped styles
 ```

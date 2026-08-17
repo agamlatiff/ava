@@ -1,52 +1,23 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useAccessForm } from '@/hooks/useAccessForm'
 import styles from './AccessPage.module.css'
 
-// Hard-coded secrets for Phase 1 UI testing — replaced by real API in Phase 2
-const TEMP_SECRETS: Record<string, string> = {
-  'agam-secret': 'agam',
-  'diva-secret': 'diva',
-}
-
-type FormState = 'idle' | 'typing' | 'loading' | 'error' | 'success'
+const FEATURES = [
+  { icon: '🗓️', label: 'Plan your hangout together' },
+  { icon: '📍', label: 'Find the best place around you' },
+  { icon: '⭐', label: 'Make every moment special' },
+]
 
 export function AccessPage() {
-  const [secret, setSecret] = useState('')
-  const [state, setState] = useState<FormState>('idle')
-  const [errorMsg, setErrorMsg] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSecret(e.target.value)
-    setState(e.target.value.length > 0 ? 'typing' : 'idle')
-    setErrorMsg('')
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!secret.trim()) return
-
-    setState('loading')
-
-    // Phase 1: temporary client-side check
-    await new Promise(r => setTimeout(r, 800)) // simulate network
-    const user = TEMP_SECRETS[secret.trim()]
-
-    if (user) {
-      setState('success')
-      setTimeout(() => router.push('/home'), 800)
-    } else {
-      setState('error')
-      setErrorMsg('Invalid secret. Try again.')
-      setTimeout(() => {
-        setState('idle')
-        inputRef.current?.focus()
-      }, 1500)
-    }
-  }
+  const {
+    secret,
+    state,
+    errorMsg,
+    inputRef,
+    handleChange,
+    handleSubmit,
+  } = useAccessForm()
 
   const inputClass = [
     'input-field',
@@ -154,9 +125,3 @@ export function AccessPage() {
     </main>
   )
 }
-
-const FEATURES = [
-  { icon: '🗓️', label: 'Plan your hangout together' },
-  { icon: '📍', label: 'Find the best place around you' },
-  { icon: '⭐', label: 'Make every moment special' },
-]

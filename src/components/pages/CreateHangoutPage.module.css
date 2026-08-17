@@ -1,0 +1,100 @@
+.createRoot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-4);
+  max-width: 540px;
+  margin-inline: auto;
+}
+
+.headerTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.createForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.formCard {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  border-radius: var(--radius-xl);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.fieldLabel {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.timeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.durationBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  background: var(--primary-subtle);
+  border: 1px solid rgba(77, 208, 225, 0.3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-caption);
+  color: var(--accent-cyan);
+  align-self: flex-start;
+}
+
+.budgetPrefixWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.budgetPrefix {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.budgetInput {
+  padding-left: 42px !important;
+}
+
+.textareaField {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.errorBanner {
+  color: var(--error);
+  font-size: var(--text-body-sm);
+  padding: var(--space-2) var(--space-3);
+  background: rgba(239, 83, 80, 0.15);
+  border: 1px solid rgba(239, 83, 80, 0.3);
+  border-radius: var(--radius-md);
+}

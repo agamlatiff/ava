@@ -1,0 +1,182 @@
+.homeRoot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-4);
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+/* ── Hero Greeting ────────────────────────────────────────── */
+.greetingSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  animation: fade-in-up 300ms var(--transition-page) both;
+}
+
+.greetingTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.greetingSub {
+  color: var(--text-secondary);
+}
+
+/* ── Next Hangout Glass Card ──────────────────────────────── */
+.nextCard {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  animation: fade-in-up 350ms 50ms var(--transition-page) both;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardBadge {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--primary-subtle);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(77, 208, 225, 0.3);
+}
+
+.cardBadgeToday {
+  background: rgba(76, 175, 80, 0.2);
+  color: #81C784;
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-body-sm);
+  color: var(--text-secondary);
+}
+
+.emptyPlan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+}
+
+/* ── Quick Plan Row ───────────────────────────────────────── */
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.quickPlanGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  animation: fade-in-up 400ms 100ms var(--transition-page) both;
+}
+
+.quickChip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.quickChip:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+.chipIcon {
+  font-size: 1.75rem;
+}
+
+.chipLabel {
+  font-size: var(--text-caption);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* ── Explore Row ──────────────────────────────────────────── */
+.exploreCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  animation: fade-in-up 450ms 150ms var(--transition-page) both;
+}
+
+.exploreCard:hover {
+  background: var(--glass-bg-hover);
+  transform: translateX(3px);
+}
+
+.exploreArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Recent Adventures ────────────────────────────────────── */
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  animation: fade-in-up 500ms 200ms var(--transition-page) both;
+}
+
+.recentItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+}
