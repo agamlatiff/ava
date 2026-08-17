@@ -1,0 +1,197 @@
+/* ── Activity Chip ────────────────────────────────────────── */
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  user-select: none;
+  text-align: center;
+}
+
+.chip:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+.chipSelected {
+  border: 2px solid var(--primary) !important;
+  box-shadow: var(--shadow-glow);
+  background: rgba(33, 150, 243, 0.15) !important;
+}
+
+.badgeCheck {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.reactionGroup {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.reactionBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all var(--transition-fast);
+}
+
+.reactionBtn:hover {
+  transform: scale(1.15);
+}
+
+.reactionActiveLove {
+  background: rgba(255, 107, 107, 0.3) !important;
+  border-color: var(--warm-coral) !important;
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
+}
+
+.reactionActiveLike {
+  background: rgba(0, 188, 212, 0.3) !important;
+  border-color: var(--accent-teal) !important;
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+}
+
+.reactionActivePass {
+  background: rgba(239, 83, 80, 0.2) !important;
+  border-color: var(--error) !important;
+}
+
+/* ── Place Card ───────────────────────────────────────────── */
+.placeCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.placeCard:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+.placeCardSelected {
+  border: 2px solid var(--accent-cyan) !important;
+  box-shadow: 0 0 20px rgba(77, 208, 225, 0.3);
+  background: rgba(77, 208, 225, 0.12) !important;
+}
+
+.radioCircle {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.radioSelected {
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan);
+}
+
+.radioInner {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: #fff;
+}
+
+/* ── Timeline ─────────────────────────────────────────────── */
+.timelineContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-left: 28px;
+}
+
+.timelineTrack {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  bottom: 15px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--primary), var(--accent-cyan));
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.timelineNode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.timelineDot {
+  position: absolute;
+  left: -24px;
+  top: 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  background: var(--primary-bright);
+  box-shadow: 0 0 12px var(--primary);
+  border: 2px solid #fff;
+}
+
+.timelineDotCompleted {
+  background: var(--success);
+  box-shadow: 0 0 12px var(--success);
+}
+
+.timelineDotInProgress {
+  background: var(--accent-cyan);
+  animation: glow-pulse 1.2s infinite;
+}
+
+/* ── Star Rating ──────────────────────────────────────────── */
+.starRow {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  color: var(--text-muted);
+  font-size: 1.25rem;
+}
+
+.starFilled {
+  color: var(--warm-gold);
+}

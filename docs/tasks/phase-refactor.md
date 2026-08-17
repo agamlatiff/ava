@@ -13,7 +13,7 @@
 
 ---
 
-## 2. Service & Repository Layer Audit
+## 2. Service, Repository & Caching Layer Audit
 
 - `[ ]` **Repository Pattern Compliance (`src/db/repositories/`)**:
   - `[ ]` `usersRepo.ts` — contains all User Drizzle queries.
@@ -21,6 +21,9 @@
   - `[ ]` `activitiesRepo.ts` — contains all Activity selections queries.
   - `[ ]` `placesRepo.ts` — contains all Place queries.
   - `[ ]` `memoriesRepo.ts` — contains all Memory queries.
+- `[ ]` **Caching Layer Audit (`src/db/cache.ts`)**:
+  - `[ ]` Verify `unstable_cache` wraps static catalogs (activities, places, memories).
+  - `[ ]` Verify all Server Actions call `revalidateTag()` on mutation.
 - `[ ]` **Zero Raw DB Queries in Server Actions**: Verify Server Actions only call services or repositories, never raw `db.select()` / `db.insert()`.
 - `[ ]` **Strict Zod Validation**: Validate all client inputs at the action boundary before hitting services.
 

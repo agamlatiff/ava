@@ -1,13 +1,15 @@
 # Phase 4 — Hangout Day, Memories & Deployment
 
-**Status:** ⏳ Not Started  
+**Status:** 🔄 In Progress  
 **Goal:** Hangout day timeline, memories history, star rating inputs, full polish, and production deployment.
 
 ---
 
-## 1. Repositories (`src/db/repositories/`)
+## 1. Repositories & Caching (`src/db/repositories/`)
 
 - `[ ]` `src/db/repositories/memoriesRepository.ts` — Create memory, fetch memories with hangout details
+- `[ ]` `getCachedMemories()` — tagged data cache for completed hangout memories
+- `[ ]` `revalidateTag('memories')` on memory save mutation
 
 ---
 

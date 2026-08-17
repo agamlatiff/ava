@@ -6,14 +6,17 @@
 
 ---
 
-## Architectural Principles (Clean Separation of Concerns)
+## Architectural Principles (Clean Separation of Concerns & Caching)
 
-To avoid mixing UI with business and state logic, we strictly enforce 4 decoupled layers:
+To avoid mixing UI with business and state logic, we strictly enforce 4 decoupled layers plus a multi-tier caching strategy:
 
 1. **Presentation Layer (`src/components/`, `src/app/`)**: Pure UI views, design tokens, CSS Modules, no direct DB or raw async logic.
 2. **UI Logic Layer (`src/hooks/`)**: Custom React hooks managing client-side form state, animations, user interactions, and event handlers.
 3. **Business & Service Layer (`src/lib/actions/`, `src/services/`)**: Zod validation schemas, business logic (matching algorithms, calculations), server actions.
 4. **Data Access / Repository Layer (`src/db/repositories/`)**: Isolated Drizzle ORM queries, transactions, and mutations.
+5. **Multi-Tier Caching Layer**:
+   - **Server Data Cache**: `unstable_cache` & React `cache()` for static catalogs (Activities, Places, User profiles) with on-demand `revalidateTag()`.
+   - **Client WebGL Cache**: Three.js `THREE.Cache.enabled = true` and model preloading for 60fps transitions without shader re-compilation.
 
 ---
 
@@ -23,8 +26,8 @@ To avoid mixing UI with business and state logic, we strictly enforce 4 decouple
 |-------|------|--------|-------------|
 | 1 | [phase-1.md](./phase-1.md) | ✅ Completed | Foundation, R3F canvas, Access page + Hook separation |
 | 2 | [phase-2.md](./phase-2.md) | ✅ Completed | Database repositories, auth service, Home, Create Hangout, Nav |
-| 3 | [phase-3.md](./phase-3.md) | 🔄 In Progress | Activity selection hook, matching service, places, itinerary, confirm |
-| 4 | [phase-4.md](./phase-4.md) | ⏳ Not Started | Hangout day, memories, polish, deployment |
+| 3 | [phase-3.md](./phase-3.md) | ✅ Completed | Activity selection hook, matching service, places, itinerary, confirm |
+| 4 | [phase-4.md](./phase-4.md) | 🔄 In Progress | Hangout day, memories, polish, deployment |
 | Refactor | [phase-refactor.md](./phase-refactor.md) | ⏳ Not Started | Architecture audit, strict decoupling verification, performance & types cleanup |
 
 ---
