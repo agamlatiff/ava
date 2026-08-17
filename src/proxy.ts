@@ -5,7 +5,7 @@ import { unsealData } from 'iron-session'
 
 const PROTECTED_ROUTES = ['/home', '/hangouts', '/memories']
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const cookie = request.cookies.get(sessionOptions.cookieName as string)
   const isProtected = PROTECTED_ROUTES.some((route) =>
     request.nextUrl.pathname.startsWith(route)

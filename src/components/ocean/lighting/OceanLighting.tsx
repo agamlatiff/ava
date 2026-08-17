@@ -10,11 +10,13 @@ interface OceanLightingProps {
 
 export function OceanLighting({ intensity = 'light' }: OceanLightingProps) {
   const pointLightRef = useRef<THREE.PointLight>(null!)
+  const timeRef = useRef(0)
 
   // Gently pulse the underwater point light
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!pointLightRef.current) return
-    const t = state.clock.elapsedTime
+    timeRef.current += delta
+    const t = timeRef.current
     pointLightRef.current.intensity = 0.6 + Math.sin(t * 0.5) * 0.1
   })
 
@@ -38,29 +40,19 @@ export function OceanLighting({ intensity = 'light' }: OceanLightingProps) {
       <directionalLight
         position={[2, -4, -2]}
         intensity={0.15}
-        color="#0e4a8a"
+        color="#00bcd4"
+        castShadow={false}
       />
 
-      {/* Pulsing underwater point light */}
+      {/* Subtle pulsing point light near center — underwater life feel */}
       <pointLight
         ref={pointLightRef}
-        position={[0, 1, 2]}
+        position={[0, 0, 2]}
         intensity={0.6}
-        color="#2196F3"
-        distance={12}
+        color="#80deea"
+        distance={8}
         decay={2}
       />
-
-      {/* Accent warm light (subtle coral warmth near seabed) */}
-      {(intensity === 'heavy' || intensity === 'medium') && (
-        <pointLight
-          position={[3, -4, 0]}
-          intensity={0.3}
-          color="#FF8A65"
-          distance={8}
-          decay={2}
-        />
-      )}
     </>
   )
 }

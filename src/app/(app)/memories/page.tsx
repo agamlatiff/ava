@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { memoriesRepository } from '@/db/repositories/memoriesRepository'
+import { MemoriesPage } from '@/components/pages/MemoriesPage'
 
 export const metadata: Metadata = {
   title: "Let's Go — Memories",
@@ -6,19 +8,21 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  return (
-    <div style={{ maxWidth: '640px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)' }}>
-      <h1 className="text-h2" style={{ marginBottom: 'var(--space-6)' }}>
-        Our Adventures 🐚
-      </h1>
+  let memoriesList: Awaited<ReturnType<typeof memoriesRepository.getAllWithHangouts>> = []
 
-      <div className="glass-card" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)' }}>
-        <span style={{ fontSize: '2.5rem' }}>🐠</span>
-        <h2 className="text-h3">No memories saved yet</h2>
-        <p className="text-body-sm text-secondary">
-          Completed hangouts will appear here as beautiful memories.
-        </p>
-      </div>
-    </div>
-  )
+  try {
+    memoriesList = await memoriesRepository.getAllWithHangouts()
+  } catch (err) {
+    console.warn('Failed to load memories:', err)
+  }
+
+  const formattedMemories = memoriesList.map((m) => ({
+    id: m.id,
+    hangoutDate: m.hangoutDate,
+    hangoutArea: m.hangoutArea,
+    rating: m.rating,
+    note: m.note,
+  }))
+
+  return <MemoriesPage memories={formattedMemories} />
 }

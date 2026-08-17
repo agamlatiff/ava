@@ -9,8 +9,9 @@ interface LightRaysProps {
   reducedMotion?: boolean
 }
 
-export function LightRays({ count = 3, reducedMotion = false }: LightRaysProps) {
+export function LightRays({ count = 4, reducedMotion = false }: LightRaysProps) {
   const groupRef = useRef<THREE.Group>(null!)
+  const timeRef = useRef(0)
 
   const rays = useMemo(() => {
     return Array.from({ length: count }, (_, i) => ({
@@ -21,9 +22,10 @@ export function LightRays({ count = 3, reducedMotion = false }: LightRaysProps) 
     }))
   }, [count])
 
-  useFrame((state) => {
+  useFrame((_, delta) => {
     if (!groupRef.current || reducedMotion) return
-    const t = state.clock.elapsedTime
+    timeRef.current += delta
+    const t = timeRef.current
 
     groupRef.current.children.forEach((child, i) => {
       const ray = rays[i]
@@ -45,8 +47,9 @@ export function LightRays({ count = 3, reducedMotion = false }: LightRaysProps) 
             color="#4DD0E1"
             transparent
             opacity={ray.opacity}
-            side={THREE.FrontSide}
+            side={THREE.DoubleSide}
             depthWrite={false}
+            blending={THREE.AdditiveBlending}
           />
         </mesh>
       ))}

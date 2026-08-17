@@ -26,7 +26,7 @@
 - `[x]` `src/lib/actions/auth.ts` — Login / Logout server actions
 - `[x]` `src/services/hangoutService.ts` — Zod schema validation & domain service
 - `[x]` `src/lib/actions/hangouts.ts` — Hangout creation server action
-- `[x]` `src/middleware.ts` — Session guard for `/home`, `/hangouts/*`, `/memories`
+- `[x]` `src/proxy.ts` — Session guard for `/home`, `/hangouts/*`, `/memories`
 
 ---
 
