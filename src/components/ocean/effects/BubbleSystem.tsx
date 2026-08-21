@@ -3,6 +3,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { oceanState } from '../hooks/globalOceanState'
 
 interface BubbleSystemProps {
   count: number
@@ -58,11 +59,14 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
     timeRef.current += delta
     const t = timeRef.current
 
+    // If bubbles event is active, boost their speed temporarily
+    const speedBoost = oceanState.activeEvent === 'bubbles' ? 2.5 : 1.0
+
     bubbles.forEach((bubble, i) => {
       // Ascend upwards with current drift
-      bubble.position.y += bubble.speed * delta
+      bubble.position.y += bubble.speed * speedBoost * delta
       const currentDrift = Math.sin(t * 0.35 + bubble.swayOffset) * 0.25
-      bubble.position.x = bubble.startX + Math.sin(t * bubble.swayFreq + bubble.swayOffset) * bubble.swayAmp + currentDrift
+      bubble.position.x = bubble.startX + Math.sin(t * bubble.swayFreq + bubble.swayOffset) * bubble.swayAmp + currentDrift + oceanState.currentDrift * 3.0
 
       // Loop back to bottom when reaching surface
       if (bubble.position.y > 6.5) {
@@ -71,8 +75,14 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
         bubble.position.x = bubble.startX
       }
 
+      // Calculate scale fade based on height (bubbles pop/shrink near surface)
+      let scaleMult = 1.0
+      if (bubble.position.y > 4.5) {
+        scaleMult = Math.max(0.01, 1.0 - (bubble.position.y - 4.5) / 2.0)
+      }
+
       dummy.position.copy(bubble.position)
-      dummy.scale.setScalar(bubble.scale)
+      dummy.scale.setScalar(bubble.scale * scaleMult)
       dummy.updateMatrix()
       meshRef.current.setMatrixAt(i, dummy.matrix)
     })

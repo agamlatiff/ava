@@ -3,6 +3,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { oceanState } from '../hooks/globalOceanState'
 
 interface SeaweedProps {
   count?: number
@@ -92,6 +93,7 @@ function createOrganicBladeGeometry(
 
 const vertexShader = `
   uniform float uTime;
+  uniform float uCurrentDrift;
   attribute float aHeightNorm;
   attribute float aPhase;
   attribute float aSpeed;
@@ -110,7 +112,8 @@ const vertexShader = `
     float waveX2 = cos(uTime * (aSpeed * 0.58) + aPhase * 1.3) * 0.22;
     float waveZ  = cos(uTime * (aSpeed * 0.82) + aPhase) * 0.2;
 
-    pos.x += (waveX1 + waveX2) * hLag * aFlexibility;
+    // Apply global underwater current + local swaying
+    pos.x += (waveX1 + waveX2 + uCurrentDrift * 2.5) * hLag * aFlexibility;
     pos.z += waveZ * hLag * aFlexibility;
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -213,6 +216,7 @@ export function Seaweed({ count = 11, reducedMotion = false }: SeaweedProps) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
+      uCurrentDrift: { value: 0 },
       uBaseColor: { value: new THREE.Color('#003328') }, // Deep kelp teal root
       uMidColor:  { value: new THREE.Color('#0A6E56') }, // Jade kelp body
       uTipColor:  { value: new THREE.Color('#38D8B8') }, // Luminous sea green tip
@@ -224,6 +228,7 @@ export function Seaweed({ count = 11, reducedMotion = false }: SeaweedProps) {
     if (reducedMotion || !materialRef.current) return
     timeRef.current += delta
     materialRef.current.uniforms.uTime.value = timeRef.current
+    materialRef.current.uniforms.uCurrentDrift.value = oceanState.currentDrift
   })
 
   return (

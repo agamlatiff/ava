@@ -3,9 +3,11 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { oceanState } from '../hooks/globalOceanState'
 
 const vertexShader = `
   uniform float uTime;
+  uniform float uCurrentDrift;
   attribute float aScale;
   attribute float aSpeed;
   attribute float aOffset;
@@ -21,7 +23,7 @@ const vertexShader = `
     float currentSwayY = cos(uTime * 0.25 + aOffset) * 0.3;
     float currentSwayZ = sin(uTime * 0.2 + aOffset * 1.5) * 0.2;
 
-    pos.x += currentSwayX;
+    pos.x += currentSwayX + uCurrentDrift * 6.0;
     pos.y += currentSwayY;
     pos.z += currentSwayZ;
 
@@ -104,6 +106,7 @@ export function ParticleField({ count, reducedMotion = false }: ParticleFieldPro
       fragmentShader,
       uniforms: {
         uTime: { value: 0 },
+        uCurrentDrift: { value: 0 }
       },
       transparent: true,
       depthWrite: false,
@@ -119,6 +122,7 @@ export function ParticleField({ count, reducedMotion = false }: ParticleFieldPro
     const mat = pointsRef.current.material as THREE.ShaderMaterial
     if (mat?.uniforms?.uTime) {
       mat.uniforms.uTime.value = timeRef.current
+      mat.uniforms.uCurrentDrift.value = oceanState.currentDrift
     }
   })
 

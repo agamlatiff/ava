@@ -4,6 +4,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
+import { oceanState } from '../hooks/globalOceanState'
 
 export type FishType = 'clownfish' | 'midground' | 'distant'
 
@@ -103,7 +104,7 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
   const angleRef = useRef(data.pathAngle)
   const timeOffset = useMemo(() => data.id * 3.17, [data.id])
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     if (!rootGroupRef.current) return
 
     if (data.behavior === 'hover-graze') {
@@ -111,8 +112,11 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
       // 1. Grazing / Hovering Behavior (Foreground Reef Fish)
       // Stays near the reef on the left margin, gentle hovering
       // ─────────────────────────────────────────────────────────
+      const isPaused = oceanState.activeEvent === 'pause'
+
       if (!reducedMotion) {
-        angleRef.current += delta * 0.4
+        // Slow down dramatically if paused, otherwise normal
+        angleRef.current += (isPaused ? delta * 0.05 : delta * 0.4)
       }
       
       const hoverAngle = angleRef.current
@@ -136,7 +140,8 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
       if (!reducedMotion) {
         const tail = rootGroupRef.current.getObjectByName('TailFin')
         if (tail) {
-          tail.rotation.y = Math.sin(hoverAngle * 3.5 + timeOffset) * 0.15
+          // Keep fluttering even if paused
+          tail.rotation.y = Math.sin(timeOffset + state.clock.elapsedTime * 3.5) * (isPaused ? 0.05 : 0.15)
         }
       }
     } else {
