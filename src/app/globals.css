@@ -162,12 +162,14 @@ img {
   inset: 0;
   z-index: 0;
   background: radial-gradient(
-    ellipse at 50% 30%,
-    var(--bg-shallow) 0%,
-    var(--bg-ocean)   50%,
-    var(--bg-deep)    100%
+    ellipse at 50% 0%,
+    #165E9C 0%,
+    #0E4476 35%,
+    #082D54 65%,
+    #041A36 100%
   );
 }
+
 
 /* ── R3F Canvas Layer ─────────────────────────────────────── */
 .ocean-canvas {

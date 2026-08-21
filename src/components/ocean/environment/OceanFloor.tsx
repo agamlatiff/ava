@@ -18,17 +18,21 @@ const vertexShader = `
     vUv = uv;
     vec3 pos = position;
 
-    // Organic procedural sand dunes and rolling seabed undulations
-    float dune1 = sin(pos.x * 0.12 + pos.y * 0.09) * 0.8;
-    float dune2 = cos(pos.x * 0.22 - pos.y * 0.16) * 0.45;
-    float dune3 = sin((pos.x + pos.y) * 0.35) * 0.25;
+    // 1. Organic seabed bowl / amphitheater:
+    // Left & right peripheral reef shelves rise gently, center dips deeper for UI breathing room
+    float sideShelf = smoothstep(1.5, 14.0, abs(pos.x)) * 1.6;
     
-    // Gentle natural curvature dipping deeper into the distance
-    float distanceDrop = smoothstep(4.0, 36.0, -pos.y) * -2.2;
+    // 2. Rolling organic dunes & multi-frequency ripples
+    float dune1 = sin(pos.x * 0.14 + pos.y * 0.1) * 0.7;
+    float dune2 = cos(pos.x * 0.25 - pos.y * 0.18) * 0.4;
+    float dune3 = sin((pos.x + pos.y) * 0.38) * 0.22;
     
-    float totalDisplacement = dune1 + dune2 + dune3 + distanceDrop;
-    pos.z += totalDisplacement;
-    vElevation = totalDisplacement;
+    // 3. Gentle slope dipping into deep background water
+    float distanceSlope = smoothstep(2.0, 32.0, -pos.y) * -2.8;
+    
+    float totalElevation = sideShelf + dune1 + dune2 + dune3 + distanceSlope;
+    pos.z += totalElevation;
+    vElevation = totalElevation;
 
     vec4 worldPos = modelMatrix * vec4(pos, 1.0);
     vWorldPos = worldPos.xyz;
@@ -41,45 +45,45 @@ const fragmentShader = `
   uniform vec3 uSandBase;
   uniform vec3 uSandRidge;
   uniform vec3 uCausticColor;
-  uniform vec3 uFogColor;
+  uniform vec3 uWaterFog;
   varying vec2 vUv;
   varying vec3 vWorldPos;
   varying float vElevation;
 
-  // Organic multi-wave caustic sunlight interference
-  float causticPattern(vec2 p, float time) {
-    vec2 uv = p * 3.5;
-    float c1 = sin(uv.x * 1.4 + time * 0.6) * cos(uv.y * 1.2 - time * 0.5);
-    float c2 = sin(uv.x * 2.0 - time * 0.4 + c1) * cos(uv.y * 1.8 + time * 0.7);
-    float c3 = sin((uv.x + uv.y) * 1.6 + time * 0.35 + c2);
-    float wave = pow((c1 + c2 + c3) / 3.0 * 0.5 + 0.5, 3.0);
-    return clamp(wave * 2.0, 0.0, 1.0);
+  // Very subtle, subconscious caustics (low contrast, soft wave shimmer)
+  float subtleCaustics(vec2 p, float time) {
+    vec2 uv = p * 3.2;
+    float c1 = sin(uv.x * 1.3 + time * 0.45) * cos(uv.y * 1.1 - time * 0.4);
+    float c2 = sin(uv.x * 1.8 - time * 0.35 + c1) * cos(uv.y * 1.6 + time * 0.5);
+    float c3 = sin((uv.x + uv.y) * 1.4 + time * 0.3 + c2);
+    float wave = pow((c1 + c2 + c3) / 3.0 * 0.5 + 0.5, 2.5);
+    return clamp(wave * 1.5, 0.0, 1.0);
   }
 
   void main() {
-    float caustics = causticPattern(vUv, uTime);
+    float caustics = subtleCaustics(vUv, uTime);
 
-    // Modulate sand color based on dune elevation and slope
-    float ridgeFactor = smoothstep(-1.2, 1.2, vElevation);
-    vec3 sandColor = mix(uSandBase, uSandRidge, ridgeFactor * 0.5);
+    // Dune elevation shading: sunlit ridges vs deeper blue-gray crevices
+    float ridgeFactor = smoothstep(-1.0, 1.5, vElevation);
+    vec3 sandColor = mix(uSandBase, uSandRidge, ridgeFactor * 0.45);
     
-    // Add shimmering caustic sunlight patterns to the sand
-    vec3 litSand = mix(sandColor, uCausticColor, caustics * 0.28);
+    // Low-contrast, subconscious caustic lighting
+    vec3 litTerrain = mix(sandColor, uCausticColor, caustics * 0.18);
 
     // ─────────────────────────────────────────────────────────────
-    // Seamless atmospheric fog blending:
-    // Distance from camera completely dissolves the terrain into water fog.
-    // The user NEVER sees any geometric edge of the terrain plane.
+    // Seamless atmospheric depth & vertical water haze:
+    // 1. Distance fog from camera
+    // 2. Vertical depth haze (deeper water dissolves floor line)
     // ─────────────────────────────────────────────────────────────
     float dist = length(vWorldPos - cameraPosition);
-    float fogFactor = smoothstep(7.0, 24.0, dist);
-
-    // Near-camera gentle edge fade (radial falloff from center)
+    float distanceFog = smoothstep(6.0, 22.0, dist);
+    
+    // Radial boundary fade ensuring ZERO visible plane edges
     vec2 centerOffset = (vUv - vec2(0.5)) * 2.0;
-    float radialEdge = smoothstep(1.0, 0.7, length(centerOffset));
+    float radialEdge = smoothstep(1.0, 0.72, length(centerOffset));
 
-    vec3 finalColor = mix(litSand, uFogColor, fogFactor);
-    float alpha = mix(0.0, 1.0, radialEdge) * (1.0 - fogFactor * 0.15);
+    vec3 finalColor = mix(litTerrain, uWaterFog, distanceFog);
+    float alpha = mix(0.0, 0.95, radialEdge) * (1.0 - distanceFog * 0.2);
 
     gl_FragColor = vec4(finalColor, clamp(alpha, 0.0, 0.95));
   }
@@ -92,24 +96,23 @@ export function OceanFloor({ reducedMotion = false }: OceanFloorProps) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uSandBase: { value: new THREE.Color('#082A4A') },     // Deep marine blue-gray sand
-      uSandRidge: { value: new THREE.Color('#104470') },    // Soft sunlit dune ridge
-      uCausticColor: { value: new THREE.Color('#4DD0E1') }, // Soft turquoise caustic shimmer
-      uFogColor: { value: new THREE.Color('#05254A') },      // Atmospheric water fog color
+      uSandBase: { value: new THREE.Color('#0A3052') },     // Deep marine blue-gray
+      uSandRidge: { value: new THREE.Color('#144E7E') },    // Subtle sunlit dune ridge
+      uCausticColor: { value: new THREE.Color('#64D8EB') }, // Soft subconscious caustic light
+      uWaterFog: { value: new THREE.Color('#05254A') },      // Atmospheric ocean fog
     }),
     []
   )
 
   useFrame((_, delta) => {
     if (reducedMotion || !materialRef.current) return
-    timeRef.current += delta * 0.7
+    timeRef.current += delta * 0.6
     materialRef.current.uniforms.uTime.value = timeRef.current
   })
 
   return (
-    // Oversized rolling terrain extending far beyond frustum into distant atmospheric fog
     <mesh position={[0, -5.2, -6]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[70, 70, 64, 64]} />
+      <planeGeometry args={[72, 72, 64, 64]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={vertexShader}

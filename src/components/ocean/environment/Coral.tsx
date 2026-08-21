@@ -5,7 +5,7 @@ import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
 /**
- * GLB Realistic Coral Formation with luminous underwater material
+ * GLB Realistic Coral Formation with warm marine tones
  */
 function GLBCoral({
   position,
@@ -23,9 +23,11 @@ function GLBCoral({
       if ((obj as THREE.Mesh).isMesh) {
         const mesh = obj as THREE.Mesh
         mesh.material = new THREE.MeshStandardMaterial({
-          color: '#E06D75', // Warm pastel coral rose
-          roughness: 0.7,
+          color: '#E57373', // Warm living coral rose
+          roughness: 0.6,
           metalness: 0.05,
+          emissive: new THREE.Color('#1F0B0E'),
+          emissiveIntensity: 0.35,
         })
       }
     })
@@ -40,7 +42,7 @@ function GLBCoral({
 }
 
 /**
- * GLB Realistic Submarine Ocean Rock Outcrop with soft blue-gray marine granite material
+ * GLB Realistic Submarine Ocean Rock Outcrop with blue-gray marine granite material
  */
 function GLBRock({
   position,
@@ -58,9 +60,11 @@ function GLBRock({
       if ((obj as THREE.Mesh).isMesh) {
         const mesh = obj as THREE.Mesh
         mesh.material = new THREE.MeshStandardMaterial({
-          color: '#264A62', // Marine blue-gray granite
-          roughness: 0.85,
-          metalness: 0.05,
+          color: '#345E7D', // Marine blue-gray granite
+          roughness: 0.65,
+          metalness: 0.08,
+          emissive: new THREE.Color('#0A2338'),
+          emissiveIntensity: 0.45,
         })
       }
     })

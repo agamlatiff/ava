@@ -19,6 +19,7 @@ const vertexShader = `
   attribute float aPhase;
   attribute float aSpeed;
   attribute float aFlexibility;
+  attribute float aCurvature;
   varying vec2 vUv;
   varying float vHeightNorm;
 
@@ -26,12 +27,18 @@ const vertexShader = `
     vUv = uv;
     vec3 pos = position;
 
-    // Organic current swaying: non-linear height lag with multi-frequency waves
+    // 1. Organic Tapering: Wider at root, organically tapering to a slender curved tip
+    float taper = 1.0 - pow(uv.y, 1.3) * 0.7;
+    // 2. Static natural biological curvature curve
+    float staticCurve = sin(uv.y * 3.14159 * 0.7) * aCurvature;
+    pos.x = (pos.x + staticCurve) * taper;
+
+    // 3. Dynamic current swaying with height lag
     float heightFactor = pow(clamp(uv.y, 0.0, 1.0), 1.6);
-    float wave1 = sin(uTime * aSpeed + aPhase) * 0.38;
-    float wave2 = cos(uTime * (aSpeed * 0.65) + aPhase * 1.3) * 0.22;
+    float wave1 = sin(uTime * aSpeed + aPhase) * 0.35;
+    float wave2 = cos(uTime * (aSpeed * 0.6) + aPhase * 1.3) * 0.2;
     float swayX = (wave1 + wave2) * heightFactor * aFlexibility;
-    float swayZ = cos(uTime * (aSpeed * 0.8) + aPhase) * 0.18 * heightFactor;
+    float swayZ = cos(uTime * (aSpeed * 0.75) + aPhase) * 0.16 * heightFactor;
 
     pos.x += swayX;
     pos.z += swayZ;
@@ -50,7 +57,12 @@ const fragmentShader = `
   void main() {
     // Rich gradient from deep marine kelp teal to sunlit translucent sea green
     vec3 color = mix(uBaseColor, uTipColor, vHeightNorm);
-    float alpha = 0.82 + vHeightNorm * 0.15;
+    
+    // Soft organic edge & tip shaping (eliminates rectangular plane edges)
+    float tipShape = smoothstep(1.0, 0.85, vHeightNorm);
+    float edgeShape = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x);
+    
+    float alpha = (0.75 + vHeightNorm * 0.2) * tipShape * edgeShape;
     gl_FragColor = vec4(color, alpha);
   }
 `
@@ -63,6 +75,7 @@ interface BladeData {
   phase: number
   speed: number
   flexibility: number
+  curvature: number
   rotationY: number
 }
 
@@ -72,18 +85,19 @@ export function Seaweed({ count = 10, reducedMotion = false }: SeaweedProps) {
 
   const blades = useMemo<BladeData[]>(() => {
     return Array.from({ length: count }, (_, i) => {
-      // Cluster seaweed primarily on the outer edges (left & right)
+      // Cluster seaweed strictly on the outer margins (left & right framing)
       const side = i % 2 === 0 ? -1 : 1
-      const xOffset = side * (3.8 + pseudoRandom(i * 5 + 1) * 2.8)
+      const xOffset = side * (4.0 + pseudoRandom(i * 5 + 1) * 2.6)
       return {
         x: xOffset,
-        z: -1.6 + (pseudoRandom(i * 5 + 2) - 0.5) * 3.2,
-        height: 2.6 + pseudoRandom(i * 5 + 3) * 1.8,
-        width: 0.22 + pseudoRandom(i * 5 + 4) * 0.12,
+        z: -1.6 + (pseudoRandom(i * 5 + 2) - 0.5) * 3.0,
+        height: 2.8 + pseudoRandom(i * 5 + 3) * 1.8,
+        width: 0.32 + pseudoRandom(i * 5 + 4) * 0.12,
         phase: pseudoRandom(i * 5 + 5) * Math.PI * 2,
-        speed: 0.7 + pseudoRandom(i * 5 + 6) * 0.5,
-        flexibility: 0.8 + pseudoRandom(i * 5 + 7) * 0.4,
-        rotationY: pseudoRandom(i * 5 + 8) * Math.PI,
+        speed: 0.65 + pseudoRandom(i * 5 + 6) * 0.45,
+        flexibility: 0.75 + pseudoRandom(i * 5 + 7) * 0.4,
+        curvature: (pseudoRandom(i * 5 + 8) - 0.5) * 0.35,
+        rotationY: pseudoRandom(i * 5 + 9) * Math.PI,
       }
     })
   }, [count])
@@ -91,8 +105,8 @@ export function Seaweed({ count = 10, reducedMotion = false }: SeaweedProps) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uBaseColor: { value: new THREE.Color('#003D33') }, // Deep kelp teal
-      uTipColor: { value: new THREE.Color('#26A69A') },  // Luminous sea green
+      uBaseColor: { value: new THREE.Color('#004236') }, // Deep kelp teal
+      uTipColor: { value: new THREE.Color('#2BBBAD') },  // Luminous sea green tip
     }),
     []
   )
@@ -106,7 +120,6 @@ export function Seaweed({ count = 10, reducedMotion = false }: SeaweedProps) {
   return (
     <group position={[0, -5.2, 0]}>
       {blades.map((blade, idx) => (
-
         <mesh
           key={idx}
           position={[blade.x, blade.height / 2, blade.z]}
