@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import type { MatchResult } from '@/services/matchingService'
+import { getActivityIcon, SparklesIcon, HeartIcon, ThumbsUpIcon, ArrowRightIcon } from '@/components/ui/OceanIcons'
+import styles from './MatchResultsPage.module.css'
 
 interface MatchResultsPageProps {
   hangoutId: string
@@ -12,12 +14,12 @@ export function MatchResultsPage({ hangoutId, matches }: MatchResultsPageProps) 
   const hasMatches = matches.matchedActivities.length > 0
 
   return (
-    <div style={{ maxWidth: '580px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-2)' }}>
-        <h1 className="text-display" style={{ fontSize: '2.5rem' }}>
-          {hasMatches ? 'Match Found! 🎉' : 'No Direct Matches 🌊'}
+    <div className={styles.root}>
+      <div className={styles.hero}>
+        <h1 className={styles.title}>
+          {hasMatches ? 'Match Found!' : 'No Direct Matches'}
         </h1>
-        <p className="text-body-sm text-secondary">
+        <p className={`text-body-sm ${styles.subtitle}`}>
           {hasMatches
             ? 'Both of you said YES to these activities!'
             : 'You picked different things — pick one together or try again!'}
@@ -26,62 +28,52 @@ export function MatchResultsPage({ hangoutId, matches }: MatchResultsPageProps) 
 
       {/* ── Matched Activities ── */}
       {hasMatches && (
-        <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--space-3)' }}>
-            {matches.matchedActivities.map((m) => (
-              <div
-                key={m.activityId}
-                className="glass-card glow-pulse"
-                style={{
-                  padding: 'var(--space-5) var(--space-6)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  border: '2px solid var(--accent-cyan)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-                  <span style={{ fontSize: '2.5rem' }} aria-hidden="true">
-                    {m.icon}
-                  </span>
-                  <div>
-                    <h2 className="text-h3">{m.name}</h2>
-                    <p className="text-caption text-secondary">
-                      {m.responderChoice === 'love' ? '❤️ Loved by Partner' : '👍 Liked by Partner'}
-                    </p>
-                  </div>
+        <section className={styles.matchesList}>
+          {matches.matchedActivities.map((m) => (
+            <div key={m.activityId} className={styles.matchCard}>
+              <div className={styles.matchContent}>
+                <div className={styles.iconWrapper}>
+                  {getActivityIcon(m.activityId, 28, 'var(--accent-cyan)')}
                 </div>
-
-                <span style={{ fontSize: '1.5rem' }}>✨</span>
+                <div>
+                  <h2 className={styles.matchName}>{m.name}</h2>
+                  <p className={styles.matchSubtitle}>
+                    {m.responderChoice === 'love' ? (
+                      <>
+                        <HeartIcon size={14} color="var(--warm-coral)" filled /> Loved by Partner
+                      </>
+                    ) : (
+                      <>
+                        <ThumbsUpIcon size={14} color="var(--accent-teal)" filled /> Liked by Partner
+                      </>
+                    )}
+                  </p>
+                </div>
               </div>
-            ))}
-          </div>
+
+              <SparklesIcon size={24} color="var(--accent-cyan)" />
+            </div>
+          ))}
 
           <Link
             href={`/hangouts/${hangoutId}/places`}
             className="btn-primary w-full"
             style={{ marginTop: 'var(--space-4)' }}
           >
-            Build the Plan →
+            Build the Plan <ArrowRightIcon size={18} />
           </Link>
         </section>
       )}
 
       {/* ── Unmatched Section ── */}
       {matches.unmatchedActivities.length > 0 && (
-        <section style={{ opacity: 0.6, marginTop: 'var(--space-2)' }}>
-          <hr style={{ border: 'none', borderTop: 'var(--border-glass)', marginBottom: 'var(--space-4)' }} />
-          <h3 className="text-caption text-muted" style={{ marginBottom: 'var(--space-2)' }}>
-            OTHER PROPOSALS (NO MATCH)
-          </h3>
-          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+        <section className={styles.unmatchedSection}>
+          <hr className={styles.divider} />
+          <h3 className={styles.unmatchedTitle}>OTHER PROPOSALS (NO MATCH)</h3>
+          <div className={styles.unmatchedList}>
             {matches.unmatchedActivities.map((u) => (
-              <div
-                key={u.activityId}
-                className="glass-card"
-                style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: '6px' }}
-              >
-                <span>{u.icon}</span>
+              <div key={u.activityId} className={styles.unmatchedItem}>
+                {getActivityIcon(u.activityId, 16, 'var(--text-muted)')}
                 <span className="text-caption">{u.name}</span>
               </div>
             ))}

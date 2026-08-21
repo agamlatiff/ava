@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { hangoutsRepository } from '@/db/repositories/hangoutsRepository'
 import { getHangoutRoute } from '@/lib/routes'
+import { CalendarIcon, PlusIcon, SparklesIcon, ArrowRightIcon } from '@/components/ui/OceanIcons'
 import type { Hangout } from '@/db/schema'
 
 export const metadata: Metadata = {
@@ -20,29 +21,57 @@ export default async function Page() {
   return (
     <div style={{ maxWidth: '640px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)' }}>
       <h1 className="text-h2" style={{ marginBottom: 'var(--space-6)' }}>
-        Your Plans 📋
+        Your Plans
       </h1>
 
       {hangoutsList.length === 0 ? (
-        <div className="glass-card" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)' }}>
-          <span style={{ fontSize: '2.5rem' }}>🌊</span>
+        <div className="glass-card-strong" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)', borderRadius: 'var(--radius-xl)' }}>
+          <SparklesIcon size={36} color="var(--accent-cyan)" />
           <h2 className="text-h3">No plans yet</h2>
           <p className="text-body-sm text-secondary">Start by creating your first hangout together!</p>
           <Link href="/hangouts/new" className="btn-primary">
-            + Plan Something
+            <PlusIcon size={18} /> Plan Something
           </Link>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           {hangoutsList.map((h) => (
-            <Link key={h.id} href={getHangoutRoute(h)} className="glass-card" style={{ padding: 'var(--space-4) var(--space-5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textDecoration: 'none' }}>
+            <Link
+              key={h.id}
+              href={getHangoutRoute(h)}
+              className="glass-card"
+              style={{
+                padding: 'var(--space-4) var(--space-5)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                textDecoration: 'none',
+                borderRadius: 'var(--radius-xl)',
+              }}
+            >
               <div>
-                <h3 className="text-body" style={{ fontWeight: 600 }}>{h.area}</h3>
-                <p className="text-caption text-muted">{h.date} · {h.startTime} – {h.endTime}</p>
+                <h3 className="text-body" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{h.area}</h3>
+                <p className="text-caption text-muted" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                  <CalendarIcon size={14} color="var(--accent-cyan)" />
+                  {h.date} · {h.startTime} – {h.endTime}
+                </p>
               </div>
-              <span className="text-caption" style={{ padding: '4px 8px', borderRadius: 'var(--radius-full)', background: 'var(--primary-subtle)', color: 'var(--accent-cyan)' }}>
-                {h.status.replace('_', ' ').toUpperCase()}
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span
+                  className="text-caption"
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: 'var(--radius-full)',
+                    background: 'rgba(0, 188, 212, 0.15)',
+                    color: 'var(--accent-cyan)',
+                    border: '1px solid rgba(77, 208, 225, 0.3)',
+                    fontWeight: 600,
+                  }}
+                >
+                  {h.status.replace('_', ' ').toUpperCase()}
+                </span>
+                <ArrowRightIcon size={16} color="var(--text-muted)" />
+              </div>
             </Link>
           ))}
         </div>

@@ -1,4 +1,6 @@
 import { StarRating } from '@/components/ui/StarRating'
+import { SparklesIcon } from '@/components/ui/OceanIcons'
+import styles from './MemoriesPage.module.css'
 
 interface MemoryCardData {
   id: string
@@ -14,12 +16,12 @@ interface MemoriesPageProps {
 
 export function MemoriesPage({ memories }: MemoriesPageProps) {
   return (
-    <div style={{ maxWidth: '640px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <h1 className="text-h2">Our Adventures 🐚</h1>
+    <div className={styles.root}>
+      <h1 className={styles.title}>Our Adventures</h1>
 
       {memories.length === 0 ? (
-        <div className="glass-card" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)' }}>
-          <span style={{ fontSize: '2.5rem' }}>🐠</span>
+        <div className={`glass-card-strong ${styles.emptyCard}`}>
+          <SparklesIcon size={36} color="var(--accent-cyan)" />
           <h2 className="text-h3">No memories saved yet</h2>
           <p className="text-body-sm text-secondary">
             Completed hangouts will appear here as beautiful memories.
@@ -27,29 +29,20 @@ export function MemoriesPage({ memories }: MemoriesPageProps) {
         </div>
       ) : (
         <>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <div className={styles.memoriesList}>
             {memories.map((m, i) => (
-              <div
-                key={m.id}
-                className="glass-card"
-                style={{
-                  padding: 'var(--space-5) var(--space-6)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 'var(--space-3)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span className="text-h3" style={{ color: 'var(--accent-cyan)' }}>
+              <div key={m.id} className={`glass-card ${styles.memoryCard}`}>
+                <div className={styles.cardHeader}>
+                  <span className={styles.memoryNumber}>
                     #{String(memories.length - i).padStart(3, '0')}
                   </span>
-                  <span className="text-caption text-muted">
+                  <span className={styles.memoryDate}>
                     {m.hangoutDate || 'Unknown date'}
                   </span>
                 </div>
 
                 <div>
-                  <p className="text-body" style={{ fontWeight: 600 }}>
+                  <p className={styles.memoryArea}>
                     {m.hangoutArea || 'Somewhere special'}
                   </p>
                 </div>
@@ -57,16 +50,16 @@ export function MemoriesPage({ memories }: MemoriesPageProps) {
                 <StarRating rating={m.rating} />
 
                 {m.note && (
-                  <p className="text-body-sm text-secondary" style={{ fontStyle: 'italic' }}>
-                    &ldquo;{m.note.length > 80 ? m.note.slice(0, 80) + '...' : m.note}&rdquo;
+                  <p className={styles.memoryNote}>
+                    &ldquo;{m.note.length > 120 ? m.note.slice(0, 120) + '...' : m.note}&rdquo;
                   </p>
                 )}
               </div>
             ))}
           </div>
 
-          <p className="text-caption text-muted" style={{ textAlign: 'center' }}>
-            {memories.length} adventure{memories.length !== 1 ? 's' : ''} together 🐠
+          <p className={styles.footerSummary}>
+            {memories.length} adventure{memories.length !== 1 ? 's' : ''} together
           </p>
         </>
       )}

@@ -1,0 +1,64 @@
+.root {
+  max-width: 600px;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: fade-in-up 300ms var(--transition-page) both;
+}
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+}
+
+.categoryGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.categoryTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+}
+
+.categoryIcon {
+  color: var(--accent-cyan);
+}
+
+.placesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.errorMessage {
+  color: var(--error);
+  font-size: var(--text-body-sm);
+  text-align: center;
+}

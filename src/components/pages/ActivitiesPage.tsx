@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation'
 import { useActivitySelect } from '@/hooks/useActivitySelect'
 import { useResponderReactions } from '@/hooks/useResponderReactions'
 import { ActivityChip } from '@/components/ui/ActivityChip'
+import { SparklesIcon, getActivityIcon, ArrowRightIcon } from '@/components/ui/OceanIcons'
 import type { Activity, Hangout } from '@/db/schema'
 import Link from 'next/link'
+import styles from './ActivitiesPage.module.css'
 
 interface ActivitiesPageProps {
   hangout: Hangout
@@ -74,15 +76,17 @@ export function ActivitiesPage({
   // If responder has already voted, offer link to Match Results
   if (hasPartnerResponded) {
     return (
-      <div style={{ maxWidth: '580px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-        <div className="glass-card" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)' }}>
-          <span style={{ fontSize: '3rem' }}>🎉</span>
-          <h1 className="text-h2">Both Choices Submitted!</h1>
-          <p className="text-body-sm text-secondary">
+      <div className={styles.root}>
+        <div className={`glass-card-strong ${styles.statusCard}`}>
+          <div className={styles.statusIconWrapper}>
+            <SparklesIcon size={32} color="var(--accent-cyan)" />
+          </div>
+          <h1 className={styles.title}>Both Choices Submitted!</h1>
+          <p className={`text-body-sm ${styles.subtitle}`}>
             Preferences have been shared. Let&apos;s see what matched!
           </p>
           <Link href={`/hangouts/${hangout.id}/matches`} className="btn-primary">
-            See Matches →
+            See Matches <ArrowRightIcon size={18} />
           </Link>
         </div>
       </div>
@@ -93,49 +97,38 @@ export function ActivitiesPage({
   if (isCreator && !isEditing && creatorSelected.length > 0) {
     const partnerName = hangout.createdBy.toLowerCase() === 'agam' ? 'Diva' : 'Agam'
     return (
-      <div style={{ maxWidth: '580px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-        <div className="glass-card" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)' }}>
-          <span style={{ fontSize: '3rem' }}>📨</span>
-          <h1 className="text-h2">Activities Sent!</h1>
-          <p className="text-body-sm text-secondary">
-            You picked {creatorSelected.length} activities. Waiting for {partnerName} to react and choose favorites! 🐢
+      <div className={styles.root}>
+        <div className={`glass-card-strong ${styles.statusCard}`}>
+          <div className={styles.statusIconWrapper}>
+            <SparklesIcon size={32} color="var(--accent-cyan)" />
+          </div>
+          <h1 className={styles.title}>Activities Sent!</h1>
+          <p className={`text-body-sm ${styles.subtitle}`}>
+            You picked {creatorSelected.length} activities. Waiting for {partnerName} to react and choose favorites!
           </p>
 
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center', marginBlock: 'var(--space-3)' }}>
+          <div className={styles.chipList}>
             {allActivities
               .filter((a) => creatorSelected.includes(a.id))
               .map((a) => (
-                <span
-                  key={a.id}
-                  className="text-caption"
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: 'var(--radius-full)',
-                    background: 'rgba(255,255,255,0.12)',
-                    color: 'var(--text-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontWeight: 600,
-                  }}
-                >
-                  <span>{a.icon}</span>
+                <span key={a.id} className={styles.selectedPill}>
+                  {getActivityIcon(a.id, 16, 'var(--accent-cyan)')}
                   <span>{a.name}</span>
                 </span>
               ))}
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', width: '100%', marginTop: 'var(--space-2)' }}>
+          <div className={styles.actionRow}>
             <button
               type="button"
               className="btn-secondary"
               style={{ flex: 1 }}
               onClick={() => setIsEditing(true)}
             >
-              Change Picks ✏️
+              Change Picks
             </button>
             <Link href="/home" className="btn-primary" style={{ flex: 1, textAlign: 'center' }}>
-              Back to Home 🏠
+              Back to Home
             </Link>
           </div>
         </div>
@@ -151,21 +144,20 @@ export function ActivitiesPage({
       setIsEditing(false)
     }
     return (
-      <div style={{ maxWidth: '580px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
-          <h1 className="text-h2">Choose Activities 🐠</h1>
-          <p className="text-body-sm text-secondary">
+      <div className={styles.root}>
+        <div className={styles.headerSection}>
+          <h1 className={styles.title}>Choose Activities</h1>
+          <p className={`text-body-sm ${styles.subtitle}`}>
             Pick activities you&apos;d love to do. {partnerName} will choose favorites!
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+        <div className={styles.grid}>
           {allActivities.map((act) => (
             <ActivityChip
               key={act.id}
               id={act.id}
               name={act.name}
-              icon={act.icon}
               isSelected={creatorHook.selectedIds.includes(act.id)}
               onToggleSelect={creatorHook.handleToggle}
               mode="select"
@@ -174,12 +166,12 @@ export function ActivitiesPage({
         </div>
 
         {creatorHook.errorMsg && (
-          <p style={{ color: 'var(--error)', fontSize: 'var(--text-body-sm)' }}>
+          <p className={styles.errorMessage}>
             {creatorHook.errorMsg}
           </p>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className={styles.footerRow}>
           <span className="text-caption text-muted">
             {creatorHook.count} selected
           </span>
@@ -190,7 +182,7 @@ export function ActivitiesPage({
             disabled={creatorHook.count === 0 || creatorHook.isSubmitting}
             onClick={handleCreatorSubmit}
           >
-            {creatorHook.isSubmitting ? 'Sending...' : `Send to ${partnerName} 📨`}
+            {creatorHook.isSubmitting ? 'Sending...' : `Send to ${partnerName}`}
           </button>
         </div>
       </div>
@@ -199,24 +191,23 @@ export function ActivitiesPage({
 
   // ── RESPONDER VIEW (Partner) ──
   return (
-    <div style={{ maxWidth: '580px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
-        <h1 className="text-h2">{hangout.createdBy.toUpperCase()}&apos;S PLAN 🐙</h1>
-        <p className="text-body-sm text-secondary">
+    <div className={styles.root}>
+      <div className={styles.headerSection}>
+        <h1 className={styles.title}>{hangout.createdBy.toUpperCase()}&apos;S PLAN</h1>
+        <p className={`text-body-sm ${styles.subtitle}`}>
           {hangout.date} · {hangout.startTime}–{hangout.endTime} · {hangout.area}
         </p>
         <p className="text-caption text-muted" style={{ marginTop: 'var(--space-1)' }}>
-          React to each activity with ❤️ Love, 👍 Like, or 👎 Pass.
+          React to each activity with Love, Like, or Pass.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+      <div className={styles.grid}>
         {candidateActivities.map((act) => (
           <ActivityChip
             key={act.id}
             id={act.id}
             name={act.name}
-            icon={act.icon}
             reaction={responderHook.reactions[act.id]}
             onReact={responderHook.handleReact}
             mode="react"
@@ -225,7 +216,7 @@ export function ActivitiesPage({
       </div>
 
       {responderHook.errorMsg && (
-        <p style={{ color: 'var(--error)', fontSize: 'var(--text-body-sm)' }}>
+        <p className={styles.errorMessage}>
           {responderHook.errorMsg}
         </p>
       )}
@@ -236,7 +227,7 @@ export function ActivitiesPage({
         disabled={responderHook.isSubmitting}
         onClick={responderHook.handleSubmit}
       >
-        {responderHook.isSubmitting ? 'Submitting...' : 'Submit Choices 🐚'}
+        {responderHook.isSubmitting ? 'Submitting...' : 'Submit Choices'}
       </button>
     </div>
   )

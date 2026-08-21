@@ -1,0 +1,118 @@
+.root {
+  max-width: 600px;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: fade-in-up 300ms var(--transition-page) both;
+}
+
+.hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-h1);
+  font-weight: 700;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, #FFFFFF 0%, #80DEEA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+}
+
+.matchesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.matchCard {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--accent-cyan);
+  background: rgba(12, 48, 96, 0.7);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  animation: glow-pulse 2s infinite ease-in-out;
+}
+
+.matchContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.iconWrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: rgba(0, 188, 212, 0.15);
+  border: 1px solid rgba(77, 208, 225, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+}
+
+.matchName {
+  font-family: var(--font-heading);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.matchSubtitle {
+  font-size: var(--text-caption);
+  color: var(--accent-light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.unmatchedSection {
+  opacity: 0.75;
+  margin-top: var(--space-2);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: var(--space-4);
+}
+
+.unmatchedTitle {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.unmatchedList {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.unmatchedItem {
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+}

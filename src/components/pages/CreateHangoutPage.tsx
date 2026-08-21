@@ -1,6 +1,13 @@
 'use client'
 
 import { useCreateHangout } from '@/hooks/useCreateHangout'
+import {
+  CalendarIcon,
+  ClockIcon,
+  MapPinIcon,
+  ArrowRightIcon,
+  SparklesIcon,
+} from '@/components/ui/OceanIcons'
 import styles from './CreateHangoutPage.module.css'
 
 interface CreateHangoutPageProps {
@@ -30,15 +37,15 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
   return (
     <div className={styles.createRoot}>
       <h1 className={styles.headerTitle}>
-        <span aria-hidden="true">🐢</span> New Hangout
+        <SparklesIcon size={26} color="var(--accent-cyan)" /> New Hangout
       </h1>
 
       <form onSubmit={handleSubmit} className={styles.createForm} noValidate>
-        <div className={`glass-card ${styles.formCard}`}>
+        <div className={`glass-card-strong ${styles.formCard}`}>
           {/* ── Date Field ── */}
           <div className={styles.fieldGroup}>
             <label htmlFor="date-input" className={styles.fieldLabel}>
-              <span aria-hidden="true">🗓️</span> When?
+              <CalendarIcon size={16} color="var(--accent-cyan)" /> When?
             </label>
             <input
               id="date-input"
@@ -54,7 +61,7 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
           {/* ── Time & Duration ── */}
           <div className={styles.fieldGroup}>
             <label className={styles.fieldLabel}>
-              <span aria-hidden="true">⏰</span> Time Range
+              <ClockIcon size={16} color="var(--accent-cyan)" /> Time Range
             </label>
             <div className={styles.timeRow}>
               <div>
@@ -82,7 +89,7 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
             </div>
             {duration && (
               <span className={styles.durationBadge}>
-                <span aria-hidden="true">⏱️</span> {duration}
+                <ClockIcon size={14} color="var(--accent-cyan)" /> {duration}
               </span>
             )}
           </div>
@@ -90,13 +97,13 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
           {/* ── Area / Location ── */}
           <div className={styles.fieldGroup}>
             <label htmlFor="area-input" className={styles.fieldLabel}>
-              <span aria-hidden="true">📍</span> Where?
+              <MapPinIcon size={16} color="var(--accent-cyan)" /> Where?
             </label>
             <input
               id="area-input"
               type="text"
               className="input-field"
-              placeholder="e.g. Around campus, Central Park..."
+              placeholder="e.g. Around campus, Central Park, Coastline..."
               value={area}
               onChange={(e) => setArea(e.target.value)}
               required
@@ -106,7 +113,7 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
           {/* ── Budget ── */}
           <div className={styles.fieldGroup}>
             <label htmlFor="budget-input" className={styles.fieldLabel}>
-              <span aria-hidden="true">💰</span> Budget (optional)
+              Budget (optional)
             </label>
             <div className={styles.budgetPrefixWrapper}>
               <span className={styles.budgetPrefix}>Rp</span>
@@ -124,7 +131,7 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
           {/* ── Notes ── */}
           <div className={styles.fieldGroup}>
             <label htmlFor="notes-input" className={styles.fieldLabel}>
-              <span aria-hidden="true">📝</span> Notes (optional)
+              Notes (optional)
             </label>
             <textarea
               id="notes-input"
@@ -143,7 +150,7 @@ export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = 
             className="btn-primary w-full"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Creating plan...' : 'Continue →'}
+            {isSubmitting ? 'Creating plan...' : 'Continue'} <ArrowRightIcon size={18} />
           </button>
         </div>
       </form>

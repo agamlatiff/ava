@@ -1,11 +1,12 @@
 'use client'
 
 import styles from './UIComponents.module.css'
+import { getActivityIcon, HeartIcon, ThumbsUpIcon, PassIcon } from './OceanIcons'
 
 interface ActivityChipProps {
   id: string
   name: string
-  icon: string
+  icon?: string
   isSelected?: boolean
   onToggleSelect?: (id: string) => void
   reaction?: 'love' | 'like' | 'pass'
@@ -16,13 +17,16 @@ interface ActivityChipProps {
 export function ActivityChip({
   id,
   name,
-  icon,
   isSelected = false,
   onToggleSelect,
   reaction,
   onReact,
   mode = 'select',
 }: ActivityChipProps) {
+
+
+  const iconElement = getActivityIcon(id, 32, isSelected ? '#80DEEA' : '#B0D4F1')
+
   if (mode === 'select') {
     return (
       <div
@@ -43,10 +47,10 @@ export function ActivityChip({
             ✓
           </span>
         )}
-        <span style={{ fontSize: '2.25rem' }} aria-hidden="true">
-          {icon}
-        </span>
-        <span className="text-body" style={{ fontWeight: 600 }}>
+        <div style={{ padding: '8px', color: isSelected ? 'var(--accent-cyan)' : 'var(--accent-light)' }} aria-hidden="true">
+          {iconElement}
+        </div>
+        <span className="text-body" style={{ fontWeight: 600, color: isSelected ? '#FFFFFF' : 'var(--text-secondary)' }}>
           {name}
         </span>
       </div>
@@ -56,9 +60,9 @@ export function ActivityChip({
   if (mode === 'react') {
     return (
       <div className={styles.chip} style={{ cursor: 'default' }}>
-        <span style={{ fontSize: '2.25rem' }} aria-hidden="true">
-          {icon}
-        </span>
+        <div style={{ padding: '8px', color: 'var(--accent-cyan)' }} aria-hidden="true">
+          {iconElement}
+        </div>
         <span className="text-body" style={{ fontWeight: 600 }}>
           {name}
         </span>
@@ -72,7 +76,7 @@ export function ActivityChip({
             onClick={() => onReact?.(id, 'love')}
             aria-label="Love this activity"
           >
-            ❤️
+            <HeartIcon size={18} color={reaction === 'love' ? '#FF6B6B' : 'var(--warm-coral)'} filled={reaction === 'love'} />
           </button>
           <button
             type="button"
@@ -82,7 +86,7 @@ export function ActivityChip({
             onClick={() => onReact?.(id, 'like')}
             aria-label="Like this activity"
           >
-            👍
+            <ThumbsUpIcon size={18} color={reaction === 'like' ? '#00BCD4' : 'var(--accent-teal)'} filled={reaction === 'like'} />
           </button>
           <button
             type="button"
@@ -92,7 +96,7 @@ export function ActivityChip({
             onClick={() => onReact?.(id, 'pass')}
             aria-label="Pass on this activity"
           >
-            👎
+            <PassIcon size={18} color={reaction === 'pass' ? '#EF5350' : 'var(--text-muted)'} />
           </button>
         </div>
       </div>
@@ -101,13 +105,14 @@ export function ActivityChip({
 
   // mode === 'display'
   return (
-    <div className={styles.chip} style={{ cursor: 'default', padding: '12px 16px' }}>
-      <span style={{ fontSize: '1.75rem' }} aria-hidden="true">
-        {icon}
-      </span>
+    <div className={styles.chip} style={{ cursor: 'default', padding: '12px 18px', flexDirection: 'row', gap: '10px' }}>
+      <div style={{ color: 'var(--accent-cyan)' }} aria-hidden="true">
+        {getActivityIcon(id, 22, 'var(--accent-cyan)')}
+      </div>
       <span className="text-body-sm" style={{ fontWeight: 600 }}>
         {name}
       </span>
     </div>
   )
 }
+

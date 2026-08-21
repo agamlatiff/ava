@@ -2,7 +2,9 @@
 
 import { useMemoryForm } from '@/hooks/useMemoryForm'
 import { StarRatingInput } from '@/components/ui/StarRatingInput'
+import { SparklesIcon } from '@/components/ui/OceanIcons'
 import type { Hangout } from '@/db/schema'
+import styles from './SaveMemoryPage.module.css'
 
 interface SaveMemoryPageProps {
   hangout: Hangout
@@ -22,64 +24,57 @@ export function SaveMemoryPage({ hangout }: SaveMemoryPageProps) {
   } = useMemoryForm(hangout.id)
 
   return (
-    <div style={{ maxWidth: '540px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-2)' }}>
-        <h1 className="text-display" style={{ fontSize: '2.25rem' }}>
-          Save This Memory 🐚
-        </h1>
-        <p className="text-body-sm text-secondary">
+    <div className={styles.root}>
+      <div className={styles.hero}>
+        <h1 className={styles.title}>Save This Memory</h1>
+        <p className={`text-body-sm ${styles.subtitle}`}>
           {hangout.date} · {hangout.area}
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         {/* ── Star Rating ── */}
-        <div className="glass-card" style={{ padding: 'var(--space-6)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-3)' }}>
-          <p className="text-body" style={{ fontWeight: 600 }}>How was it?</p>
+        <div className={`glass-card-strong ${styles.ratingCard}`}>
+          <p className={styles.ratingLabel}>How was our adventure?</p>
           <StarRatingInput
             rating={rating}
             hoveredStar={hoveredStar}
             onHover={setHoveredStar}
             onClick={handleStarClick}
           />
-          <p className="text-caption text-muted">
+          <p className={styles.ratingDescription}>
             {rating === 0
-              ? 'Tap a star'
+              ? 'Tap a star to rate'
               : rating <= 2
               ? 'Better luck next time!'
               : rating <= 3
-              ? 'Pretty good!'
+              ? 'Pretty good time!'
               : rating <= 4
-              ? 'Amazing time! ✨'
-              : 'LEGENDARY! 🌟'}
+              ? 'Amazing adventure!'
+              : 'LEGENDARY MOMENT! ✨'}
           </p>
         </div>
 
         {/* ── Note ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-          <label
-            htmlFor="memory-note"
-            className="text-caption"
-            style={{ fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-          >
-            💭 What was your favorite part? (optional)
+        <div className={styles.noteGroup}>
+          <label htmlFor="memory-note" className={styles.fieldLabel}>
+            What was your favorite part? (optional)
           </label>
           <textarea
             id="memory-note"
-            className="input-field"
-            placeholder="That sunset walk was incredible..."
+            className={`input-field ${styles.textareaField}`}
+            placeholder="That sunset view and the coffee talk was unforgettable..."
             value={note}
             onChange={(e) => setNote(e.target.value)}
             maxLength={500}
-            style={{ minHeight: '100px', resize: 'vertical' }}
           />
-          <span className="text-caption text-muted" style={{ alignSelf: 'flex-end' }}>
+          <span className={styles.charCount}>
             {note.length}/500
           </span>
         </div>
 
         {errorMsg && (
-          <p style={{ color: 'var(--error)', fontSize: 'var(--text-body-sm)', textAlign: 'center' }}>
+          <p className={styles.errorMessage}>
             {errorMsg}
           </p>
         )}
@@ -89,7 +84,7 @@ export function SaveMemoryPage({ hangout }: SaveMemoryPageProps) {
           className="btn-primary w-full"
           disabled={rating === 0 || isSubmitting}
         >
-          {isSubmitting ? 'Saving...' : 'Save Memory 🐚'}
+          <SparklesIcon size={18} /> {isSubmitting ? 'Saving Memory...' : 'Save Memory'}
         </button>
       </form>
     </div>

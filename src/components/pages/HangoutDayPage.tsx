@@ -2,8 +2,10 @@
 
 import { useHangoutDay } from '@/hooks/useHangoutDay'
 import { Timeline, type TimelineStop } from '@/components/ui/Timeline'
+import { SparklesIcon, ArrowRightIcon } from '@/components/ui/OceanIcons'
 import type { Hangout } from '@/db/schema'
 import Link from 'next/link'
+import styles from './HangoutDayPage.module.css'
 
 interface HangoutDayPageProps {
   hangout: Hangout
@@ -18,43 +20,35 @@ export function HangoutDayPage({ hangout, stops }: HangoutDayPageProps) {
     handleMarkComplete,
   } = useHangoutDay(hangout.id, stops)
 
+  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
+
   return (
-    <div style={{ maxWidth: '580px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+    <div className={styles.root}>
       {/* ── Header ── */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div className={styles.headerSection}>
         <div>
-          <h1 className="text-h2">
-            {allComplete ? 'Adventure Complete! 🎉' : "Today's Adventure 🌊"}
+          <h1 className={styles.title}>
+            {allComplete ? 'Adventure Complete!' : "Today's Adventure"}
           </h1>
-          <p className="text-body-sm text-secondary">
+          <p className={`text-body-sm ${styles.subtitle}`}>
             {hangout.date} · {hangout.area}
           </p>
         </div>
 
         <span
-          className="text-caption"
-          style={{
-            padding: '4px 10px',
-            borderRadius: 'var(--radius-full)',
-            background: allComplete ? 'rgba(76,175,80,0.2)' : 'var(--primary-subtle)',
-            color: allComplete ? '#81C784' : 'var(--accent-cyan)',
-            fontWeight: 600,
-          }}
+          className={`${styles.progressBadge} ${
+            allComplete ? styles.badgeDone : styles.badgeActive
+          }`}
         >
           {completedCount}/{totalCount} Done
         </span>
       </div>
 
       {/* ── Progress Bar ── */}
-      <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.1)' }}>
+      <div className={styles.progressBarTrack}>
         <div
-          style={{
-            width: totalCount > 0 ? `${(completedCount / totalCount) * 100}%` : '0%',
-            height: '100%',
-            borderRadius: '3px',
-            background: 'linear-gradient(90deg, var(--primary), var(--accent-cyan))',
-            transition: 'width 300ms ease',
-          }}
+          className={styles.progressBarFill}
+          style={{ width: `${progressPercent}%` }}
         />
       </div>
 
@@ -72,7 +66,7 @@ export function HangoutDayPage({ hangout, stops }: HangoutDayPageProps) {
           className="btn-primary w-full"
           style={{ textAlign: 'center' }}
         >
-          Save This Memory 🐚
+          <SparklesIcon size={18} /> Save This Memory <ArrowRightIcon size={18} />
         </Link>
       )}
     </div>

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { logoutAction } from '@/lib/actions/auth'
+import { FishOutlineIcon } from '@/components/ui/OceanIcons'
 import styles from './Nav.module.css'
 
 interface DesktopNavProps {
@@ -23,7 +24,7 @@ export function DesktopNav({ userName = 'You' }: DesktopNavProps) {
     <nav className={styles.desktopNav} aria-label="Main desktop navigation">
       <div className={styles.navContainer}>
         <Link href="/home" className={styles.logoLink}>
-          <span aria-hidden="true">🌊</span> Let&apos;s Go
+          <FishOutlineIcon size={24} color="var(--accent-cyan)" /> Let&apos;s Go
         </Link>
 
         <ul className={styles.navLinks}>
@@ -47,7 +48,7 @@ export function DesktopNav({ userName = 'You' }: DesktopNavProps) {
         </ul>
 
         <div className={styles.userBadge}>
-          <span>🐠 {userName}</span>
+          <span>{userName}</span>
           <form action={logoutAction}>
             <button type="submit" className={styles.logoutBtn} aria-label="Sign out">
               ✕

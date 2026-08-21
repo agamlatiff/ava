@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { FishOutlineIcon } from '@/components/ui/OceanIcons'
 import styles from './Nav.module.css'
 
 interface MobileHeaderProps {
@@ -27,8 +28,8 @@ export function MobileHeader({ title, userName = 'A' }: MobileHeaderProps) {
           ←
         </button>
       ) : (
-        <Link href="/home" className={styles.logoLink}>
-          <span>🌊</span>
+        <Link href="/home" className={styles.logoLink} style={{ fontSize: '1.1rem' }}>
+          <FishOutlineIcon size={20} color="var(--accent-cyan)" />
         </Link>
       )}
 

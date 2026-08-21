@@ -1,12 +1,19 @@
 'use client'
 
 import { useAccessForm } from '@/hooks/useAccessForm'
+import {
+  CalendarIcon,
+  MapPinIcon,
+  SparklesIcon,
+  FishOutlineIcon,
+  ArrowRightIcon,
+} from '@/components/ui/OceanIcons'
 import styles from './AccessPage.module.css'
 
 const FEATURES = [
-  { icon: '🗓️', label: 'Plan your hangout together' },
-  { icon: '📍', label: 'Find the best place around you' },
-  { icon: '⭐', label: 'Make every moment special' },
+  { icon: <CalendarIcon size={20} color="var(--accent-cyan)" />, label: 'Plan your hangout together' },
+  { icon: <MapPinIcon size={20} color="var(--accent-cyan)" />, label: 'Find the best place around you' },
+  { icon: <SparklesIcon size={20} color="var(--accent-cyan)" />, label: 'Make every moment special' },
 ]
 
 export function AccessPage() {
@@ -27,7 +34,7 @@ export function AccessPage() {
   ].filter(Boolean).join(' ')
 
   const cardClass = [
-    'glass-card',
+    'glass-card-strong',
     styles.loginCard,
     state === 'success' ? 'glow-pulse' : '',
   ].filter(Boolean).join(' ')
@@ -46,8 +53,8 @@ export function AccessPage() {
         </div>
 
         <ul className={styles.bullets} aria-label="App features">
-          {FEATURES.map((f) => (
-            <li key={f.label} className={styles.bullet}>
+          {FEATURES.map((f, i) => (
+            <li key={i} className={styles.bullet}>
               <span className={styles.bulletIcon} aria-hidden="true">{f.icon}</span>
               <span className="text-body text-secondary">{f.label}</span>
             </li>
@@ -83,7 +90,9 @@ export function AccessPage() {
                 aria-describedby={errorMsg ? 'error-msg' : undefined}
                 aria-invalid={state === 'error'}
               />
-              <span className={styles.inputIcon} aria-hidden="true">🐟</span>
+              <span className={styles.inputIcon} aria-hidden="true">
+                <FishOutlineIcon size={20} color="var(--accent-cyan)" />
+              </span>
             </div>
 
             {errorMsg && (
@@ -110,9 +119,9 @@ export function AccessPage() {
                   Diving in...
                 </>
               ) : state === 'success' ? (
-                '🌊 Let\'s Go!'
+                <>Let&apos;s Go! <SparklesIcon size={18} /></>
               ) : (
-                'Dive In'
+                <>Dive In <ArrowRightIcon size={18} /></>
               )}
             </button>
           </form>

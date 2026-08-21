@@ -1,8 +1,10 @@
 'use client'
 
 import { useHangoutConfirm } from '@/hooks/useHangoutConfirm'
+import { CheckCircleIcon } from '@/components/ui/OceanIcons'
 import type { Hangout } from '@/db/schema'
 import Link from 'next/link'
+import styles from './ConfirmPage.module.css'
 
 interface ConfirmPageProps {
   hangout: Hangout
@@ -27,64 +29,56 @@ export function ConfirmPage({ hangout, currentUserId }: ConfirmPageProps) {
   )
 
   return (
-    <div style={{ maxWidth: '540px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-2)' }}>
-        <h1 className="text-display" style={{ fontSize: '2.5rem' }}>
-          {isBothConfirmed ? "IT'S ON! 🎉" : 'Confirm Hangout 🌊'}
+    <div className={styles.root}>
+      <div className={styles.hero}>
+        <h1 className={styles.title}>
+          {isBothConfirmed ? "IT'S ON!" : 'Confirm Hangout'}
         </h1>
-        <p className="text-body-sm text-secondary">
+        <p className={`text-body-sm ${styles.subtitle}`}>
           {isBothConfirmed
             ? `See you ${hangout.date}! Get ready for our adventure.`
             : 'Both of you must confirm to lock in the plan.'}
         </p>
       </div>
 
-      <div className="glass-card" style={{ padding: 'var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+      <div className={`glass-card-strong ${styles.statusCard}`}>
         {/* ── Agam Status ── */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-3)', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.05)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.25rem' }}>🐠</span>
-            <span className="text-body" style={{ fontWeight: 600 }}>Agam</span>
+        <div className={styles.userRow}>
+          <div className={styles.userInfo}>
+            <div className={styles.userAvatar}>A</div>
+            <span className={styles.userName}>Agam</span>
           </div>
 
           <span
-            className="text-caption"
-            style={{
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-full)',
-              background: agamConfirmed ? 'rgba(76, 175, 80, 0.2)' : 'rgba(255, 183, 77, 0.2)',
-              color: agamConfirmed ? '#81C784' : '#FFB74D',
-              fontWeight: 600,
-            }}
+            className={`${styles.statusPill} ${
+              agamConfirmed ? styles.statusPillConfirmed : styles.statusPillWaiting
+            }`}
           >
-            {agamConfirmed ? '✓ Confirmed ✨' : 'Waiting... 🐢'}
+            {agamConfirmed ? '✓ Confirmed' : 'Waiting...'}
           </span>
         </div>
 
         {/* ── Diva Status ── */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-3)', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.05)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.25rem' }}>🐙</span>
-            <span className="text-body" style={{ fontWeight: 600 }}>Diva</span>
+        <div className={styles.userRow}>
+          <div className={styles.userInfo}>
+            <div className={styles.userAvatar} style={{ background: 'linear-gradient(135deg, var(--warm-coral), var(--warm-pink))' }}>
+              D
+            </div>
+            <span className={styles.userName}>Diva</span>
           </div>
 
           <span
-            className="text-caption"
-            style={{
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-full)',
-              background: divaConfirmed ? 'rgba(76, 175, 80, 0.2)' : 'rgba(255, 183, 77, 0.2)',
-              color: divaConfirmed ? '#81C784' : '#FFB74D',
-              fontWeight: 600,
-            }}
+            className={`${styles.statusPill} ${
+              divaConfirmed ? styles.statusPillConfirmed : styles.statusPillWaiting
+            }`}
           >
-            {divaConfirmed ? '✓ Confirmed ✨' : 'Waiting... 🐢'}
+            {divaConfirmed ? '✓ Confirmed' : 'Waiting...'}
           </span>
         </div>
       </div>
 
       {errorMsg && (
-        <p style={{ color: 'var(--error)', fontSize: 'var(--text-body-sm)', textAlign: 'center' }}>
+        <p className={styles.errorMessage}>
           {errorMsg}
         </p>
       )}
@@ -92,7 +86,7 @@ export function ConfirmPage({ hangout, currentUserId }: ConfirmPageProps) {
       {/* ── Action Buttons ── */}
       {isBothConfirmed ? (
         <Link href="/home" className="btn-primary w-full text-center">
-          Back to Home 🏠
+          Back to Home
         </Link>
       ) : !isCurrentUserConfirmed ? (
         <button
@@ -101,12 +95,13 @@ export function ConfirmPage({ hangout, currentUserId }: ConfirmPageProps) {
           disabled={isSubmitting}
           onClick={handleConfirm}
         >
-          {isSubmitting ? 'Confirming...' : "✓ I'm In!"}
+          <CheckCircleIcon size={18} />
+          {isSubmitting ? 'Confirming...' : "I'm In!"}
         </button>
       ) : (
-        <div className="glass-card" style={{ padding: 'var(--space-4)', textAlign: 'center' }}>
+        <div className={`glass-card ${styles.waitingBox}`}>
           <p className="text-body-sm text-secondary">
-            You confirmed! Waiting for partner to confirm... 🐢
+            You confirmed! Waiting for partner to confirm...
           </p>
         </div>
       )}
