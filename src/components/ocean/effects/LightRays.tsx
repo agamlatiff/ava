@@ -9,53 +9,99 @@ interface LightRaysProps {
   reducedMotion?: boolean
 }
 
+const vertexShader = `
+  uniform float uTime;
+  attribute float aSpeed;
+  attribute float aPhase;
+  varying vec2 vUv;
+  varying float vIntensity;
+
+  void main() {
+    vUv = uv;
+    vec3 pos = position;
+
+    // Gentle lateral drift with current
+    float sway = sin(uTime * aSpeed * 0.5 + aPhase) * 0.35 * (1.0 - uv.y);
+    pos.x += sway;
+
+    vIntensity = 0.7 + 0.3 * sin(uTime * aSpeed + aPhase);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  }
+`
+
+const fragmentShader = `
+  uniform vec3 uColor;
+  varying vec2 vUv;
+  varying float vIntensity;
+
+  void main() {
+    // Smooth vertical falloff from ocean surface downward
+    float verticalFade = pow(vUv.y, 1.6);
+    
+    // Soft horizontal beam falloff (Gaussian-like curve across width)
+    float horizontalFade = sin(vUv.x * 3.14159265);
+    horizontalFade = pow(horizontalFade, 1.8);
+
+    float alpha = verticalFade * horizontalFade * vIntensity * 0.14;
+    gl_FragColor = vec4(uColor, alpha);
+  }
+`
+
 function pseudoRandom(seed: number): number {
   const x = Math.sin(seed) * 10000
   return x - Math.floor(x)
 }
 
 export function LightRays({ count = 4, reducedMotion = false }: LightRaysProps) {
-  const groupRef = useRef<THREE.Group>(null!)
+  const materialRef = useRef<THREE.ShaderMaterial>(null!)
   const timeRef = useRef(0)
 
-  const rays = useMemo(() => {
-    return Array.from({ length: count }, (_, i) => ({
-      x: (i - (count - 1) / 2) * 3 + (pseudoRandom(i * 4 + 1) - 0.5),
-      rotationOffset: pseudoRandom(i * 4 + 2) * Math.PI * 2,
-      rotationZ: (pseudoRandom(i * 4 + 5) - 0.5) * 0.3,
-      speed: 0.1 + pseudoRandom(i * 4 + 3) * 0.1,
-      opacity: 0.04 + pseudoRandom(i * 4 + 4) * 0.04,
-    }))
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color('#7FE7FC') },
+    }),
+    []
+  )
+
+  const rayInstances = useMemo(() => {
+    return Array.from({ length: count }, (_, i) => {
+      const x = (i - (count - 1) / 2) * 2.8 + (pseudoRandom(i * 5 + 1) - 0.5) * 1.2
+      const z = -2.5 + (pseudoRandom(i * 5 + 2) - 0.5) * 2.0
+      const width = 1.4 + pseudoRandom(i * 5 + 3) * 1.0
+      const height = 12 + pseudoRandom(i * 5 + 4) * 4
+      const tiltZ = (pseudoRandom(i * 5 + 5) - 0.5) * 0.15
+      const speed = 0.3 + pseudoRandom(i * 5 + 6) * 0.3
+      const phase = pseudoRandom(i * 5 + 7) * Math.PI * 2
+
+      return { x, z, width, height, tiltZ, speed, phase }
+    })
   }, [count])
 
   useFrame((_, delta) => {
-    if (!groupRef.current || reducedMotion) return
+    if (reducedMotion || !materialRef.current) return
     timeRef.current += delta
-    const t = timeRef.current
-
-    groupRef.current.children.forEach((child, i) => {
-      const ray = rays[i]
-      if (!ray) return
-      const mesh = child as THREE.Mesh
-      const mat = mesh.material as THREE.MeshBasicMaterial
-      // Pulse opacity gently
-      mat.opacity = ray.opacity * (0.7 + 0.3 * Math.sin(t * ray.speed + ray.rotationOffset))
-    })
+    materialRef.current.uniforms.uTime.value = timeRef.current
   })
 
   return (
-    <group ref={groupRef} position={[0, 4, -2]}>
-      {rays.map((ray, i) => (
-        <mesh key={i} position={[ray.x, 0, 0]} rotation={[0, 0, ray.rotationZ]}>
-          {/* Tall thin cone pointing downward, like sunlight penetrating water */}
-          <coneGeometry args={[0.6, 12, 6, 1, true]} />
-          <meshBasicMaterial
-            color="#4DD0E1"
+    <group position={[0, 4.5, 0]}>
+      {rayInstances.map((ray, i) => (
+        <mesh
+          key={i}
+          position={[ray.x, -ray.height / 2, ray.z]}
+          rotation={[0, 0, ray.tiltZ]}
+        >
+          <planeGeometry args={[ray.width, ray.height, 4, 8]} />
+          <shaderMaterial
+            ref={i === 0 ? materialRef : undefined}
+            vertexShader={vertexShader}
+            fragmentShader={fragmentShader}
+            uniforms={uniforms}
             transparent
-            opacity={ray.opacity}
-            side={THREE.DoubleSide}
             depthWrite={false}
             blending={THREE.AdditiveBlending}
+            side={THREE.DoubleSide}
           />
         </mesh>
       ))}

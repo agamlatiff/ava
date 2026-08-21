@@ -17,7 +17,8 @@ function pseudoRandom(seed: number): number {
 const vertexShader = `
   uniform float uTime;
   attribute float aPhase;
-  attribute float aHeight;
+  attribute float aSpeed;
+  attribute float aFlexibility;
   varying vec2 vUv;
   varying float vHeightNorm;
 
@@ -25,10 +26,12 @@ const vertexShader = `
     vUv = uv;
     vec3 pos = position;
 
-    // Fixed base, organic current sway increasing along height
-    float heightFactor = pow(clamp(uv.y, 0.0, 1.0), 1.4);
-    float swayX = sin(uTime * 1.1 + aPhase) * 0.32 * heightFactor;
-    float swayZ = cos(uTime * 0.8 + aPhase * 0.7) * 0.22 * heightFactor;
+    // Organic current swaying: non-linear height lag with multi-frequency waves
+    float heightFactor = pow(clamp(uv.y, 0.0, 1.0), 1.6);
+    float wave1 = sin(uTime * aSpeed + aPhase) * 0.38;
+    float wave2 = cos(uTime * (aSpeed * 0.65) + aPhase * 1.3) * 0.22;
+    float swayX = (wave1 + wave2) * heightFactor * aFlexibility;
+    float swayZ = cos(uTime * (aSpeed * 0.8) + aPhase) * 0.18 * heightFactor;
 
     pos.x += swayX;
     pos.z += swayZ;
@@ -45,9 +48,9 @@ const fragmentShader = `
   varying float vHeightNorm;
 
   void main() {
-    // Gradient from deep ocean kelp green to translucent sea emerald
+    // Rich gradient from deep marine kelp teal to sunlit translucent sea green
     vec3 color = mix(uBaseColor, uTipColor, vHeightNorm);
-    float alpha = 0.85 + vHeightNorm * 0.12;
+    float alpha = 0.82 + vHeightNorm * 0.15;
     gl_FragColor = vec4(color, alpha);
   }
 `
@@ -58,6 +61,8 @@ interface BladeData {
   height: number
   width: number
   phase: number
+  speed: number
+  flexibility: number
   rotationY: number
 }
 
@@ -67,16 +72,18 @@ export function Seaweed({ count = 10, reducedMotion = false }: SeaweedProps) {
 
   const blades = useMemo<BladeData[]>(() => {
     return Array.from({ length: count }, (_, i) => {
-      // Cluster seaweed groves on left and right sides
+      // Cluster seaweed primarily on the outer edges (left & right)
       const side = i % 2 === 0 ? -1 : 1
-      const xOffset = side * (3.2 + pseudoRandom(i * 5 + 1) * 3.2)
+      const xOffset = side * (3.8 + pseudoRandom(i * 5 + 1) * 2.8)
       return {
         x: xOffset,
-        z: -1.8 + (pseudoRandom(i * 5 + 2) - 0.5) * 3.5,
-        height: 2.4 + pseudoRandom(i * 5 + 3) * 1.6,
-        width: 0.2 + pseudoRandom(i * 5 + 4) * 0.12,
+        z: -1.6 + (pseudoRandom(i * 5 + 2) - 0.5) * 3.2,
+        height: 2.6 + pseudoRandom(i * 5 + 3) * 1.8,
+        width: 0.22 + pseudoRandom(i * 5 + 4) * 0.12,
         phase: pseudoRandom(i * 5 + 5) * Math.PI * 2,
-        rotationY: pseudoRandom(i * 5 + 6) * Math.PI,
+        speed: 0.7 + pseudoRandom(i * 5 + 6) * 0.5,
+        flexibility: 0.8 + pseudoRandom(i * 5 + 7) * 0.4,
+        rotationY: pseudoRandom(i * 5 + 8) * Math.PI,
       }
     })
   }, [count])
@@ -84,7 +91,7 @@ export function Seaweed({ count = 10, reducedMotion = false }: SeaweedProps) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uBaseColor: { value: new THREE.Color('#004D40') }, // Deep teal/kelp
+      uBaseColor: { value: new THREE.Color('#003D33') }, // Deep kelp teal
       uTipColor: { value: new THREE.Color('#26A69A') },  // Luminous sea green
     }),
     []
@@ -97,8 +104,9 @@ export function Seaweed({ count = 10, reducedMotion = false }: SeaweedProps) {
   })
 
   return (
-    <group position={[0, -4.5, 0]}>
+    <group position={[0, -5.2, 0]}>
       {blades.map((blade, idx) => (
+
         <mesh
           key={idx}
           position={[blade.x, blade.height / 2, blade.z]}

@@ -6,13 +6,12 @@
 
 /* ── Design Tokens ────────────────────────────────────────── */
 :root {
-  /* Backgrounds — Vibrant Ocean Blues */
-  --bg-deep:    #062040;
-  --bg-ocean:   #0a3068;
-  --bg-mid:     #0e4a8a;
-  --bg-shallow: #1a6ab5;
-  --bg-surface: #2080cc;
-  --bg-light:   #40a0e0;
+  /* Ocean Depth Colors — Bright Tropical Sanctuary */
+  --bg-deep:      #041B38;
+  --bg-ocean:     #062A52;
+  --bg-shallow:   #0B3E74;
+  --bg-surface:   #105494;
+  --bg-light:     #40a0e0;
 
   /* Primary — Bright Blue */
   --primary:        #2196F3;

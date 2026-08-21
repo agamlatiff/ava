@@ -1,0 +1,813 @@
+/* ── Adventure Planner Container ──────────────────────────── */
+.plannerContainer {
+  max-width: 680px;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: fade-in-up 250ms var(--transition-page) both;
+}
+
+@media (min-width: 900px) {
+  .plannerContainer {
+    padding: var(--space-8) var(--space-6);
+    gap: var(--space-8);
+  }
+}
+
+/* ── Progress Indicator Bar ───────────────────────────────── */
+.progressWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.dotsContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepDot {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+  cursor: default;
+}
+
+.stepDotActive {
+  background: linear-gradient(135deg, #0288D1, #00BCD4);
+  border-color: rgba(77, 208, 225, 0.5);
+  color: #FFFFFF;
+  box-shadow: 0 0 14px rgba(0, 188, 212, 0.4);
+  transform: scale(1.15);
+}
+
+.stepDotCompleted {
+  background: rgba(0, 188, 212, 0.18);
+  border-color: rgba(77, 208, 225, 0.35);
+  color: var(--accent-cyan);
+  cursor: pointer;
+}
+
+.stepDotCompleted:hover {
+  background: rgba(0, 188, 212, 0.28);
+  transform: scale(1.08);
+}
+
+.progressText {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Planner Main Card ────────────────────────────────────── */
+.plannerCard {
+  background: radial-gradient(120% 120% at 50% 0%, rgba(8, 38, 76, 0.6) 0%, rgba(4, 18, 40, 0.5) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-7) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  box-shadow: 0 16px 40px rgba(0, 4, 16, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 600px) {
+  .plannerCard {
+    padding: var(--space-8);
+  }
+}
+
+.plannerCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  opacity: 0.7;
+}
+
+/* ── Step Header Group ────────────────────────────────────── */
+.stepContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: fade-in-up 200ms ease-out both;
+}
+
+.stepHeaderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stepKicker {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-cyan);
+}
+
+.stepTitle {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.stepDescription {
+  font-size: var(--text-body-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── STEP 1: Activity Choices Grid ────────────────────────── */
+.activityChoicesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .activityChoicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+}
+
+.activityChoiceCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 12px 14px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.activityChoiceCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.activityChoiceCardSelected {
+  background: linear-gradient(135deg, rgba(2, 136, 209, 0.3) 0%, rgba(0, 188, 212, 0.22) 100%) !important;
+  border-color: rgba(77, 208, 225, 0.4) !important;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.activityIconCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activityChoiceLabel {
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  color: #FFFFFF;
+  flex: 1;
+}
+
+.checkIndicator {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── STEP 2 & 5: Presets Grids ────────────────────────────── */
+.datePresetsGrid,
+.locationPresetsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .datePresetsGrid,
+  .locationPresetsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.presetOptionCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 14px 16px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.presetOptionCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.presetOptionCardSelected {
+  background: linear-gradient(135deg, rgba(2, 136, 209, 0.3) 0%, rgba(0, 188, 212, 0.22) 100%) !important;
+  border-color: rgba(77, 208, 225, 0.4) !important;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.presetRadioIndicator {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.presetOptionCardSelected .presetRadioIndicator {
+  border-color: var(--accent-cyan);
+}
+
+.radioInnerGlow {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--accent-cyan);
+  box-shadow: 0 0 6px var(--accent-cyan);
+}
+
+.presetTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.presetTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.presetSub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Custom Disclosure Row ────────────────────────────────── */
+.customDateDisclosure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.textDisclosureBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  align-self: flex-start;
+  transition: opacity var(--transition-fast);
+}
+
+.textDisclosureBtn:hover {
+  opacity: 0.8;
+}
+
+.customDateInputBox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fieldSubLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.selectedBadgeRow {
+  display: flex;
+  align-items: center;
+}
+
+.selectedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(77, 208, 225, 0.25);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+}
+
+/* ── STEP 3: Time Period Cards Grid ───────────────────────── */
+.timePeriodGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .timePeriodGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.timePeriodCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 14px 16px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.timePeriodCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.timePeriodCardSelected {
+  background: linear-gradient(135deg, rgba(2, 136, 209, 0.3) 0%, rgba(0, 188, 212, 0.22) 100%) !important;
+  border-color: rgba(77, 208, 225, 0.4) !important;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.periodIconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.periodTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.periodTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.periodTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.periodApprox {
+  font-size: 11px;
+  color: var(--accent-cyan);
+  font-weight: 500;
+}
+
+.periodVibe {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* ── STEP 4: Duration Options Grid ────────────────────────── */
+.durationOptionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.durationCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 14px 18px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.durationCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.durationCardSelected {
+  background: linear-gradient(135deg, rgba(2, 136, 209, 0.3) 0%, rgba(0, 188, 212, 0.22) 100%) !important;
+  border-color: rgba(77, 208, 225, 0.4) !important;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.durationIconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.durationTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.durationTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.durationTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.durationApprox {
+  font-size: 11px;
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.durationDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.timeRangePreviewBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-lg);
+  background: rgba(0, 188, 212, 0.08);
+  border: 1px solid rgba(77, 208, 225, 0.2);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ── STEP 5: Optional Extras Drawer ───────────────────────── */
+.optionalExtrasWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.extrasToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  align-self: flex-start;
+}
+
+.extrasContentBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  animation: fade-in-up 150ms ease-out both;
+}
+
+.extraFieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.budgetInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.budgetPrefix {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.budgetInputField {
+  padding-left: 42px !important;
+}
+
+.notesTextarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* ── STEP 6: Preview Summary Card ─────────────────────────── */
+.previewSummaryCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.previewCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: var(--space-3);
+}
+
+.previewKicker {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-cyan);
+}
+
+.changePicksBtn {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.changePicksBtn:hover {
+  color: var(--accent-cyan);
+}
+
+.previewMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.previewRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.previewIconWrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 188, 212, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.previewTextCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.previewLabel {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.previewValue {
+  font-family: var(--font-heading);
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.previewActivitiesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: var(--space-3);
+}
+
+.previewChipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.previewActivityPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(77, 208, 225, 0.25);
+  font-size: 12px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.previewExtrasSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: var(--space-3);
+}
+
+.extraItem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.previewNotesText {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.confirmActionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1 0%, #00BCD4 100%);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: var(--text-body);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 188, 212, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all var(--transition-fast);
+  margin-top: var(--space-2);
+}
+
+.confirmActionButton:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(0, 188, 212, 0.5);
+}
+
+.confirmActionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.errorBanner {
+  color: #FF8A80;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 82, 82, 0.12);
+  border: 1px solid rgba(255, 82, 82, 0.25);
+  border-radius: var(--radius-md);
+}
+
+/* ── Navigation Actions Bar ───────────────────────────────── */
+.navBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: var(--space-5);
+  margin-top: var(--space-2);
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.backButton:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.primaryActionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1 0%, #00BCD4 100%);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all var(--transition-fast);
+}
+
+.primaryActionButton:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.primaryActionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

@@ -32,7 +32,8 @@ export function OceanSceneManager() {
       <OceanLighting intensity={config.intensity} />
 
       {/* BACKGROUND: Deep ocean atmospheric fog */}
-      <fog attach="fog" args={['#031428', 11, 32]} />
+      <fog attach="fog" args={['#05254A', 10, 34]} />
+
 
 
       <Suspense fallback={null}>

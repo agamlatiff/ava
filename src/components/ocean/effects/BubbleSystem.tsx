@@ -16,8 +16,8 @@ interface BubbleData {
   swayAmp: number
   swayOffset: number
   scale: number
-  opacity: number
   startX: number
+  startZ: number
 }
 
 function pseudoRandom(seed: number): number {
@@ -30,22 +30,26 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const timeRef = useRef(0)
 
-  // Pre-allocate stable bubble particles
+  // Pre-allocate stable bubble particles with varied depths
   const bubbles = useMemo<BubbleData[]>(() => {
-    return Array.from({ length: count }, (_, i) => ({
-      position: new THREE.Vector3(
-        (pseudoRandom(i * 7 + 1) - 0.5) * 10,
-        -6 + pseudoRandom(i * 7 + 2) * 12,
-        (pseudoRandom(i * 7 + 3) - 0.5) * 4 - 1
-      ),
-      speed: 0.4 + pseudoRandom(i * 7 + 4) * 0.8,
-      swayFreq: 0.8 + pseudoRandom(i * 7 + 5) * 1.2,
-      swayAmp: 0.15 + pseudoRandom(i * 7 + 6) * 0.25,
-      swayOffset: pseudoRandom(i * 7 + 7) * Math.PI * 2,
-      scale: 0.04 + pseudoRandom(i * 7 + 8) * 0.12,
-      opacity: 0.3 + pseudoRandom(i * 7 + 9) * 0.5,
-      startX: (pseudoRandom(i * 7 + 10) - 0.5) * 10,
-    }))
+    return Array.from({ length: count }, (_, i) => {
+      const z = (pseudoRandom(i * 7 + 3) - 0.5) * 5 - 2
+      const startX = (pseudoRandom(i * 7 + 1) - 0.5) * 11
+      return {
+        position: new THREE.Vector3(
+          startX,
+          -5.5 + pseudoRandom(i * 7 + 2) * 11,
+          z
+        ),
+        speed: 0.35 + pseudoRandom(i * 7 + 4) * 0.45,
+        swayFreq: 0.7 + pseudoRandom(i * 7 + 5) * 0.8,
+        swayAmp: 0.12 + pseudoRandom(i * 7 + 6) * 0.18,
+        swayOffset: pseudoRandom(i * 7 + 7) * Math.PI * 2,
+        scale: 0.035 + pseudoRandom(i * 7 + 8) * 0.08,
+        startX,
+        startZ: z,
+      }
+    })
   }, [count])
 
   useFrame((_, delta) => {
@@ -55,13 +59,15 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
     const t = timeRef.current
 
     bubbles.forEach((bubble, i) => {
+      // Ascend upwards with current drift
       bubble.position.y += bubble.speed * delta
-      bubble.position.x = bubble.startX + Math.sin(t * bubble.swayFreq + bubble.swayOffset) * bubble.swayAmp
+      const currentDrift = Math.sin(t * 0.35 + bubble.swayOffset) * 0.25
+      bubble.position.x = bubble.startX + Math.sin(t * bubble.swayFreq + bubble.swayOffset) * bubble.swayAmp + currentDrift
 
-      // Reset when above scene
-      if (bubble.position.y > 7) {
-        bubble.position.y = -6 - ((i * 1.3) % 3)
-        bubble.startX = ((i * 3.7) % 10) - 5
+      // Loop back to bottom when reaching surface
+      if (bubble.position.y > 6.5) {
+        bubble.position.y = -5.5 - ((i * 0.8) % 2.5)
+        bubble.startX = ((i * 3.1) % 11) - 5.5
         bubble.position.x = bubble.startX
       }
 
@@ -74,18 +80,17 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
     meshRef.current.instanceMatrix.needsUpdate = true
   })
 
-  // Sphere geometry with smooth glass/bubble material
-  const geometry = useMemo(() => new THREE.SphereGeometry(1, 12, 12), [])
+  const geometry = useMemo(() => new THREE.SphereGeometry(1, 10, 10), [])
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
         color: '#E0F7FA',
-        transmission: 0.9,
-        opacity: 0.7,
+        transmission: 0.92,
+        opacity: 0.65,
         transparent: true,
-        roughness: 0.05,
+        roughness: 0.08,
         ior: 1.1,
-        thickness: 0.1,
+        thickness: 0.08,
       }),
     []
   )

@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import { CreateHangoutPage } from '@/components/pages/CreateHangoutPage'
 
 export const metadata: Metadata = {
-  title: "Let's Go — New Hangout",
-  description: "Plan a new hangout together.",
+  title: "Ava — Plan Our Next Adventure",
+  description: "Plan a new adventure together.",
 }
+
 
 export default async function Page({
   searchParams,

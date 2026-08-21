@@ -93,7 +93,58 @@ export function ExploreIcon({ size = 24, color = 'currentColor', className }: Ic
   )
 }
 
+export function MorningSunIcon({ size = 24, color = 'currentColor', className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 2v4" />
+      <path d="m4.93 4.93 2.83 2.83" />
+      <path d="M20 12h-4" />
+      <path d="m19.07 4.93-2.83 2.83" />
+      <path d="M2 18h20" />
+      <path d="M4 18a8 8 0 0 1 16 0" fill="rgba(255,213,79,0.2)" />
+    </svg>
+  )
+}
+
+export function SunIcon({ size = 24, color = 'currentColor', className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="4" fill="rgba(255,183,77,0.25)" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </svg>
+  )
+}
+
+export function SunsetIcon({ size = 24, color = 'currentColor', className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 10V2" />
+      <path d="m4.93 10.93 1.41-1.41" />
+      <path d="m17.66 9.52 1.41 1.41" />
+      <path d="M2 18h20" />
+      <path d="M20 18a8 8 0 0 0-16 0" fill="rgba(255,112,67,0.25)" />
+      <path d="m16 6-4 4-4-4" />
+    </svg>
+  )
+}
+
+export function MoonIcon({ size = 24, color = 'currentColor', className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="rgba(179,157,219,0.2)" />
+    </svg>
+  )
+}
+
 export function DessertIcon({ size = 24, color = 'currentColor', className }: IconProps) {
+
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="M12 2a2 2 0 0 1 2 2c0 .7-.4 1.3-1 1.7V7h-2V5.7A2 2 0 0 1 12 2Z" />

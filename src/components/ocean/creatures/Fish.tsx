@@ -35,8 +35,7 @@ function pseudoRandom(seed: number): number {
 }
 
 /**
- * Foreground / Midground Realistic GLB Tropical Fish (Clownfish)
- * Rendered at refined, natural proportions.
+ * Realistic GLB Tropical Fish (Clownfish)
  */
 function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedMotion: boolean }) {
   const gltf = useGLTF('/models/ocean/tropical_fish.glb')
@@ -50,7 +49,9 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
     if (!rootGroupRef.current) return
 
     if (!reducedMotion) {
-      angleRef.current += (data.baseSpeed + Math.sin(angleRef.current * 1.4) * data.speedVariance) * delta
+      // Natural speed variation (occasional glide & slow kick)
+      const speedPulse = Math.sin(angleRef.current * 2.0 + timeOffset) * data.speedVariance
+      angleRef.current += (data.baseSpeed + speedPulse) * delta
     }
 
     const a = angleRef.current
@@ -58,23 +59,23 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
     const posZ = data.centerPos.z + Math.cos(a) * data.radiusZ
     const posY = data.yBase + Math.sin(a * data.yFrequency + timeOffset) * data.yAmplitude
 
-    // Calculate heading tangent and banking
+    // Calculate heading tangent and hydrodynamic banking
     const nextA = a + 0.03
     const nextX = data.centerPos.x + Math.sin(nextA) * data.radiusX
     const nextZ = data.centerPos.z + Math.cos(nextA) * data.radiusZ
 
     const heading = Math.atan2(nextX - posX, nextZ - posZ)
-    const pitch = (Math.cos(a * data.yFrequency + timeOffset) * data.yAmplitude) * 0.1
-    const roll = Math.sin(a) * 0.06
+    const pitch = (Math.cos(a * data.yFrequency + timeOffset) * data.yAmplitude) * 0.09
+    const roll = Math.sin(a) * 0.05
 
     rootGroupRef.current.position.set(posX, posY, posZ)
     rootGroupRef.current.rotation.set(pitch, heading, roll)
 
-    // Tail fin gentle swimming stroke
+    // Tail fin gentle swimming oscillation
     if (!reducedMotion) {
       const tail = rootGroupRef.current.getObjectByName('TailFin')
       if (tail) {
-        tail.rotation.y = Math.sin(a * data.swimFreq + timeOffset) * 0.22
+        tail.rotation.y = Math.sin(a * data.swimFreq + timeOffset) * 0.2
       }
     }
   })
@@ -97,18 +98,18 @@ function DistantFish({ data, reducedMotion }: { data: FishInstance; reducedMotio
   const distantMat = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: '#0A3258',
+        color: '#0D3E6A',
         roughness: 0.9,
         metalness: 0.05,
         transparent: true,
-        opacity: data.depthLayer === 'background' ? 0.45 : 0.7,
+        opacity: data.depthLayer === 'background' ? 0.38 : 0.65,
       }),
     [data.depthLayer]
   )
 
   const distantGeo = useMemo(() => {
-    const geo = new THREE.SphereGeometry(0.3, 8, 6)
-    geo.scale(1.3, 0.7, 0.35)
+    const geo = new THREE.SphereGeometry(0.28, 8, 6)
+    geo.scale(1.3, 0.65, 0.3)
     return geo
   }, [])
 
@@ -145,24 +146,24 @@ export function Fish({ count = 3, reducedMotion = false }: FishProps) {
     const list: FishInstance[] = []
 
     // ─────────────────────────────────────────────────────────────
-    // 1. FOREGROUND PERIPHERAL FISH: Small & swimming at edges only
-    // Kept away from the central screen text (x outside [-2.5, 2.5])
+    // 1. FOREGROUND PERIPHERAL FISH: Small & swimming at outer margins
+    // Kept strictly away from center text (x < -3.5 or x > 3.5)
     // ─────────────────────────────────────────────────────────────
     list.push({
       id: 0,
       type: 'clownfish',
       depthLayer: 'foreground-peripheral',
-      baseSpeed: 0.18,
+      baseSpeed: 0.16,
       speedVariance: 0.03,
-      radiusX: 2.2,
-      radiusZ: 1.4,
-      centerPos: new THREE.Vector3(-4.2, -1.6, -2.5), // Lower left corner
-      pathAngle: 0.4,
-      yBase: -1.6,
-      yAmplitude: 0.18,
-      yFrequency: 0.9,
-      swimFreq: 4.8,
-      scale: 0.42, // Refined, gentle size
+      radiusX: 1.8,
+      radiusZ: 1.2,
+      centerPos: new THREE.Vector3(-4.4, -1.5, -2.4), // Lower left corner near reef
+      pathAngle: 0.3,
+      yBase: -1.5,
+      yAmplitude: 0.15,
+      yFrequency: 0.8,
+      swimFreq: 4.5,
+      scale: 0.4,
     })
 
     // ─────────────────────────────────────────────────────────────
@@ -175,49 +176,49 @@ export function Fish({ count = 3, reducedMotion = false }: FishProps) {
         id: idx,
         type: 'clownfish',
         depthLayer: 'midground',
-        baseSpeed: 0.15 + pseudoRandom(idx * 5 + 1) * 0.06,
+        baseSpeed: 0.14 + pseudoRandom(idx * 5 + 1) * 0.05,
         speedVariance: 0.02,
-        radiusX: 4.5 + pseudoRandom(idx * 5 + 2) * 1.5,
+        radiusX: 4.8 + pseudoRandom(idx * 5 + 2) * 1.5,
         radiusZ: 2.0 + pseudoRandom(idx * 5 + 3) * 1.0,
         centerPos: new THREE.Vector3(
-          (pseudoRandom(idx * 5 + 4) - 0.5) * 4.0,
-          0.2 + (pseudoRandom(idx * 5 + 5) - 0.5) * 1.5,
-          -5.2 + (pseudoRandom(idx * 5 + 6) - 0.5) * 1.2
+          (pseudoRandom(idx * 5 + 4) - 0.5) * 4.2,
+          0.3 + (pseudoRandom(idx * 5 + 5) - 0.5) * 1.4,
+          -5.5 + (pseudoRandom(idx * 5 + 6) - 0.5) * 1.2
         ),
         pathAngle: pseudoRandom(idx * 5 + 7) * Math.PI * 2,
-        yBase: 0.2 + (pseudoRandom(idx * 5 + 8) - 0.5) * 1.2,
-        yAmplitude: 0.14 + pseudoRandom(idx * 5 + 9) * 0.08,
-        yFrequency: 0.8 + pseudoRandom(idx * 5 + 10) * 0.4,
-        swimFreq: 4.2 + pseudoRandom(idx * 5 + 11) * 0.8,
-        scale: 0.32 + pseudoRandom(idx * 5 + 12) * 0.08, // Subtle midground scale
+        yBase: 0.3 + (pseudoRandom(idx * 5 + 8) - 0.5) * 1.0,
+        yAmplitude: 0.12 + pseudoRandom(idx * 5 + 9) * 0.06,
+        yFrequency: 0.7 + pseudoRandom(idx * 5 + 10) * 0.3,
+        swimFreq: 4.0 + pseudoRandom(idx * 5 + 11) * 0.6,
+        scale: 0.32 + pseudoRandom(idx * 5 + 12) * 0.06,
       })
     }
 
     // ─────────────────────────────────────────────────────────────
     // 3. BACKGROUND FISH: Tiny distant silhouettes in deep fog
     // ─────────────────────────────────────────────────────────────
-    const bgCount = 3
+    const bgCount = 4
     for (let i = 0; i < bgCount; i++) {
       const idx = 10 + i
       list.push({
         id: idx,
         type: 'distant',
         depthLayer: 'background',
-        baseSpeed: 0.12 + pseudoRandom(idx * 7 + 1) * 0.05,
-        speedVariance: 0.02,
-        radiusX: 6.0 + pseudoRandom(idx * 7 + 2) * 2.0,
-        radiusZ: 3.0 + pseudoRandom(idx * 7 + 3) * 1.5,
+        baseSpeed: 0.11 + pseudoRandom(idx * 7 + 1) * 0.04,
+        speedVariance: 0.015,
+        radiusX: 6.5 + pseudoRandom(idx * 7 + 2) * 2.0,
+        radiusZ: 3.2 + pseudoRandom(idx * 7 + 3) * 1.5,
         centerPos: new THREE.Vector3(
-          (pseudoRandom(idx * 7 + 4) - 0.5) * 6.0,
-          0.8 + (pseudoRandom(idx * 7 + 5) - 0.5) * 2.0,
-          -10.5 + (pseudoRandom(idx * 7 + 6) - 0.5) * 2.5
+          (pseudoRandom(idx * 7 + 4) - 0.5) * 6.5,
+          1.0 + (pseudoRandom(idx * 7 + 5) - 0.5) * 2.0,
+          -11.0 + (pseudoRandom(idx * 7 + 6) - 0.5) * 2.5
         ),
         pathAngle: pseudoRandom(idx * 7 + 7) * Math.PI * 2,
-        yBase: 0.8 + (pseudoRandom(idx * 7 + 8) - 0.5) * 1.6,
-        yAmplitude: 0.1 + pseudoRandom(idx * 7 + 9) * 0.06,
-        yFrequency: 0.6 + pseudoRandom(idx * 7 + 10) * 0.3,
-        swimFreq: 3.5 + pseudoRandom(idx * 7 + 11) * 0.6,
-        scale: 0.18 + pseudoRandom(idx * 7 + 12) * 0.06, // Tiny distant speck
+        yBase: 1.0 + (pseudoRandom(idx * 7 + 8) - 0.5) * 1.4,
+        yAmplitude: 0.09 + pseudoRandom(idx * 7 + 9) * 0.05,
+        yFrequency: 0.5 + pseudoRandom(idx * 7 + 10) * 0.3,
+        swimFreq: 3.2 + pseudoRandom(idx * 7 + 11) * 0.5,
+        scale: 0.16 + pseudoRandom(idx * 7 + 12) * 0.05,
       })
     }
 
