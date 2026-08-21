@@ -1,30 +1,30 @@
-/* ── Dashboard Layout ─────────────────────────────────────── */
-.dashboardContainer {
+/* ── Sanctuary Main Container ─────────────────────────────── */
+.worldContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-8);
   padding: var(--space-6) var(--space-6);
-  max-width: 1200px;
+  max-width: 1160px;
   margin-inline: auto;
-  animation: fade-in-up 250ms var(--transition-page) both;
+  animation: fade-in-up 300ms var(--transition-page) both;
 }
 
 @media (min-width: 1024px) {
-  .dashboardContainer {
+  .worldContainer {
     padding: var(--space-8) var(--space-8);
-    gap: var(--space-8);
+    gap: var(--space-10);
   }
 }
 
-/* ── Top Header Greeting ──────────────────────────────────── */
-.topHeader {
+/* ── Sanctuary Header ─────────────────────────────────────── */
+.sanctuaryHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
 }
 
-.greetingGroup {
+.greetingBlock {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -32,68 +32,371 @@
 
 .greetingTitle {
   font-family: var(--font-heading);
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.greetingWave {
-  font-size: 1.25rem;
 }
 
 .greetingSub {
   font-size: var(--text-body-sm);
   color: var(--text-secondary);
+  line-height: 1.4;
 }
 
-.headerUtilities {
+.headerActions {
   display: flex;
   align-items: center;
   gap: var(--space-3);
 }
 
-.iconCircleBtn {
-  width: 40px;
-  height: 40px;
+.iconAuraBtn {
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
 }
 
-.iconCircleBtn:hover {
-  background: rgba(255, 255, 255, 0.14);
+.iconAuraBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
   transform: translateY(-1px);
 }
 
-.userBadgeBtn {
+.coupleBadge {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 4px 10px 4px 4px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all var(--transition-fast);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
 }
 
-.userBadgeBtn:hover {
-  background: rgba(255, 255, 255, 0.14);
+.coupleBadge:hover {
+  background: rgba(255, 255, 255, 0.09);
 }
 
-.userBadgeAvatar {
+.coupleAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1, #00BCD4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 188, 212, 0.25);
+}
+
+/* ── Fluid 2-Column Story Grid ────────────────────────────── */
+.storyGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .storyGrid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--space-8);
+  }
+}
+
+/* ── Main Journey Column (Left) ───────────────────────────── */
+.journeyColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ── 1. Next Adventure Invitation (Hero) ──────────────────── */
+.heroSection {
+  width: 100%;
+}
+
+.invitationCard {
+  background: radial-gradient(120% 120% at 50% 0%, rgba(8, 38, 76, 0.55) 0%, rgba(4, 18, 40, 0.45) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: 0 16px 40px rgba(0, 4, 16, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.invitationCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  opacity: 0.6;
+}
+
+.invitationTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionKicker {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-cyan);
+}
+
+.softStatusBadge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(171, 71, 188, 0.18);
+  color: #E1BEE7;
+  border: 1px solid rgba(171, 71, 188, 0.3);
+  text-transform: capitalize;
+}
+
+.statusToday {
+  background: rgba(76, 175, 80, 0.18);
+  color: #A5D6A7;
+  border-color: rgba(76, 175, 80, 0.35);
+}
+
+.destinationHeading {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.15;
+}
+
+.destinationMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: 2px;
+}
+
+.metaPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-body-sm);
+  color: var(--text-secondary);
+}
+
+.invitationActionRow {
+  margin-top: var(--space-2);
+}
+
+.openPlanButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1 0%, #00BCD4 100%);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all var(--transition-fast);
+}
+
+.openPlanButton:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(0, 188, 212, 0.45);
+}
+
+.invitationEmpty {
+  background: rgba(4, 18, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .invitationEmpty {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.emptyGlowIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 188, 212, 0.1);
+  border: 1px solid rgba(77, 208, 225, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.emptyTextContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.emptySubtext {
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+}
+
+/* ── 2. Interactive Choice Bubbles (Quick Plan) ───────────── */
+.activitiesSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionHeaderLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-inline: 4px;
+}
+
+.organicHeading {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.headingSub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.choiceBubblesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.choiceBubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(4, 18, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.choiceBubble:hover {
+  background: rgba(8, 38, 78, 0.65);
+  border-color: rgba(77, 208, 225, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.2);
+}
+
+.bubbleIconGlow {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubbleLabel {
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+/* ── 3. Explore Places Floating Ribbon ────────────────────── */
+.exploreRibbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-xl);
+  background: rgba(4, 18, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.exploreRibbon:hover {
+  background: rgba(8, 38, 78, 0.65);
+  border-color: rgba(77, 208, 225, 0.25);
+  transform: translateY(-1px);
+}
+
+.ribbonLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.ribbonIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 188, 212, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ribbonTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.ribbonSub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.ribbonArrow {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-full);
@@ -101,521 +404,261 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 188, 212, 0.3);
 }
 
-/* ── 2-Column Responsive Dashboard Grid ───────────────────── */
-.dashboardGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
-  align-items: start;
-}
-
-@media (min-width: 1024px) {
-  .dashboardGrid {
-    grid-template-columns: minmax(0, 1fr) 320px;
-    gap: var(--space-6);
-  }
-}
-
-/* ── Primary Column (Left) ────────────────────────────────── */
-.primaryColumn {
+/* ── 4. Memories & Past Adventures ────────────────────────── */
+.recentSection {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-}
-
-/* ── 1. Next Hangout Hero Card ────────────────────────────── */
-.nextHangoutCard {
-  background: rgba(4, 22, 48, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6) var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  box-shadow: 0 10px 32px rgba(0, 4, 16, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  position: relative;
-  overflow: hidden;
-}
-
-.nextHangoutCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-  opacity: 0.8;
-}
-
-.planCardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: var(--space-3);
 }
 
-.cardHeading {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #FFFFFF;
-}
-
-.statusPill {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  background: rgba(171, 71, 188, 0.22);
-  color: #E1BEE7;
-  border: 1px solid rgba(171, 71, 188, 0.4);
-  letter-spacing: 0.03em;
-  text-transform: capitalize;
-}
-
-.statusPillToday {
-  background: rgba(76, 175, 80, 0.22);
-  color: #A5D6A7;
-  border-color: rgba(76, 175, 80, 0.45);
-}
-
-.planDetailsList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.detailRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: var(--text-body-sm);
-  color: var(--text-secondary);
-}
-
-.cardActionRow {
-  margin-top: var(--space-2);
-}
-
-.viewPlanBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #0288D1 0%, #29B6F6 50%, #00BCD4 100%);
-  color: #FFFFFF;
-  font-family: var(--font-heading);
-  font-size: var(--text-body-sm);
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  transition: all var(--transition-fast);
-}
-
-.viewPlanBtn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 188, 212, 0.5);
-}
-
-.emptyHangoutCard {
-  background: rgba(4, 22, 48, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(20px);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
+.recentTitleRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  padding-inline: 4px;
 }
 
-.emptyHeaderGroup {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.emptyIconBadge {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  background: rgba(0, 188, 212, 0.12);
-  border: 1px solid rgba(77, 208, 225, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.emptyText {
-  font-size: var(--text-body-sm);
-  color: var(--text-muted);
-}
-
-/* ── 2. "What shall we do?" Activity Tiles ────────────────── */
-.sectionTitle {
-  font-family: var(--font-heading);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin-bottom: var(--space-3);
-}
-
-.activityGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
-
-@media (min-width: 600px) {
-  .activityGrid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-.activityTile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-2);
-  border-radius: var(--radius-lg);
-  background: rgba(4, 22, 48, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  text-decoration: none;
-  transition: all var(--transition-fast);
-  box-shadow: 0 4px 16px rgba(0, 4, 16, 0.25);
-}
-
-.activityTile:hover {
-  background: rgba(8, 38, 78, 0.75);
-  border-color: rgba(77, 208, 225, 0.35);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.25);
-}
-
-.activityIconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.activityLabel {
-  font-size: var(--text-caption);
-  font-weight: 600;
-  color: #FFFFFF;
-}
-
-/* ── 3. Explore New Places Banner ─────────────────────────── */
-.exploreBanner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-5) var(--space-6);
-  border-radius: var(--radius-xl);
-  background: rgba(4, 22, 48, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(20px);
-  text-decoration: none;
-  transition: all var(--transition-fast);
-  box-shadow: 0 6px 20px rgba(0, 4, 16, 0.25);
-}
-
-.exploreBanner:hover {
-  background: rgba(8, 38, 78, 0.75);
-  border-color: rgba(77, 208, 225, 0.35);
-  transform: translateY(-2px);
-}
-
-.exploreTitle {
-  font-family: var(--font-heading);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #FFFFFF;
-}
-
-.exploreSub {
-  font-size: var(--text-body-sm);
-  color: var(--text-muted);
-}
-
-.exploreArrowBtn {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #0288D1, #00BCD4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 188, 212, 0.35);
-}
-
-/* ── 4. Recent Adventures Cards ───────────────────────────── */
-.recentHeaderRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-3);
-}
-
-.seeAllLink {
+.viewMemoriesLink {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: var(--text-caption);
+  font-size: 11px;
   color: var(--accent-cyan);
   font-weight: 600;
   text-decoration: none;
 }
 
-.recentCardsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-}
-
-@media (min-width: 600px) {
-  .recentCardsGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.adventureCard {
-  background: rgba(4, 22, 48, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(20px);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
+.recentAdventuresList {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  position: relative;
-  box-shadow: 0 4px 16px rgba(0, 4, 16, 0.25);
+}
+
+.adventureItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  background: rgba(4, 18, 40, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
   transition: all var(--transition-fast);
 }
 
-.adventureCard:hover {
-  background: rgba(8, 38, 78, 0.75);
-  border-color: rgba(77, 208, 225, 0.3);
-  transform: translateY(-2px);
+.adventureItem:hover {
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.adventureIndex {
+.adventureMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.adventureNum {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--accent-cyan);
+  font-weight: 600;
 }
 
-.adventureName {
+.adventureLocation {
   font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 600;
   color: #FFFFFF;
 }
 
-.adventureFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: var(--space-1);
-}
-
-.adventureDate {
+.adventureDateText {
   font-size: 11px;
   color: var(--text-muted);
 }
 
-.adventureStatus {
+.completedPill {
   font-size: 10px;
   font-weight: 600;
   color: #A5D6A7;
-  background: rgba(76, 175, 80, 0.18);
-  border: 1px solid rgba(76, 175, 80, 0.35);
+  background: rgba(76, 175, 80, 0.14);
+  border: 1px solid rgba(76, 175, 80, 0.25);
   padding: 2px 8px;
   border-radius: var(--radius-full);
 }
 
-/* ── Secondary Column (Right Widgets) ─────────────────────── */
-.secondaryColumn {
+/* ── Sanctuary Sidebar Column (Right) ─────────────────────── */
+.sanctuaryColumn {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.widgetCard {
-  background: rgba(4, 22, 48, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+.organicPanel {
+  background: rgba(4, 18, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   border-radius: var(--radius-xl);
   padding: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  box-shadow: 0 8px 24px rgba(0, 4, 16, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 4, 16, 0.2);
 }
 
-.widgetHeading {
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 700;
-  color: #FFFFFF;
-}
-
-/* Planning Widget */
-.planningCreatureBox {
+.panelHeader {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-block: var(--space-2);
+  justify-content: space-between;
 }
 
-.creatureGlow {
-  width: 72px;
-  height: 72px;
+.panelKicker {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.onlinePulse {
+  width: 7px;
+  height: 7px;
   border-radius: var(--radius-full);
-  background: radial-gradient(circle, rgba(244, 143, 177, 0.25) 0%, transparent 70%);
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+/* Partner Status */
+.partnerCreatureWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 16px rgba(244, 143, 177, 0.5));
+  padding-block: var(--space-1);
 }
 
-.planningTextBox {
+.jellyfishAura {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(244, 143, 177, 0.2) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 12px rgba(244, 143, 177, 0.35));
+}
+
+.partnerStatusBlock {
   text-align: center;
 }
 
-.planningTitle {
+.partnerStatusTitle {
   font-family: var(--font-heading);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #80DEEA;
 }
 
-.planningSub {
-  font-size: 12px;
+.partnerStatusSub {
+  font-size: 11px;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
-.reminderBtn {
+.gentleActionBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   width: 100%;
-  padding: 10px 16px;
+  padding: 9px 14px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #0288D1 0%, #00BCD4 100%);
+  background: linear-gradient(135deg, rgba(2, 136, 209, 0.4) 0%, rgba(0, 188, 212, 0.35) 100%);
+  border: 1px solid rgba(77, 208, 225, 0.3);
   color: #FFFFFF;
-  font-size: var(--text-body-sm);
+  font-size: 12px;
   font-weight: 600;
   text-decoration: none;
-  border: none;
   cursor: pointer;
   transition: all var(--transition-fast);
-  box-shadow: 0 2px 10px rgba(0, 188, 212, 0.3);
 }
 
-.reminderBtn:hover {
-  filter: brightness(1.1);
+.gentleActionBtn:hover {
+  background: linear-gradient(135deg, #0288D1, #00BCD4);
   transform: translateY(-1px);
 }
 
-/* Tips Widget */
-.tipHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.tipFishBadge {
-  width: 28px;
-  height: 28px;
+/* Daily Thought */
+.mascotBadge {
+  width: 24px;
+  height: 24px;
   border-radius: var(--radius-full);
-  background: rgba(255, 213, 79, 0.15);
-  border: 1px solid rgba(255, 213, 79, 0.3);
+  background: rgba(255, 213, 79, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.tipBody {
-  font-size: 13px;
+.thoughtQuote {
+  font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.5;
+  font-style: italic;
 }
 
-.carouselDots {
+.thoughtPaging {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding-top: var(--space-1);
+  gap: 5px;
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
+.thoughtDot {
+  width: 5px;
+  height: 5px;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.2);
 }
 
-.dotActive {
+.thoughtDotActive {
   background: var(--accent-cyan);
-  width: 14px;
+  width: 12px;
 }
 
-/* Weather Widget */
-.weatherMain {
+/* Outdoor Atmosphere */
+.weatherHero {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding-block: var(--space-1);
 }
 
-.weatherTemp {
+.weatherDegrees {
   font-family: var(--font-heading);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #FFFFFF;
   line-height: 1;
 }
 
-.weatherCondition {
-  font-size: 12px;
+.weatherSummary {
+  font-size: 11px;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
-.weatherStatsRow {
+.weatherPillsRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: var(--space-2);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.weatherStatItem {
+.tinyStat {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 11px;
   color: var(--text-secondary);
 }

@@ -36,12 +36,12 @@ interface HomePageProps {
 }
 
 const ACTIVITIES = [
-  { id: 'coffee', label: 'Coffee', icon: <CoffeeIcon size={28} color="#80DEEA" /> },
-  { id: 'food', label: 'Food', icon: <FoodIcon size={28} color="#FF8A65" /> },
-  { id: 'games', label: 'Games', icon: <GamesIcon size={28} color="#BA68C8" /> },
-  { id: 'walk', label: 'Walk', icon: <WalkIcon size={28} color="#4DD0E1" /> },
-  { id: 'movie', label: 'Movie', icon: <MovieIcon size={28} color="#FFB74D" /> },
-  { id: 'study', label: 'Study', icon: <StudyIcon size={28} color="#81C784" /> },
+  { id: 'coffee', label: 'Coffee', icon: <CoffeeIcon size={22} color="#80DEEA" /> },
+  { id: 'food', label: 'Food', icon: <FoodIcon size={22} color="#FF8A65" /> },
+  { id: 'games', label: 'Games', icon: <GamesIcon size={22} color="#BA68C8" /> },
+  { id: 'walk', label: 'Walk', icon: <WalkIcon size={22} color="#4DD0E1" /> },
+  { id: 'movie', label: 'Movie', icon: <MovieIcon size={22} color="#FFB74D" /> },
+  { id: 'study', label: 'Study', icon: <StudyIcon size={22} color="#81C784" /> },
 ]
 
 export function HomePage({
@@ -53,45 +53,44 @@ export function HomePage({
   const partnerName = userName.toLowerCase() === 'diva' ? 'Agam' : 'Diva'
 
   return (
-    <div className={styles.dashboardContainer}>
-      {/* ── Top Header Greeting & Utility Actions ── */}
-      <header className={styles.topHeader}>
-        <div className={styles.greetingGroup}>
+    <div className={styles.worldContainer}>
+      {/* ── Sanctuary Header ── */}
+      <header className={styles.sanctuaryHeader}>
+        <div className={styles.greetingBlock}>
           <h1 className={styles.greetingTitle}>
             {greeting}
           </h1>
           <p className={styles.greetingSub}>
-            Ready for our next adventure?
+            Ready for our next adventure together?
           </p>
         </div>
 
-
-        <div className={styles.headerUtilities}>
-          <button className={styles.iconCircleBtn} aria-label="Notifications" title="Notifications">
+        <div className={styles.headerActions}>
+          <button className={styles.iconAuraBtn} aria-label="Notifications" title="Notifications">
             <BellIcon size={18} color="var(--text-secondary)" />
           </button>
-          <div className={styles.userBadgeBtn}>
-            <div className={styles.userBadgeAvatar}>
-              <FishOutlineIcon size={18} color="#FFFFFF" />
+          <div className={styles.coupleBadge}>
+            <div className={styles.coupleAvatar}>
+              <FishOutlineIcon size={16} color="#FFFFFF" />
             </div>
-            <ChevronDownIcon size={14} color="var(--text-muted)" />
+            <ChevronDownIcon size={13} color="var(--text-muted)" />
           </div>
         </div>
       </header>
 
-      {/* ── 2-Column Responsive Dashboard Layout ── */}
-      <div className={styles.dashboardGrid}>
-        {/* ════════════ LEFT COLUMN: Primary Content ════════════ */}
-        <div className={styles.primaryColumn}>
-          {/* 1. Next Hangout Hero Card */}
-          <section aria-label="Next Hangout">
+      {/* ── Fluid 2-Column Story Layout ── */}
+      <div className={styles.storyGrid}>
+        {/* ════════════ MAIN JOURNEY COLUMN (Left) ════════════ */}
+        <div className={styles.journeyColumn}>
+          {/* 1. Primary Focal Point: The Next Adventure Invitation */}
+          <section aria-label="Next Adventure" className={styles.heroSection}>
             {upcomingHangout ? (
-              <div className={styles.nextHangoutCard}>
-                <div className={styles.planCardHeader}>
-                  <h2 className={styles.cardHeading}>Next Hangout</h2>
+              <div className={styles.invitationCard}>
+                <div className={styles.invitationTopRow}>
+                  <span className={styles.sectionKicker}>Next Destination</span>
                   <span
-                    className={`${styles.statusPill} ${
-                      hangoutState === 'today' ? styles.statusPillToday : ''
+                    className={`${styles.softStatusBadge} ${
+                      hangoutState === 'today' ? styles.statusToday : ''
                     }`}
                   >
                     {hangoutState === 'today'
@@ -100,134 +99,143 @@ export function HomePage({
                   </span>
                 </div>
 
-                <div className={styles.planDetailsList}>
-                  <div className={styles.detailRow}>
-                    <CalendarIcon size={16} color="var(--accent-cyan)" />
+                <h2 className={styles.destinationHeading}>{upcomingHangout.area}</h2>
+
+                <div className={styles.destinationMeta}>
+                  <div className={styles.metaPill}>
+                    <CalendarIcon size={15} color="var(--accent-cyan)" />
                     <span>{upcomingHangout.date}</span>
                   </div>
-                  <div className={styles.detailRow}>
-                    <ClockIcon size={16} color="var(--accent-cyan)" />
+                  <div className={styles.metaPill}>
+                    <ClockIcon size={15} color="var(--accent-cyan)" />
                     <span className="text-time">
                       {upcomingHangout.startTime} – {upcomingHangout.endTime}
                     </span>
                   </div>
-                  <div className={styles.detailRow}>
-                    <MapPinIcon size={16} color="var(--accent-cyan)" />
+                  <div className={styles.metaPill}>
+                    <MapPinIcon size={15} color="var(--accent-cyan)" />
                     <span>{upcomingHangout.area}</span>
                   </div>
                 </div>
 
-                <div className={styles.cardActionRow}>
+                <div className={styles.invitationActionRow}>
                   <Link
                     href={getHangoutRoute(upcomingHangout)}
-                    className={styles.viewPlanBtn}
+                    className={styles.openPlanButton}
                   >
-                    View Plan <ArrowRightIcon size={16} />
+                    Open Our Plan <ArrowRightIcon size={16} />
                   </Link>
                 </div>
               </div>
             ) : (
-              <div className={styles.emptyHangoutCard}>
-                <div className={styles.emptyHeaderGroup}>
-                  <div className={styles.emptyIconBadge}>
-                    <SparklesIcon size={24} color="var(--accent-cyan)" />
-                  </div>
-                  <div>
-                    <h2 className={styles.cardHeading}>No active plans</h2>
-                    <p className={styles.emptyText}>
-                      Ready to plan your next hangout together?
-                    </p>
-                  </div>
+              <div className={styles.invitationEmpty}>
+                <div className={styles.emptyGlowIcon}>
+                  <SparklesIcon size={26} color="var(--accent-cyan)" />
                 </div>
-                <Link href="/hangouts/new" className={styles.viewPlanBtn}>
-                  <PlusIcon size={16} /> Plan Something
+                <div className={styles.emptyTextContent}>
+                  <h2 className={styles.destinationHeading} style={{ fontSize: '1.35rem' }}>
+                    No active adventure yet
+                  </h2>
+                  <p className={styles.emptySubtext}>
+                    Pick a day, choose places you both love, and start planning.
+                  </p>
+                </div>
+                <Link href="/hangouts/new" className={styles.openPlanButton}>
+                  <PlusIcon size={16} /> Plan Something Together
                 </Link>
               </div>
             )}
           </section>
 
-          {/* 2. "What shall we do?" Activity Tiles */}
-          <section aria-label="Activities">
-            <h2 className={styles.sectionTitle}>What shall we do?</h2>
-            <div className={styles.activityGrid}>
+          {/* 2. Interactive Choice Bubbles: Quick Plan */}
+          <section aria-label="What shall we do?" className={styles.activitiesSection}>
+            <div className={styles.sectionHeaderLine}>
+              <h2 className={styles.organicHeading}>Where shall we wander?</h2>
+              <span className={styles.headingSub}>Choose an activity to start</span>
+            </div>
+
+            <div className={styles.choiceBubblesContainer}>
               {ACTIVITIES.map((act) => (
                 <Link
                   key={act.id}
                   href={`/hangouts/new?activity=${act.id}`}
-                  className={styles.activityTile}
+                  className={styles.choiceBubble}
                 >
-                  <div className={styles.activityIconWrapper}>
+                  <div className={styles.bubbleIconGlow}>
                     {act.icon}
                   </div>
-                  <span className={styles.activityLabel}>{act.label}</span>
+                  <span className={styles.bubbleLabel}>{act.label}</span>
                 </Link>
               ))}
             </div>
           </section>
 
-          {/* 3. "Explore new places" Banner */}
+          {/* 3. Explore Places Floating Ribbon */}
           <section aria-label="Explore places">
-            <Link href="/hangouts/new" className={styles.exploreBanner}>
-              <div>
-                <h2 className={styles.exploreTitle}>Explore new places</h2>
-                <p className={styles.exploreSub}>Find interesting places around you</p>
+            <Link href="/hangouts/new" className={styles.exploreRibbon}>
+              <div className={styles.ribbonLeft}>
+                <div className={styles.ribbonIcon}>
+                  <SparklesIcon size={20} color="var(--accent-cyan)" />
+                </div>
+                <div>
+                  <h3 className={styles.ribbonTitle}>Discover new spots together</h3>
+                  <p className={styles.ribbonSub}>Find cozy cafes, hidden trails &amp; romantic dinners</p>
+                </div>
               </div>
-              <div className={styles.exploreArrowBtn} aria-hidden="true">
-                <ArrowRightIcon size={18} color="#FFFFFF" />
+              <div className={styles.ribbonArrow} aria-hidden="true">
+                <ArrowRightIcon size={16} color="#FFFFFF" />
               </div>
             </Link>
           </section>
 
-          {/* 4. Recent Adventures Cards */}
-          <section aria-label="Recent Adventures">
-            <div className={styles.recentHeaderRow}>
-              <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Recent Adventures</h2>
-              <Link href="/memories" className={styles.seeAllLink}>
-                See all <ArrowRightIcon size={14} />
+          {/* 4. Memories & Past Adventures */}
+          <section aria-label="Recent Adventures" className={styles.recentSection}>
+            <div className={styles.recentTitleRow}>
+              <h2 className={styles.organicHeading} style={{ margin: 0 }}>Recent Adventures</h2>
+              <Link href="/memories" className={styles.viewMemoriesLink}>
+                All Memories <ArrowRightIcon size={13} />
               </Link>
             </div>
 
-            <div className={styles.recentCardsGrid}>
+            <div className={styles.recentAdventuresList}>
               {recentHangouts.length > 0 ? (
                 recentHangouts.slice(0, 3).map((h, i) => (
-                  <div key={h.id} className={styles.adventureCard}>
-                    <span className={styles.adventureIndex}>
-                      #{String(recentHangouts.length - i).padStart(3, '0')}
-                    </span>
-                    <h3 className={styles.adventureName}>{h.area}</h3>
-                    <div className={styles.adventureFooter}>
-                      <span className={styles.adventureDate}>{h.date}</span>
-                      <span className={styles.adventureStatus}>
-                        {h.status === 'completed' ? 'Completed' : 'Saved'}
+                  <div key={h.id} className={styles.adventureItem}>
+                    <div className={styles.adventureMain}>
+                      <span className={styles.adventureNum}>
+                        #{String(recentHangouts.length - i).padStart(2, '0')}
                       </span>
+                      <div>
+                        <h4 className={styles.adventureLocation}>{h.area}</h4>
+                        <p className={styles.adventureDateText}>{h.date}</p>
+                      </div>
                     </div>
+                    <span className={styles.completedPill}>
+                      {h.status === 'completed' ? 'Completed' : 'Saved'}
+                    </span>
                   </div>
                 ))
               ) : (
                 <>
-                  <div className={styles.adventureCard}>
-                    <span className={styles.adventureIndex}>#003</span>
-                    <h3 className={styles.adventureName}>Coffee &amp; Walk</h3>
-                    <div className={styles.adventureFooter}>
-                      <span className={styles.adventureDate}>15 Aug 2026</span>
-                      <span className={styles.adventureStatus}>Completed</span>
+                  <div className={styles.adventureItem}>
+                    <div className={styles.adventureMain}>
+                      <span className={styles.adventureNum}>#03</span>
+                      <div>
+                        <h4 className={styles.adventureLocation}>Coffee &amp; Walk</h4>
+                        <p className={styles.adventureDateText}>15 Aug 2026</p>
+                      </div>
                     </div>
+                    <span className={styles.completedPill}>Completed</span>
                   </div>
-                  <div className={styles.adventureCard}>
-                    <span className={styles.adventureIndex}>#002</span>
-                    <h3 className={styles.adventureName}>Movie Night</h3>
-                    <div className={styles.adventureFooter}>
-                      <span className={styles.adventureDate}>8 Aug 2026</span>
-                      <span className={styles.adventureStatus}>Completed</span>
+                  <div className={styles.adventureItem}>
+                    <div className={styles.adventureMain}>
+                      <span className={styles.adventureNum}>#02</span>
+                      <div>
+                        <h4 className={styles.adventureLocation}>Movie Night</h4>
+                        <p className={styles.adventureDateText}>8 Aug 2026</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className={styles.adventureCard}>
-                    <span className={styles.adventureIndex}>#001</span>
-                    <h3 className={styles.adventureName}>Food Hunt</h3>
-                    <div className={styles.adventureFooter}>
-                      <span className={styles.adventureDate}>1 Aug 2026</span>
-                      <span className={styles.adventureStatus}>Completed</span>
-                    </div>
+                    <span className={styles.completedPill}>Completed</span>
                   </div>
                 </>
               )}
@@ -235,84 +243,85 @@ export function HomePage({
           </section>
         </div>
 
-        {/* ════════════ RIGHT COLUMN: Secondary Widgets ════════════ */}
-        <aside className={styles.secondaryColumn}>
-          {/* 1. Planning Status Widget */}
-          <div className={styles.widgetCard}>
-            <h3 className={styles.widgetHeading}>Planning Status</h3>
-            <div className={styles.planningCreatureBox}>
-              <div className={styles.creatureGlow}>
-                <JellyfishIcon size={46} color="#F48FB1" />
+        {/* ════════════ SANCTUARY SIDEBAR (Right) ════════════ */}
+        <aside className={styles.sanctuaryColumn}>
+          {/* 1. Couple Connection & Status */}
+          <div className={styles.organicPanel}>
+            <div className={styles.panelHeader}>
+              <span className={styles.panelKicker}>Connection</span>
+              <span className={styles.onlinePulse} />
+            </div>
+            <div className={styles.partnerCreatureWrapper}>
+              <div className={styles.jellyfishAura}>
+                <JellyfishIcon size={44} color="#F48FB1" />
               </div>
             </div>
-            <div className={styles.planningTextBox}>
-              <h4 className={styles.planningTitle}>
-                {upcomingHangout ? `Waiting for ${partnerName}` : 'No active plan'}
-              </h4>
-              <p className={styles.planningSub}>
+            <div className={styles.partnerStatusBlock}>
+              <h3 className={styles.partnerStatusTitle}>
+                {upcomingHangout ? `Waiting for ${partnerName}` : `${userName} & ${partnerName}`}
+              </h3>
+              <p className={styles.partnerStatusSub}>
                 {upcomingHangout
-                  ? `${partnerName} hasn't responded yet.`
-                  : 'Start by choosing a date & time.'}
+                  ? `${partnerName} is reviewing your choices.`
+                  : 'Connected in your private world.'}
               </p>
             </div>
             {upcomingHangout ? (
               <button
                 type="button"
-                className={styles.reminderBtn}
-                onClick={() => alert(`Reminder sent to ${partnerName}!`)}
+                className={styles.gentleActionBtn}
+                onClick={() => alert(`Nudge sent to ${partnerName}!`)}
               >
-                Send Reminder <SendIcon size={14} />
+                Send Gentle Nudge <SendIcon size={13} />
               </button>
             ) : (
-              <Link href="/hangouts/new" className={styles.reminderBtn}>
-                Plan Together <ArrowRightIcon size={14} />
+              <Link href="/hangouts/new" className={styles.gentleActionBtn}>
+                Plan Together <ArrowRightIcon size={13} />
               </Link>
             )}
           </div>
 
-          {/* 2. Tips from Ava Widget */}
-          <div className={styles.widgetCard}>
-            <div className={styles.tipHeader}>
-              <h3 className={styles.widgetHeading} style={{ margin: 0 }}>Tips from Ava</h3>
-              <div className={styles.tipFishBadge}>
-                <FishOutlineIcon size={18} color="#FFD54F" />
+          {/* 2. Ava's Thought for Today */}
+          <div className={styles.organicPanel}>
+            <div className={styles.panelHeader}>
+              <span className={styles.panelKicker}>Daily Thought</span>
+              <div className={styles.mascotBadge}>
+                <FishOutlineIcon size={16} color="#FFD54F" />
               </div>
             </div>
-            <p className={styles.tipBody}>
-              Try a sunset walk after coffee. The weather will be perfect!
+            <p className={styles.thoughtQuote}>
+              &ldquo;Try a sunset walk after coffee. The cool evening breeze will be wonderful.&rdquo;
             </p>
-            <div className={styles.carouselDots} aria-hidden="true">
-              <span className={`${styles.dot} ${styles.dotActive}`} />
-              <span className={styles.dot} />
-              <span className={styles.dot} />
-              <span className={styles.dot} />
+            <div className={styles.thoughtPaging} aria-hidden="true">
+              <span className={`${styles.thoughtDot} ${styles.thoughtDotActive}`} />
+              <span className={styles.thoughtDot} />
+              <span className={styles.thoughtDot} />
             </div>
           </div>
 
-          {/* 3. Today's Weather Widget */}
-          <div className={styles.widgetCard}>
-            <h3 className={styles.widgetHeading}>Today&apos;s Weather</h3>
-            <div className={styles.weatherMain}>
-              <SunCloudIcon size={38} color="#FFD54F" />
+          {/* 3. Outdoor Atmosphere */}
+          <div className={styles.organicPanel}>
+            <div className={styles.panelHeader}>
+              <span className={styles.panelKicker}>Atmosphere</span>
+            </div>
+            <div className={styles.weatherHero}>
+              <SunCloudIcon size={34} color="#FFD54F" />
               <div>
-                <span className={styles.weatherTemp}>31°C</span>
-                <p className={styles.weatherCondition}>Partly sunny</p>
+                <span className={styles.weatherDegrees}>31°C</span>
+                <p className={styles.weatherSummary}>Partly sunny &amp; gentle breeze</p>
               </div>
             </div>
 
-            <div className={styles.weatherStatsRow}>
-              <div className={styles.weatherStatItem}>
-                <RainIcon size={15} color="var(--accent-cyan)" />
-                <span>20%</span>
-              </div>
-              <div className={styles.weatherStatItem}>
-                <WindIcon size={15} color="var(--accent-cyan)" />
-                <span>12 km/h</span>
-              </div>
-              <div className={styles.weatherStatItem}>
-                <DropletIcon size={15} color="var(--accent-cyan)" />
-                <span>65%</span>
-              </div>
+            <div className={styles.weatherPillsRow}>
+              <span className={styles.tinyStat}>
+                <RainIcon size={13} color="var(--accent-cyan)" /> 20%
+              </span>
+              <span className={styles.tinyStat}>
+                <WindIcon size={13} color="var(--accent-cyan)" /> 12 km/h
+              </span>
+              <span className={styles.tinyStat}>
+                <DropletIcon size={13} color="var(--accent-cyan)" /> 65%
+              </span>
             </div>
           </div>
         </aside>

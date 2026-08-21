@@ -24,29 +24,29 @@ export function DesktopNav({ userName = 'Diva' }: DesktopNavProps) {
   const partnerName = userName.toLowerCase() === 'diva' ? 'Agam' : 'Diva'
 
   const links = [
-    { href: '/home', label: 'Home', icon: <HomeIcon size={20} /> },
-    { href: '/hangouts/new', label: 'Explore', icon: <ExploreIcon size={20} /> },
-    { href: '/hangouts', label: 'Plans', icon: <CalendarIcon size={20} /> },
-    { href: '/memories', label: 'Memories', icon: <ShellIcon size={20} /> },
-    { href: '/settings', label: 'Settings', icon: <SettingsIcon size={20} /> },
+    { href: '/home', label: 'Home', icon: <HomeIcon size={19} /> },
+    { href: '/hangouts/new', label: 'Explore', icon: <ExploreIcon size={19} /> },
+    { href: '/hangouts', label: 'Plans', icon: <CalendarIcon size={19} /> },
+    { href: '/memories', label: 'Memories', icon: <ShellIcon size={19} /> },
+    { href: '/settings', label: 'Settings', icon: <SettingsIcon size={19} /> },
   ]
 
   return (
-    <aside className={styles.desktopSidebar} aria-label="Main desktop navigation">
-      {/* ── Brand / Logo ── */}
+    <aside className={styles.desktopSidebar} aria-label="Personal Navigation">
+      {/* ── Brand Sanctuary ── */}
       <div className={styles.sidebarHeader}>
         <Link href="/home" className={styles.brandLink}>
           <div className={styles.brandIconWrapper}>
-            <ShellIcon size={24} color="var(--accent-cyan)" />
+            <ShellIcon size={22} color="var(--accent-cyan)" />
           </div>
           <div>
             <span className={styles.brandTitle}>Ava</span>
-            <span className={styles.brandSubtitle}>Somewhere worth going.</span>
+            <span className={styles.brandSubtitle}>Our private sanctuary</span>
           </div>
         </Link>
       </div>
 
-      {/* ── Nav Links ── */}
+      {/* ── Floating Nav Links ── */}
       <nav className={styles.sidebarNav}>
         <ul className={styles.sidebarNavList}>
           {links.map((link) => {
@@ -70,24 +70,24 @@ export function DesktopNav({ userName = 'Diva' }: DesktopNavProps) {
         </ul>
       </nav>
 
-      {/* ── Ambient Decorative Jellyfish In Sidebar ── */}
+      {/* ── Ambient Decorative Marine Glow ── */}
       <div className={styles.sidebarAmbientDeco} aria-hidden="true">
-        <JellyfishIcon size={44} color="#F48FB1" />
+        <JellyfishIcon size={38} color="#F48FB1" />
       </div>
 
-      {/* ── Bottom User Profile / Logout ── */}
+      {/* ── Two-Person Presence Pill ── */}
       <div className={styles.sidebarFooter}>
         <div className={styles.userProfilePill}>
           <div className={styles.userAvatar}>
-            <FishOutlineIcon size={18} color="#FFFFFF" />
+            <FishOutlineIcon size={16} color="#FFFFFF" />
           </div>
           <div className={styles.userInfo}>
-            <span className={styles.userNameText}>{userName}</span>
-            <span className={styles.userStatusText}>You & {partnerName}</span>
+            <span className={styles.userNameText}>{userName} &amp; {partnerName}</span>
+            <span className={styles.userStatusText}>Connected in Ava</span>
           </div>
           <form action={logoutAction}>
             <button type="submit" className={styles.sidebarLogoutBtn} title="Sign out" aria-label="Sign out">
-              <ChevronDownIcon size={16} />
+              <ChevronDownIcon size={14} />
             </button>
           </form>
         </div>
