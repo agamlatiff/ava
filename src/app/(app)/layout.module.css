@@ -20,8 +20,9 @@
 
 @media (min-width: 900px) {
   .mainContent {
-    margin-left: 260px;
+    margin-left: 240px;
     padding-bottom: var(--space-10);
     min-height: 100vh;
   }
 }
+

@@ -7,8 +7,11 @@ import {
   HomeIcon,
   ExploreIcon,
   CalendarIcon,
-  SparklesIcon,
+  ShellIcon,
+  SettingsIcon,
+  ChevronDownIcon,
   FishOutlineIcon,
+  JellyfishIcon,
 } from '@/components/ui/OceanIcons'
 import styles from './Nav.module.css'
 
@@ -16,14 +19,16 @@ interface DesktopNavProps {
   userName?: string
 }
 
-export function DesktopNav({ userName = 'You' }: DesktopNavProps) {
+export function DesktopNav({ userName = 'Diva' }: DesktopNavProps) {
   const pathname = usePathname()
+  const partnerName = userName.toLowerCase() === 'diva' ? 'Agam' : 'Diva'
 
   const links = [
-    { href: '/home', label: 'Home', icon: <HomeIcon size={19} /> },
-    { href: '/hangouts/new', label: 'Explore', icon: <ExploreIcon size={19} /> },
-    { href: '/hangouts', label: 'Plans', icon: <CalendarIcon size={19} /> },
-    { href: '/memories', label: 'Memories', icon: <SparklesIcon size={19} /> },
+    { href: '/home', label: 'Home', icon: <HomeIcon size={20} /> },
+    { href: '/hangouts/new', label: 'Explore', icon: <ExploreIcon size={20} /> },
+    { href: '/hangouts', label: 'Plans', icon: <CalendarIcon size={20} /> },
+    { href: '/memories', label: 'Memories', icon: <ShellIcon size={20} /> },
+    { href: '/settings', label: 'Settings', icon: <SettingsIcon size={20} /> },
   ]
 
   return (
@@ -32,11 +37,11 @@ export function DesktopNav({ userName = 'You' }: DesktopNavProps) {
       <div className={styles.sidebarHeader}>
         <Link href="/home" className={styles.brandLink}>
           <div className={styles.brandIconWrapper}>
-            <FishOutlineIcon size={22} color="var(--accent-cyan)" />
+            <ShellIcon size={24} color="var(--accent-cyan)" />
           </div>
           <div>
-            <span className={styles.brandTitle}>AVA</span>
-            <span className={styles.brandSubtitle}>Two people · One plan</span>
+            <span className={styles.brandTitle}>Ava</span>
+            <span className={styles.brandSubtitle}>Somewhere worth going.</span>
           </div>
         </Link>
       </div>
@@ -65,19 +70,24 @@ export function DesktopNav({ userName = 'You' }: DesktopNavProps) {
         </ul>
       </nav>
 
+      {/* ── Ambient Decorative Jellyfish In Sidebar ── */}
+      <div className={styles.sidebarAmbientDeco} aria-hidden="true">
+        <JellyfishIcon size={44} color="#F48FB1" />
+      </div>
+
       {/* ── Bottom User Profile / Logout ── */}
       <div className={styles.sidebarFooter}>
         <div className={styles.userProfilePill}>
           <div className={styles.userAvatar}>
-            {userName.charAt(0).toUpperCase()}
+            <FishOutlineIcon size={18} color="#FFFFFF" />
           </div>
           <div className={styles.userInfo}>
             <span className={styles.userNameText}>{userName}</span>
-            <span className={styles.userStatusText}>Connected</span>
+            <span className={styles.userStatusText}>You & {partnerName}</span>
           </div>
           <form action={logoutAction}>
             <button type="submit" className={styles.sidebarLogoutBtn} title="Sign out" aria-label="Sign out">
-              ✕
+              <ChevronDownIcon size={16} />
             </button>
           </form>
         </div>

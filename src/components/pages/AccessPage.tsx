@@ -7,13 +7,14 @@ import {
   SparklesIcon,
   FishOutlineIcon,
   ArrowRightIcon,
+  ShellIcon,
 } from '@/components/ui/OceanIcons'
 import styles from './AccessPage.module.css'
 
 const FEATURES = [
-  { icon: <CalendarIcon size={20} color="var(--accent-cyan)" />, label: 'Plan your hangout together' },
-  { icon: <MapPinIcon size={20} color="var(--accent-cyan)" />, label: 'Find the best place around you' },
-  { icon: <SparklesIcon size={20} color="var(--accent-cyan)" />, label: 'Make every moment special' },
+  { icon: <CalendarIcon size={20} color="var(--accent-cyan)" />, label: 'Plan your hangouts together' },
+  { icon: <MapPinIcon size={20} color="var(--accent-cyan)" />, label: 'Discover places around you' },
+  { icon: <SparklesIcon size={20} color="var(--accent-cyan)" />, label: 'Save memories that last' },
 ]
 
 export function AccessPage() {
@@ -44,11 +45,16 @@ export function AccessPage() {
       {/* ── Left side — Feature bullets (desktop only) ── */}
       <aside className={styles.aside}>
         <div className={styles.logoGroup}>
-          <h1 className={`text-display ${styles.logo}`}>
-            Let&apos;s<br />Go
-          </h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '44px', height: '44px', borderRadius: 'var(--radius-lg)', background: 'rgba(0,188,212,0.15)', border: '1px solid rgba(77,208,225,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ShellIcon size={26} color="var(--accent-cyan)" />
+            </div>
+            <h1 className={`text-display ${styles.logo}`}>
+              Ava
+            </h1>
+          </div>
           <p className={`text-body-sm text-secondary ${styles.logoSub}`}>
-            Plan together, make memories
+            Somewhere worth going.
           </p>
         </div>
 
@@ -66,8 +72,11 @@ export function AccessPage() {
       <section className={styles.center}>
         {/* Mobile logo — only shown on small screens */}
         <div className={styles.mobileLogo} aria-hidden="true">
-          <span className={`text-display ${styles.logo}`}>Let&apos;s Go</span>
-          <p className="text-body-sm text-secondary">Plan together, make memories</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ShellIcon size={24} color="var(--accent-cyan)" />
+            <span className={`text-display ${styles.logo}`}>Ava</span>
+          </div>
+          <p className="text-body-sm text-secondary">Somewhere worth going.</p>
         </div>
 
         <div className={cardClass} role="region" aria-label="Access form">
@@ -119,7 +128,7 @@ export function AccessPage() {
                   Diving in...
                 </>
               ) : state === 'success' ? (
-                <>Let&apos;s Go! <SparklesIcon size={18} /></>
+                <>Welcome! <SparklesIcon size={18} /></>
               ) : (
                 <>Dive In <ArrowRightIcon size={18} /></>
               )}

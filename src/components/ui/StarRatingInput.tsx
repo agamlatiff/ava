@@ -1,6 +1,7 @@
 'use client'
 
-import styles from '../ui/UIComponents.module.css'
+import { StarIcon } from './OceanIcons'
+import styles from './UIComponents.module.css'
 
 interface StarRatingInputProps {
   rating: number
@@ -31,13 +32,15 @@ export function StarRatingInput({
           type="button"
           className={`${styles.star} ${star <= displayValue ? styles.starFilled : ''}`}
           style={{
-            fontSize: '2rem',
             transition: 'transform 150ms ease, color 150ms ease',
             transform: star <= displayValue ? 'scale(1.15)' : 'scale(1)',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
           onMouseEnter={() => onHover(star)}
           onClick={() => onClick(star)}
@@ -45,7 +48,11 @@ export function StarRatingInput({
           aria-checked={rating === star}
           role="radio"
         >
-          ★
+          <StarIcon
+            size={28}
+            color={star <= displayValue ? 'var(--warm-gold)' : 'rgba(255,255,255,0.25)'}
+            filled={star <= displayValue}
+          />
         </button>
       ))}
     </div>

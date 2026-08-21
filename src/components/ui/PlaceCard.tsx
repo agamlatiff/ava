@@ -1,6 +1,7 @@
 'use client'
 
 import styles from './UIComponents.module.css'
+import { MapPinIcon, SparklesIcon } from './OceanIcons'
 import type { Place } from '@/db/schema'
 
 interface PlaceCardProps {
@@ -34,16 +35,20 @@ export function PlaceCard({ place, isSelected = false, onSelect }: PlaceCardProp
           <h3 className="text-body" style={{ fontWeight: 700 }}>
             {place.name}
           </h3>
-          <span className="text-caption" style={{ color: 'var(--warm-gold)' }}>
-            ★ {place.rating}
+          <span className="text-caption" style={{ color: 'var(--warm-gold)', display: 'flex', alignItems: 'center', gap: '2px' }}>
+            <SparklesIcon size={12} color="var(--warm-gold)" /> {place.rating}
           </span>
         </div>
 
         <p className="text-caption text-secondary">{place.description}</p>
 
         <div style={{ display: 'flex', gap: '12px', marginTop: '4px' }}>
-          <span className="text-caption text-muted">📍 {place.distanceKm}</span>
-          <span className="text-caption text-muted">💰 {priceDisplay}</span>
+          <span className="text-caption text-muted" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <MapPinIcon size={13} color="var(--accent-cyan)" /> {place.distanceKm}
+          </span>
+          <span className="text-caption text-muted">
+            {priceDisplay}
+          </span>
         </div>
       </div>
 

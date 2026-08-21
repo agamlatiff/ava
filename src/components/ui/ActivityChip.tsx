@@ -1,7 +1,8 @@
 'use client'
 
 import styles from './UIComponents.module.css'
-import { getActivityIcon, HeartIcon, ThumbsUpIcon, PassIcon } from './OceanIcons'
+import { getActivityIcon, HeartIcon, ThumbsUpIcon, PassIcon, CheckCircleIcon } from './OceanIcons'
+
 
 interface ActivityChipProps {
   id: string
@@ -44,9 +45,10 @@ export function ActivityChip({
       >
         {isSelected && (
           <span className={styles.badgeCheck} aria-hidden="true">
-            ✓
+            <CheckCircleIcon size={14} color="#0D47A1" />
           </span>
         )}
+
         <div style={{ padding: '8px', color: isSelected ? 'var(--accent-cyan)' : 'var(--accent-light)' }} aria-hidden="true">
           {iconElement}
         </div>

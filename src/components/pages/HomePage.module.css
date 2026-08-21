@@ -1,74 +1,148 @@
-/* ── Container Layout ─────────────────────────────────────── */
-.container {
+/* ── Dashboard Layout ─────────────────────────────────────── */
+.dashboardContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
-  padding: var(--space-6) var(--space-4);
-  max-width: 860px;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-6);
+  max-width: 1200px;
   margin-inline: auto;
   animation: fade-in-up 250ms var(--transition-page) both;
 }
 
-@media (min-width: 900px) {
-  .container {
-    padding: var(--space-8) var(--space-6);
-    gap: var(--space-10);
+@media (min-width: 1024px) {
+  .dashboardContainer {
+    padding: var(--space-8) var(--space-8);
+    gap: var(--space-8);
   }
 }
 
-/* ── Header ───────────────────────────────────────────────── */
-.header {
+/* ── Top Header Greeting ──────────────────────────────────── */
+.topHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.greetingGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 4px;
 }
 
 .greetingTitle {
   font-family: var(--font-heading);
-  font-size: var(--text-h1);
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #FFFFFF;
   letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.greetingSubtitle {
+.greetingWave {
+  font-size: 1.25rem;
+}
+
+.greetingSub {
   font-size: var(--text-body-sm);
   color: var(--text-secondary);
-  line-height: 1.5;
 }
 
-/* ── Section Headings ─────────────────────────────────────── */
-.sectionHeading {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 600;
+.headerUtilities {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.iconCircleBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: var(--space-3);
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(12px);
 }
 
-/* ── PRIMARY HIERARCHY: Next Hangout Hero Card ────────────── */
-.primarySection {
-  width: 100%;
+.iconCircleBtn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
-.heroPlanCard {
-  background: rgba(6, 24, 52, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6) var(--space-8);
+.userBadgeBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(12px);
+}
+
+.userBadgeBtn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.userBadgeAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1, #00BCD4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ── 2-Column Responsive Dashboard Grid ───────────────────── */
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--space-6);
+  }
+}
+
+/* ── Primary Column (Left) ────────────────────────────────── */
+.primaryColumn {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  box-shadow: 0 12px 36px rgba(0, 8, 24, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  gap: var(--space-6);
+}
+
+/* ── 1. Next Hangout Hero Card ────────────────────────────── */
+.nextHangoutCard {
+  background: rgba(4, 22, 48, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: 0 10px 32px rgba(0, 4, 16, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   position: relative;
   overflow: hidden;
 }
 
-.heroPlanCard::before {
+.nextHangoutCard::before {
   content: '';
   position: absolute;
   top: 0;
@@ -83,98 +157,96 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
-.statusBadge {
-  font-size: var(--text-caption);
+.cardHeading {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.statusPill {
+  font-size: 11px;
   font-weight: 600;
   padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: rgba(0, 188, 212, 0.14);
-  color: var(--accent-cyan);
-  border: 1px solid rgba(77, 208, 225, 0.3);
-  letter-spacing: 0.05em;
+  background: rgba(171, 71, 188, 0.22);
+  color: #E1BEE7;
+  border: 1px solid rgba(171, 71, 188, 0.4);
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
 }
 
-.statusBadgeToday {
-  background: rgba(76, 175, 80, 0.2);
+.statusPillToday {
+  background: rgba(76, 175, 80, 0.22);
   color: #A5D6A7;
-  border-color: rgba(76, 175, 80, 0.4);
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.25);
+  border-color: rgba(76, 175, 80, 0.45);
 }
 
-.planDateText {
+.planDetailsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.detailRow {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   font-size: var(--text-body-sm);
   color: var(--text-secondary);
 }
 
-.destinationTitle {
-  font-family: var(--font-heading);
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.planMetaRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4);
+.cardActionRow {
   margin-top: var(--space-2);
 }
 
-.metaItem {
-  display: flex;
+.viewPlanBtn {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1 0%, #29B6F6 50%, #00BCD4 100%);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
   font-size: var(--text-body-sm);
-  color: var(--text-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 188, 212, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all var(--transition-fast);
 }
 
-.planActionRow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  margin-top: var(--space-1);
+.viewPlanBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 188, 212, 0.5);
 }
 
-/* ── Hero Empty State ─────────────────────────────────────── */
-.heroEmptyState {
-  background: rgba(6, 24, 52, 0.5);
+.emptyHangoutCard {
+  background: rgba(4, 22, 48, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
-  padding: var(--space-8);
+  padding: var(--space-6);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-6);
-}
-
-@media (min-width: 600px) {
-  .heroEmptyState {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.emptyContent {
-  display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--space-4);
-  max-width: 520px;
 }
 
-.emptyIcon {
-  width: 48px;
-  height: 48px;
+.emptyHeaderGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.emptyIconBadge {
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-full);
   background: rgba(0, 188, 212, 0.12);
   border: 1px solid rgba(77, 208, 225, 0.25);
@@ -184,97 +256,125 @@
   flex-shrink: 0;
 }
 
-.emptyTextGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.emptyTitle {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.emptySubtitle {
+.emptyText {
   font-size: var(--text-body-sm);
   color: var(--text-muted);
-  line-height: 1.5;
 }
 
-/* ── SECONDARY HIERARCHY: Quick Activities Grid ───────────── */
-.secondarySection {
-  width: 100%;
+/* ── 2. "What shall we do?" Activity Tiles ────────────────── */
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: var(--space-3);
 }
 
 .activityGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-3);
 }
 
 @media (min-width: 600px) {
   .activityGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 800px) {
-  .activityGrid {
     grid-template-columns: repeat(6, 1fr);
   }
 }
 
-.activityPill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: 12px 16px;
-  background: rgba(6, 24, 52, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-md);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: all var(--transition-fast);
-}
-
-.activityPill:hover {
-  background: rgba(0, 188, 212, 0.14);
-  border-color: rgba(77, 208, 225, 0.35);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.2);
-}
-
-.pillIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pillLabel {
-  font-size: var(--text-body-sm);
-  font-weight: 500;
-}
-
-/* ── TERTIARY HIERARCHY: Recent Adventures List ───────────── */
-.tertiarySection {
-  width: 100%;
+.activityTile {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-2);
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-lg);
+  background: rgba(4, 22, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(0, 4, 16, 0.25);
 }
 
-.recentHeader {
+.activityTile:hover {
+  background: rgba(8, 38, 78, 0.75);
+  border-color: rgba(77, 208, 225, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.25);
+}
+
+.activityIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.activityLabel {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+/* ── 3. Explore New Places Banner ─────────────────────────── */
+.exploreBanner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-xl);
+  background: rgba(4, 22, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  box-shadow: 0 6px 20px rgba(0, 4, 16, 0.25);
 }
 
-.viewAllLink {
+.exploreBanner:hover {
+  background: rgba(8, 38, 78, 0.75);
+  border-color: rgba(77, 208, 225, 0.35);
+  transform: translateY(-2px);
+}
+
+.exploreTitle {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.exploreSub {
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+}
+
+.exploreArrowBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1, #00BCD4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 188, 212, 0.35);
+}
+
+/* ── 4. Recent Adventures Cards ───────────────────────────── */
+.recentHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.seeAllLink {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -282,62 +382,240 @@
   color: var(--accent-cyan);
   font-weight: 600;
   text-decoration: none;
-  transition: opacity var(--transition-fast);
 }
 
-.viewAllLink:hover {
-  opacity: 0.8;
+.recentCardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
 }
 
-.recentList {
+@media (min-width: 600px) {
+  .recentCardsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.adventureCard {
+  background: rgba(4, 22, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  gap: var(--space-2);
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 4, 16, 0.25);
+  transition: all var(--transition-fast);
 }
 
-.recentRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4) var(--space-2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  transition: background var(--transition-fast);
+.adventureCard:hover {
+  background: rgba(8, 38, 78, 0.75);
+  border-color: rgba(77, 208, 225, 0.3);
+  transform: translateY(-2px);
 }
 
-.recentRow:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.recentMain {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.recentIndex {
+.adventureIndex {
   font-family: var(--font-mono);
-  font-size: var(--text-caption);
-  color: var(--accent-cyan);
-  font-weight: 600;
-}
-
-.recentArea {
-  font-size: var(--text-body);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.recentDate {
-  font-size: var(--text-caption);
+  font-size: 11px;
   color: var(--text-muted);
 }
 
-.recentStatus {
-  font-size: var(--text-caption);
+.adventureName {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  padding: 4px 10px;
+  color: #FFFFFF;
+}
+
+.adventureFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-1);
+}
+
+.adventureDate {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.adventureStatus {
+  font-size: 10px;
+  font-weight: 600;
+  color: #A5D6A7;
+  background: rgba(76, 175, 80, 0.18);
+  border: 1px solid rgba(76, 175, 80, 0.35);
+  padding: 2px 8px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── Secondary Column (Right Widgets) ─────────────────────── */
+.secondaryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.widgetCard {
+  background: rgba(4, 22, 48, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  box-shadow: 0 8px 24px rgba(0, 4, 16, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.widgetHeading {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+/* Planning Widget */
+.planningCreatureBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--space-2);
+}
+
+.creatureGlow {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(244, 143, 177, 0.25) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 16px rgba(244, 143, 177, 0.5));
+}
+
+.planningTextBox {
+  text-align: center;
+}
+
+.planningTitle {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #80DEEA;
+}
+
+.planningSub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.reminderBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0288D1 0%, #00BCD4 100%);
+  color: #FFFFFF;
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 10px rgba(0, 188, 212, 0.3);
+}
+
+.reminderBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* Tips Widget */
+.tipHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tipFishBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 213, 79, 0.15);
+  border: 1px solid rgba(255, 213, 79, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tipBody {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.carouselDots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-top: var(--space-1);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dotActive {
+  background: var(--accent-cyan);
+  width: 14px;
+}
+
+/* Weather Widget */
+.weatherMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-1);
+}
+
+.weatherTemp {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1;
+}
+
+.weatherCondition {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.weatherStatsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weatherStatItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
 }

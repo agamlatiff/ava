@@ -7,6 +7,7 @@ import { ParticleField } from './effects/ParticleField'
 import { LightRays } from './effects/LightRays'
 import { OceanLighting } from './lighting/OceanLighting'
 import { Fish } from './creatures/Fish'
+import { SeaTurtle } from './creatures/SeaTurtle'
 import { OceanFloor } from './environment/OceanFloor'
 import { Coral } from './environment/Coral'
 import { Seaweed } from './environment/Seaweed'
@@ -42,6 +43,11 @@ export function OceanSceneManager() {
         {/* BACKGROUND / MIDGROUND: Floating marine plankton glow */}
         {particleCount > 0 && (
           <ParticleField count={particleCount} reducedMotion={reducedMotion} />
+        )}
+
+        {/* MIDGROUND: Gentle sea turtle gliding in upper column */}
+        {quality.preset !== 'low' && (
+          <SeaTurtle reducedMotion={reducedMotion} />
         )}
 
         {/* MIDGROUND: Subtle rising bubbles */}

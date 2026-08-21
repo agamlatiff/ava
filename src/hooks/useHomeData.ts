@@ -6,10 +6,11 @@ import type { Hangout } from '@/db/schema'
 export function useHomeData(userName: string, upcomingHangout: Hangout | null) {
   const greeting = useMemo(() => {
     const hour = new Date().getHours()
-    if (hour < 12) return `Good morning, ${userName} 👋`
-    if (hour < 18) return `Good afternoon, ${userName} ☀️`
-    return `Good evening, ${userName} 🌙`
+    if (hour < 12) return `Good morning, ${userName}`
+    if (hour < 18) return `Good afternoon, ${userName}`
+    return `Good evening, ${userName}`
   }, [userName])
+
 
   const hangoutState = useMemo(() => {
     if (!upcomingHangout) return 'none'

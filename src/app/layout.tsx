@@ -22,12 +22,13 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Let's Go — Plan Together, Make Memories",
-  description: "A private hangout planning app for two people. Plan your next adventure together.",
+  title: "Ava — Somewhere worth going.",
+  description: "A private hangout planning app for two. Plan together, explore places, and save memories in an underwater world.",
   icons: {
     icon: '/favicon.ico',
   },
 }
+
 
 export default function RootLayout({
   children,
