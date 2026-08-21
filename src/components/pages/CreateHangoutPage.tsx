@@ -3,7 +3,11 @@
 import { useCreateHangout } from '@/hooks/useCreateHangout'
 import styles from './CreateHangoutPage.module.css'
 
-export function CreateHangoutPage() {
+interface CreateHangoutPageProps {
+  initialActivity?: string
+}
+
+export function CreateHangoutPage({ initialActivity }: CreateHangoutPageProps = {}) {
   const {
     date,
     setDate,
@@ -21,7 +25,7 @@ export function CreateHangoutPage() {
     isSubmitting,
     errorMsg,
     handleSubmit,
-  } = useCreateHangout()
+  } = useCreateHangout(initialActivity)
 
   return (
     <div className={styles.createRoot}>
@@ -40,6 +44,7 @@ export function CreateHangoutPage() {
               id="date-input"
               type="date"
               className="input-field"
+              min={new Date().toISOString().split('T')[0]}
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required

@@ -31,7 +31,8 @@ export async function confirmHangoutAction(hangoutId: string, confirmed: boolean
     }
 
     return { success: true, updated }
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Failed to update confirmation.' }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to update confirmation.'
+    return { success: false, error: msg }
   }
 }

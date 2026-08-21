@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   description: "Plan a new hangout together.",
 }
 
-export default function Page() {
-  return <CreateHangoutPage />
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ activity?: string }>
+}) {
+  const { activity } = await searchParams
+  return <CreateHangoutPage initialActivity={activity} />
 }

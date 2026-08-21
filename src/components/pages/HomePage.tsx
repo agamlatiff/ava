@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useHomeData } from '@/hooks/useHomeData'
+import { getHangoutRoute } from '@/lib/routes'
 import type { Hangout } from '@/db/schema'
 import styles from './HomePage.module.css'
 
@@ -71,7 +72,7 @@ export function HomePage({
               </div>
 
               <Link
-                href={`/hangouts/${upcomingHangout.id}/itinerary`}
+                href={getHangoutRoute(upcomingHangout)}
                 className="btn-primary w-full"
               >
                 View Plan →

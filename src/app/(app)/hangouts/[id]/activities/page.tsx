@@ -12,10 +12,13 @@ export const metadata: Metadata = {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ preselect?: string }>
 }) {
   const { id } = await params
+  const { preselect } = await searchParams
   const session = await getSession()
   const currentUserId = session.userId || 'agam'
 
@@ -33,6 +36,7 @@ export default async function Page({
       allActivities={allActivities}
       currentUserId={currentUserId}
       existingChoices={existingChoices}
+      preselectedActivity={preselect}
     />
   )
 }

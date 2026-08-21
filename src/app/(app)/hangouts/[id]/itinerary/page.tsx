@@ -33,7 +33,7 @@ export default async function Page({
     placeArea: s.placeArea,
     placeDistance: s.placeDistance,
     placeDescription: s.placeDescription,
-    status: s.status as any,
+    status: s.status as TimelineStop['status'],
     order: s.order,
   }))
 

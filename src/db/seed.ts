@@ -1,6 +1,10 @@
+import { loadEnvConfig } from '@next/env'
+loadEnvConfig(process.cwd())
+
 import { db } from './index'
 import { users, activities, places } from './schema'
 import crypto from 'crypto'
+
 
 export function hashSecret(secret: string): string {
   return crypto.createHash('sha256').update(secret.trim().toLowerCase()).digest('hex')
@@ -105,6 +109,66 @@ export async function seed() {
       rating: '4.9',
       description: 'Handcrafted gelato and warm ocean-themed pastries',
     },
+    {
+      name: 'Cinema XXI Lagoon Mall',
+      category: 'movie',
+      area: 'Around Campus',
+      distanceKm: '1.8km',
+      priceMin: 40000,
+      priceMax: 75000,
+      rating: '4.8',
+      description: 'Premiere & regular movie theater with comfortable seats',
+    },
+    {
+      name: 'Starlight Open Air Cinema',
+      category: 'movie',
+      area: 'Coastline',
+      distanceKm: '2.5km',
+      priceMin: 50000,
+      priceMax: 100000,
+      rating: '4.9',
+      description: 'Cozy outdoor beanbag movie night by the sea breeze',
+    },
+    {
+      name: 'Quiet Harbor Study Lounge & Library',
+      category: 'study',
+      area: 'Around Campus',
+      distanceKm: '700m',
+      priceMin: 20000,
+      priceMax: 45000,
+      rating: '4.9',
+      description: 'Serene co-study space with high-speed WiFi and quiet booths',
+    },
+    {
+      name: 'Book & Brew Co-working',
+      category: 'study',
+      area: 'Around Campus',
+      distanceKm: '1.1km',
+      priceMin: 25000,
+      priceMax: 60000,
+      rating: '4.7',
+      description: 'Spacious study tables, natural lighting, and artisan teas',
+    },
+    {
+      name: 'Marina Baywalk & Artisan Market',
+      category: 'explore',
+      area: 'Coastline',
+      distanceKm: '2.2km',
+      priceMin: 10000,
+      priceMax: 50000,
+      rating: '4.8',
+      description: 'Bustling seaside walkway with local craft stalls & street food',
+    },
+    {
+      name: 'Seaside Botanical Gardens',
+      category: 'explore',
+      area: 'Coastline',
+      distanceKm: '3.0km',
+      priceMin: 15000,
+      priceMax: 30000,
+      rating: '5.0',
+      description: 'Lush tropical flora walking trails overlooking ocean waves',
+    },
   ]
 
   for (const p of placesData) {
@@ -113,3 +177,11 @@ export async function seed() {
 
   console.log('✅ Seeding complete!')
 }
+
+seed()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error('❌ Seeding failed:', err)
+    process.exit(1)
+  })
+

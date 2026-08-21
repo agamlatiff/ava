@@ -38,7 +38,8 @@ export async function savePlaceSelectionsAction(
 
     revalidatePath(`/hangouts/${hangoutId}/itinerary`)
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Failed to generate itinerary.' }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to generate itinerary.'
+    return { success: false, error: msg }
   }
 }

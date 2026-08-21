@@ -23,7 +23,10 @@ export default async function Page({
   }
 
   const allChoices = await hangoutsRepository.getHangoutActivities(id)
-  const matches = matchingService.calculateMatches(hangout.createdBy, allChoices as any)
+  const matches = matchingService.calculateMatches(
+    hangout.createdBy,
+    allChoices as Parameters<typeof matchingService.calculateMatches>[1]
+  )
 
   // Fetch places for each matched activity
   const matchedCategories: {
@@ -35,11 +38,10 @@ export default async function Page({
 
   for (const m of matches.matchedActivities) {
     let placesList = await placesRepository.getByCategory(m.activityId)
-    // If no places found for this category, provide sample mock
+    // If no places found for this category, dynamically create one in DB
     if (placesList.length === 0) {
-      placesList = [
-        {
-          id: `sample-${m.activityId}-1`,
+      try {
+        const created = await placesRepository.create({
           name: `Spot for ${m.name}`,
           category: m.activityId,
           area: hangout.area,
@@ -48,8 +50,11 @@ export default async function Page({
           priceMax: 70000,
           rating: '4.9',
           description: `Great environment for ${m.name.toLowerCase()}`,
-        },
-      ]
+        })
+        placesList = [created]
+      } catch {
+        placesList = []
+      }
     }
 
     matchedCategories.push({

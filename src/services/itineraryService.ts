@@ -5,6 +5,13 @@ export interface PlaceSelectionInput {
   placeId: string
 }
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function isValidUuid(val?: string | null): boolean {
+  if (!val) return false
+  return UUID_REGEX.test(val)
+}
+
 function addMinutes(timeStr: string, minutesToAdd: number): string {
   const [h, m] = timeStr.split(':').map(Number)
   const totalM = h * 60 + m + minutesToAdd
@@ -32,7 +39,7 @@ export const itineraryService = {
       const stopEnd = addMinutes(currentStart, durationPerStop)
       const item: NewItineraryItem = {
         hangoutId,
-        placeId: sel.placeId,
+        placeId: isValidUuid(sel.placeId) ? sel.placeId : null,
         activityId: sel.activityId,
         startTime: currentStart,
         endTime: stopEnd,

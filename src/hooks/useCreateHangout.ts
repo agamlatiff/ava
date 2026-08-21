@@ -4,9 +4,8 @@ import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { createHangoutAction } from '@/lib/actions/hangouts'
 
-export function useCreateHangout() {
+export function useCreateHangout(initialActivity?: string) {
   const router = useRouter()
-
   const [date, setDate] = useState('')
   const [startTime, setStartTime] = useState('16:00')
   const [endTime, setEndTime] = useState('20:00')
@@ -71,7 +70,10 @@ export function useCreateHangout() {
       })
 
       if (res.success && res.hangoutId) {
-        router.push(`/hangouts/${res.hangoutId}/activities`)
+        const nextUrl = initialActivity
+          ? `/hangouts/${res.hangoutId}/activities?preselect=${encodeURIComponent(initialActivity)}`
+          : `/hangouts/${res.hangoutId}/activities`
+        router.push(nextUrl)
       } else {
         setErrorMsg(res.error || 'Failed to create plan. Please try again.')
         setIsSubmitting(false)

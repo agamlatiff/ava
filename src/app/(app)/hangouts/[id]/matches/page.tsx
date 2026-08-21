@@ -21,7 +21,10 @@ export default async function Page({
   }
 
   const allChoices = await hangoutsRepository.getHangoutActivities(id)
-  const matches = matchingService.calculateMatches(hangout.createdBy, allChoices as any)
+  const matches = matchingService.calculateMatches(
+    hangout.createdBy,
+    allChoices as Parameters<typeof matchingService.calculateMatches>[1]
+  )
 
   return <MatchResultsPage hangoutId={id} matches={matches} />
 }

@@ -43,6 +43,11 @@ interface ParticleFieldProps {
   reducedMotion?: boolean
 }
 
+function pseudoRandom(seed: number): number {
+  const x = Math.sin(seed) * 10000
+  return x - Math.floor(x)
+}
+
 export function ParticleField({ count, reducedMotion = false }: ParticleFieldProps) {
   const pointsRef = useRef<THREE.Points>(null!)
   const timeRef = useRef(0)
@@ -55,13 +60,13 @@ export function ParticleField({ count, reducedMotion = false }: ParticleFieldPro
     const offsets = new Float32Array(count)
 
     for (let i = 0; i < count; i++) {
-      positions[i * 3]     = (Math.random() - 0.5) * 12
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 6 - 1
+      positions[i * 3]     = (pseudoRandom(i * 4 + 1) - 0.5) * 12
+      positions[i * 3 + 1] = (pseudoRandom(i * 4 + 2) - 0.5) * 10
+      positions[i * 3 + 2] = (pseudoRandom(i * 4 + 3) - 0.5) * 6 - 1
 
-      scales[i]  = 0.5 + Math.random() * 1.5
-      speeds[i]  = 0.3 + Math.random() * 0.7
-      offsets[i] = Math.random() * Math.PI * 2
+      scales[i]  = 0.5 + pseudoRandom(i * 4 + 4) * 1.5
+      speeds[i]  = 0.3 + pseudoRandom(i * 4 + 5) * 0.7
+      offsets[i] = pseudoRandom(i * 4 + 6) * Math.PI * 2
     }
 
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
@@ -84,9 +89,12 @@ export function ParticleField({ count, reducedMotion = false }: ParticleFieldPro
   }, [count])
 
   useFrame((_, delta) => {
-    if (reducedMotion) return
+    if (reducedMotion || !pointsRef.current) return
     timeRef.current += delta
-    material.uniforms.uTime.value = timeRef.current
+    const mat = pointsRef.current.material as THREE.ShaderMaterial
+    if (mat?.uniforms?.uTime) {
+      mat.uniforms.uTime.value = timeRef.current
+    }
   })
 
   return <points ref={pointsRef} geometry={geometry} material={material} />

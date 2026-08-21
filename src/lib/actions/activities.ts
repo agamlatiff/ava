@@ -28,8 +28,9 @@ export async function saveCreatorActivitiesAction(
     revalidatePath(`/hangouts/${hangoutId}/activities`)
 
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Failed to save activities.' }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to save activities.'
+    return { success: false, error: msg }
   }
 }
 
@@ -48,7 +49,8 @@ export async function savePartnerReactionsAction(
     revalidatePath(`/hangouts/${hangoutId}/matches`)
 
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Failed to save reactions.' }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to save reactions.'
+    return { success: false, error: msg }
   }
 }

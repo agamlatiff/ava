@@ -17,6 +17,9 @@ export const hangoutService = {
   async create(userId: string, input: CreateHangoutInput): Promise<Hangout> {
     const validated = createHangoutSchema.parse(input)
 
+    const isAgam = userId.toLowerCase() === 'agam'
+    const isDiva = userId.toLowerCase() === 'diva'
+
     const newHangout = await hangoutsRepository.create({
       createdBy: userId,
       date: validated.date,
@@ -26,6 +29,8 @@ export const hangoutService = {
       budget: validated.budget ?? null,
       notes: validated.notes ?? null,
       status: 'activities_pending',
+      agamConfirmed: isAgam ? 1 : 0,
+      divaConfirmed: isDiva ? 1 : 0,
     })
 
     return newHangout

@@ -25,7 +25,8 @@ export async function markActivityCompleteAction(
 
     revalidatePath(`/hangouts/${hangoutId}/today`)
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Failed to update status.' }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to update status.'
+    return { success: false, error: msg }
   }
 }

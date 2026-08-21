@@ -29,7 +29,7 @@ export function useActivitySelect(hangoutId: string, initialSelected: string[] =
     try {
       const res = await saveCreatorActivitiesAction(hangoutId, selectedIds)
       if (res.success) {
-        router.push(`/hangouts/${hangoutId}/activities`)
+        setIsSubmitting(false)
         router.refresh()
       } else {
         setErrorMsg(res.error || 'Failed to save activities.')

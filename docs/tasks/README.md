@@ -28,7 +28,7 @@ To avoid mixing UI with business and state logic, we strictly enforce 4 decouple
 | 2 | [phase-2.md](./phase-2.md) | ✅ Completed | Database repositories, auth service, Home, Create Hangout, Nav |
 | 3 | [phase-3.md](./phase-3.md) | ✅ Completed | Activity selection hook, matching service, places, itinerary, confirm |
 | 4 | [phase-4.md](./phase-4.md) | ✅ Completed | Hangout day, memories, polish, deployment |
-| Refactor | [phase-refactor.md](./phase-refactor.md) | ⏳ Not Started | Architecture audit, strict decoupling verification, performance & types cleanup |
+| Refactor | [phase-refactor.md](./phase-refactor.md) | ✅ Completed | Architecture audit, strict decoupling verification, performance & types cleanup |
 
 ---
 

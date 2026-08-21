@@ -1,7 +1,6 @@
 import { db } from '../index'
 import {
   itineraryItems,
-  type ItineraryItem,
   type NewItineraryItem,
   places,
   activities,

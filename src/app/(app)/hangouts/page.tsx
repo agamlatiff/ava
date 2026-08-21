@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { hangoutsRepository } from '@/db/repositories/hangoutsRepository'
+import { getHangoutRoute } from '@/lib/routes'
 import type { Hangout } from '@/db/schema'
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default async function Page() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           {hangoutsList.map((h) => (
-            <Link key={h.id} href={`/hangouts/${h.id}/itinerary`} className="glass-card" style={{ padding: 'var(--space-4) var(--space-5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textDecoration: 'none' }}>
+            <Link key={h.id} href={getHangoutRoute(h)} className="glass-card" style={{ padding: 'var(--space-4) var(--space-5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textDecoration: 'none' }}>
               <div>
                 <h3 className="text-body" style={{ fontWeight: 600 }}>{h.area}</h3>
                 <p className="text-caption text-muted">{h.date} · {h.startTime} – {h.endTime}</p>

@@ -4,9 +4,7 @@ import {
   type Hangout,
   type NewHangout,
   hangoutActivities,
-  type NewHangoutActivity,
   activities,
-  memories,
 } from '../schema'
 import { eq, desc, ne, and } from 'drizzle-orm'
 

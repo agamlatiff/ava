@@ -31,7 +31,8 @@ export async function saveMemoryAction(
     revalidatePath('/memories')
     revalidatePath('/home')
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Failed to save memory.' }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Failed to save memory.'
+    return { success: false, error: msg }
   }
 }

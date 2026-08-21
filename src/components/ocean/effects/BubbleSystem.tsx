@@ -20,6 +20,11 @@ interface BubbleData {
   startX: number
 }
 
+function pseudoRandom(seed: number): number {
+  const x = Math.sin(seed) * 10000
+  return x - Math.floor(x)
+}
+
 export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null!)
   const dummy = useMemo(() => new THREE.Object3D(), [])
@@ -27,19 +32,19 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
 
   // Pre-allocate stable bubble particles
   const bubbles = useMemo<BubbleData[]>(() => {
-    return Array.from({ length: count }, () => ({
+    return Array.from({ length: count }, (_, i) => ({
       position: new THREE.Vector3(
-        (Math.random() - 0.5) * 10,
-        -6 + Math.random() * 12,
-        (Math.random() - 0.5) * 4 - 1
+        (pseudoRandom(i * 7 + 1) - 0.5) * 10,
+        -6 + pseudoRandom(i * 7 + 2) * 12,
+        (pseudoRandom(i * 7 + 3) - 0.5) * 4 - 1
       ),
-      speed: 0.4 + Math.random() * 0.8,
-      swayFreq: 0.8 + Math.random() * 1.2,
-      swayAmp: 0.15 + Math.random() * 0.25,
-      swayOffset: Math.random() * Math.PI * 2,
-      scale: 0.04 + Math.random() * 0.12,
-      opacity: 0.3 + Math.random() * 0.5,
-      startX: (Math.random() - 0.5) * 10,
+      speed: 0.4 + pseudoRandom(i * 7 + 4) * 0.8,
+      swayFreq: 0.8 + pseudoRandom(i * 7 + 5) * 1.2,
+      swayAmp: 0.15 + pseudoRandom(i * 7 + 6) * 0.25,
+      swayOffset: pseudoRandom(i * 7 + 7) * Math.PI * 2,
+      scale: 0.04 + pseudoRandom(i * 7 + 8) * 0.12,
+      opacity: 0.3 + pseudoRandom(i * 7 + 9) * 0.5,
+      startX: (pseudoRandom(i * 7 + 10) - 0.5) * 10,
     }))
   }, [count])
 
@@ -55,8 +60,8 @@ export function BubbleSystem({ count, reducedMotion = false }: BubbleSystemProps
 
       // Reset when above scene
       if (bubble.position.y > 7) {
-        bubble.position.y = -6 - Math.random() * 3
-        bubble.startX = (Math.random() - 0.5) * 10
+        bubble.position.y = -6 - ((i * 1.3) % 3)
+        bubble.startX = ((i * 3.7) % 10) - 5
         bubble.position.x = bubble.startX
       }
 

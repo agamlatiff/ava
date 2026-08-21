@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { confirmHangoutAction } from '@/lib/actions/confirm'
 
@@ -19,6 +19,17 @@ export function useHangoutConfirm(
 
   const isBothConfirmed = agamConfirmed && divaConfirmed
 
+  // Live auto-polling when waiting for partner to confirm
+  useEffect(() => {
+    if (isBothConfirmed) return
+
+    const interval = setInterval(() => {
+      router.refresh()
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [isBothConfirmed, router])
+
   const handleConfirm = async () => {
     setIsSubmitting(true)
     setErrorMsg('')
@@ -26,6 +37,7 @@ export function useHangoutConfirm(
     try {
       const res = await confirmHangoutAction(hangoutId, true)
       if (res.success) {
+        setIsSubmitting(false)
         router.refresh()
       } else {
         setErrorMsg(res.error || 'Failed to confirm.')

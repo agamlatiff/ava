@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export type QualityPreset = 'low' | 'medium' | 'high'
 
@@ -57,12 +57,10 @@ function detectQuality(): QualityPreset {
 }
 
 export function useSceneQuality(): QualityConfig {
-  const [config, setConfig] = useState<QualityConfig>(QUALITY_PRESETS.high)
-
-  useEffect(() => {
+  const [config] = useState<QualityConfig>(() => {
     const preset = detectQuality()
-    setConfig(QUALITY_PRESETS[preset])
-  }, [])
+    return QUALITY_PRESETS[preset]
+  })
 
   return config
 }
