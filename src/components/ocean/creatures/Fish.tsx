@@ -45,13 +45,23 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
   const clonedScene = useMemo(() => {
     const scene = gltf.scene.clone(true)
 
-    const isForeground = data.depthLayer === 'foreground-peripheral'
-    
     // Depth-tuned material palettes
-    const bodyColor     = isForeground ? '#FF7A00' : '#D05A0A'
-    const bodyEmissive  = isForeground ? '#3D1500' : '#1C0A00'
-    const stripeColor   = isForeground ? '#FFFFFF' : '#D0E4F0'
-    const finColor      = isForeground ? '#FFA040' : '#C06818'
+    let bodyColor     = '#FF7A00'
+    let bodyEmissive  = '#3D1500'
+    let stripeColor   = '#FFFFFF'
+    let finColor      = '#FFA040'
+
+    if (data.depthLayer === 'midground') {
+      bodyColor     = '#D05A0A'
+      bodyEmissive  = '#4A1D05' // Brightened emissive prevents black
+      stripeColor   = '#E0F0FA'
+      finColor      = '#C06818'
+    } else if (data.depthLayer === 'background') {
+      bodyColor     = '#3D8EAB'
+      bodyEmissive  = '#1A4D66'
+      stripeColor   = '#5FAAC7'
+      finColor      = '#3D8EAB'
+    }
 
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
@@ -96,8 +106,6 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
   useFrame((_, delta) => {
     if (!rootGroupRef.current) return
 
-    const t = angleRef.current
-
     if (data.behavior === 'hover-graze') {
       // ─────────────────────────────────────────────────────────
       // 1. Grazing / Hovering Behavior (Foreground Reef Fish)
@@ -134,35 +142,61 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
     } else {
       // ─────────────────────────────────────────────────────────
       // 2. Cruising & Gliding Behavior (Midground Fish)
-      // Smooth spline tangents, acceleration/glide cycle, banking
+      // Organic point-to-point wandering with momentum and banking
       // ─────────────────────────────────────────────────────────
-      if (!reducedMotion) {
-        // Wave-like speed cycle: tail kick acceleration -> long smooth glide
-        const cycleSpeed = data.baseSpeed * (0.8 + 0.5 * Math.sin(t * 1.8 + timeOffset))
-        angleRef.current += cycleSpeed * delta
+      if (!rootGroupRef.current.userData.state) {
+        rootGroupRef.current.userData.state = {
+          x: data.centerPos.x + (Math.random() - 0.5) * 2,
+          z: data.centerPos.z + (Math.random() - 0.5) * 2,
+          heading: data.pathAngle,
+          targetHeading: data.pathAngle,
+          turnTimer: Math.random() * 2.0,
+          time: timeOffset
+        }
       }
 
-      const a = angleRef.current
-      const posX = data.centerPos.x + Math.sin(a) * data.radiusX
-      const posZ = data.centerPos.z + Math.cos(a) * data.radiusZ
-      const posY = data.yBase + Math.sin(a * data.yFrequency + timeOffset) * data.yAmplitude
+      const state = rootGroupRef.current.userData.state
 
-      const nextA = a + 0.03
-      const nextX = data.centerPos.x + Math.sin(nextA) * data.radiusX
-      const nextZ = data.centerPos.z + Math.cos(nextA) * data.radiusZ
+      if (!reducedMotion) {
+        state.time += delta
+        state.turnTimer -= delta
 
-      const heading = Math.atan2(nextX - posX, nextZ - posZ)
-      const pitch = (Math.cos(a * data.yFrequency + timeOffset) * data.yAmplitude) * 0.08
-      const roll = Math.sin(a * 2.0) * 0.06 // Hydrodynamic banking
+        if (state.turnTimer <= 0) {
+          const distFromCenter = Math.hypot(state.x - data.centerPos.x, state.z - data.centerPos.z)
+          if (distFromCenter > (data.radiusX + data.radiusZ) * 0.4) {
+             state.targetHeading = Math.atan2(data.centerPos.x - state.x, data.centerPos.z - state.z)
+             state.targetHeading += (Math.random() - 0.5) * 0.5
+          } else {
+             state.targetHeading += (Math.random() - 0.5) * 1.5
+          }
+          state.turnTimer = 3.0 + Math.random() * 4.0
+        }
 
-      rootGroupRef.current.position.set(posX, posY, posZ)
-      rootGroupRef.current.rotation.set(pitch, heading, roll)
+        let diff = state.targetHeading - state.heading
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff))
+        state.heading += diff * 0.5 * delta
+
+        const cycleSpeed = data.baseSpeed * (0.8 + 0.6 * Math.sin(state.time * 1.8))
+        
+        state.x += Math.sin(state.heading) * cycleSpeed * delta * 5.0
+        state.z += Math.cos(state.heading) * cycleSpeed * delta * 5.0
+      }
+
+      const posY = data.yBase + Math.sin(state.time * data.yFrequency) * data.yAmplitude
+
+      let diffHeading = state.targetHeading - state.heading
+      diffHeading = Math.atan2(Math.sin(diffHeading), Math.cos(diffHeading))
+      const roll = diffHeading * 0.4
+      const pitch = (Math.cos(state.time * data.yFrequency) * data.yAmplitude) * 0.1
+
+      rootGroupRef.current.position.set(state.x, posY, state.z)
+      rootGroupRef.current.rotation.set(pitch, state.heading, roll)
 
       if (!reducedMotion) {
         const tail = rootGroupRef.current.getObjectByName('TailFin')
         if (tail) {
-          const tailRate = 3.0 + Math.sin(t * 1.8 + timeOffset) * 2.0
-          tail.rotation.y = Math.sin(a * tailRate + timeOffset) * 0.22
+          const tailRate = 3.0 + Math.sin(state.time * 1.8) * 2.0
+          tail.rotation.y = Math.sin(state.time * 4.0) * 0.22 * (tailRate / 3.0)
         }
       }
     }
@@ -180,19 +214,18 @@ function GLBTropicalFish({ data, reducedMotion }: { data: FishInstance; reducedM
  */
 function DistantFish({ data, reducedMotion }: { data: FishInstance; reducedMotion: boolean }) {
   const rootGroupRef = useRef<THREE.Group>(null!)
-  const angleRef = useRef(data.pathAngle)
   const timeOffset = useMemo(() => data.id * 2.137, [data.id])
 
   const distantMat = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#144E7E'),
+        color: new THREE.Color('#2C6E9E'),
         roughness: 0.9,
         metalness: 0.05,
         transparent: true,
         opacity: 0.42,
-        emissive: new THREE.Color('#0A2640'),
-        emissiveIntensity: 0.3,
+        emissive: new THREE.Color('#144E7E'), // Lifted emissive to avoid pure black
+        emissiveIntensity: 0.4,
       }),
     []
   )
@@ -206,22 +239,45 @@ function DistantFish({ data, reducedMotion }: { data: FishInstance; reducedMotio
   useFrame((_, delta) => {
     if (!rootGroupRef.current) return
 
-    if (!reducedMotion) {
-      angleRef.current += data.baseSpeed * delta
+    if (!rootGroupRef.current.userData.state) {
+      rootGroupRef.current.userData.state = {
+        x: data.centerPos.x + (Math.random() - 0.5) * 4,
+        z: data.centerPos.z + (Math.random() - 0.5) * 4,
+        heading: data.pathAngle,
+        targetHeading: data.pathAngle,
+        turnTimer: Math.random() * 5.0,
+        time: timeOffset
+      }
     }
 
-    const a = angleRef.current
-    const posX = data.centerPos.x + Math.sin(a) * data.radiusX
-    const posZ = data.centerPos.z + Math.cos(a) * data.radiusZ
-    const posY = data.yBase + Math.sin(a * data.yFrequency + timeOffset) * data.yAmplitude
+    const state = rootGroupRef.current.userData.state
 
-    const nextA = a + 0.03
-    const nextX = data.centerPos.x + Math.sin(nextA) * data.radiusX
-    const nextZ = data.centerPos.z + Math.cos(nextA) * data.radiusZ
+    if (!reducedMotion) {
+      state.time += delta
+      state.turnTimer -= delta
 
-    const heading = Math.atan2(nextX - posX, nextZ - posZ)
-    rootGroupRef.current.position.set(posX, posY, posZ)
-    rootGroupRef.current.rotation.set(0, heading, 0)
+      if (state.turnTimer <= 0) {
+        const distFromCenter = Math.hypot(state.x - data.centerPos.x, state.z - data.centerPos.z)
+        if (distFromCenter > (data.radiusX + data.radiusZ) * 0.5) {
+            state.targetHeading = Math.atan2(data.centerPos.x - state.x, data.centerPos.z - state.z)
+            state.targetHeading += (Math.random() - 0.5) * 0.4
+        } else {
+            state.targetHeading += (Math.random() - 0.5) * 1.0
+        }
+        state.turnTimer = 4.0 + Math.random() * 6.0
+      }
+
+      let diff = state.targetHeading - state.heading
+      diff = Math.atan2(Math.sin(diff), Math.cos(diff))
+      state.heading += diff * 0.3 * delta
+
+      state.x += Math.sin(state.heading) * data.baseSpeed * delta * 5.0
+      state.z += Math.cos(state.heading) * data.baseSpeed * delta * 5.0
+    }
+
+    const posY = data.yBase + Math.sin(state.time * data.yFrequency) * data.yAmplitude
+    rootGroupRef.current.position.set(state.x, posY, state.z)
+    rootGroupRef.current.rotation.set(0, state.heading, 0)
   })
 
   return (
@@ -273,9 +329,9 @@ export function Fish({ count = 3, reducedMotion = false }: FishProps) {
         radiusX: 5.0 + pseudoRandom(idx * 5 + 2) * 1.5,
         radiusZ: 2.2 + pseudoRandom(idx * 5 + 3) * 1.0,
         centerPos: new THREE.Vector3(
-          (pseudoRandom(idx * 5 + 4) - 0.5) * 3.8,
-          0.2 + (pseudoRandom(idx * 5 + 5) - 0.5) * 1.2,
-          -5.6 + (pseudoRandom(idx * 5 + 6) - 0.5) * 1.0
+          1.5 + (pseudoRandom(idx * 5 + 4) - 0.5) * 2.0, // Shifted to right side (away from text)
+          -0.5 + (pseudoRandom(idx * 5 + 5) - 0.5) * 1.0, // Shifted lower
+          -7.0 + (pseudoRandom(idx * 5 + 6) - 0.5) * 1.0 // Pushed deeper to reduce scale/impact
         ),
         pathAngle: pseudoRandom(idx * 5 + 7) * Math.PI * 2,
         yBase: 0.2 + (pseudoRandom(idx * 5 + 8) - 0.5) * 0.9,

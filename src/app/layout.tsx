@@ -39,6 +39,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${outfit.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      data-scroll-behavior="smooth"
     >
       <body>
         {/* CSS gradient fallback — visible while R3F canvas loads */}

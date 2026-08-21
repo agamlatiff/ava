@@ -141,16 +141,16 @@
 }
 
 .invitationCard {
-  background: radial-gradient(140% 140% at 50% 0%, rgba(77, 208, 225, 0.06) 0%, rgba(4, 18, 40, 0.02) 100%);
-  border: none;
-  backdrop-filter: blur(12px) brightness(1.05) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) brightness(1.05) saturate(120%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
   border-radius: var(--radius-2xl);
   padding: var(--space-5) var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  box-shadow: 0 16px 40px rgba(0, 4, 16, 0.15);
+  box-shadow: 0 32px 64px -12px rgba(0, 10, 30, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   position: relative;
   overflow: hidden;
 }
@@ -252,17 +252,17 @@
 }
 
 .invitationEmpty {
-  background: radial-gradient(100% 100% at 50% 0%, rgba(77, 208, 225, 0.04) 0%, rgba(4, 18, 40, 0.01) 100%);
-  border: none;
-  backdrop-filter: blur(8px) brightness(1.02);
-  -webkit-backdrop-filter: blur(8px) brightness(1.02);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.0) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
   border-radius: var(--radius-2xl);
   padding: var(--space-5) var(--space-5);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
-  box-shadow: 0 12px 32px rgba(0, 4, 16, 0.1);
+  box-shadow: 0 24px 48px -12px rgba(0, 10, 30, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 @media (min-width: 768px) {
@@ -331,9 +331,15 @@
 }
 
 .choiceBubblesContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3) var(--space-4);
+}
+
+@media (min-width: 500px) {
+  .choiceBubblesContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .choiceBubble {
@@ -526,7 +532,7 @@
 .sanctuaryColumn {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-10);
 }
 
 .organicPanel {
@@ -545,11 +551,11 @@
 }
 
 .panelKicker {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--accent-cyan);
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
 }
 
 .onlinePulse {
@@ -586,9 +592,10 @@
 
 .partnerStatusTitle {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.85);
+  color: #FFFFFF;
+  text-shadow: 0 0 16px rgba(244, 143, 177, 0.4);
 }
 
 .partnerStatusSub {
@@ -601,24 +608,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  padding: 8px 16px;
-  border-radius: var(--radius-full);
-  background: rgba(0, 188, 212, 0.1);
-  border: 1px solid rgba(77, 208, 225, 0.2);
-  color: var(--accent-cyan);
+  padding: 6px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: color var(--transition-water), transform var(--transition-buoyant);
   text-decoration: none;
+  margin-top: 4px;
 }
 
 .gentleActionBtn:hover {
-  background: rgba(0, 188, 212, 0.2);
-  border-color: rgba(77, 208, 225, 0.35);
   color: #FFFFFF;
+  background: transparent;
+  transform: translateY(-2px);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.gentleActionBtn:active {
+  transform: translateY(0) scale(0.96);
+  transition: transform var(--transition-fast);
 }
 
 .mascotBadge {
@@ -682,7 +695,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: var(--space-2);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: none;
 }
 
 .tinyStat {
