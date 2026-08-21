@@ -39,7 +39,7 @@ export function useAdventurePlanner(initialActivity?: string) {
   const router = useRouter()
 
   // ── 1. Step & State Definition ──
-  const [step, setStep] = useState(1) // 1: Activity, 2: Date, 3: Time, 4: Duration, 5: Location, 6: Preview
+  const [step, setStep] = useState(1) // 1: Activity, 2: When, 3: Location, 4: Preview
   const [activityIds, setActivityIds] = useState<string[]>(
     initialActivity ? [initialActivity] : []
   )
@@ -203,7 +203,7 @@ export function useAdventurePlanner(initialActivity?: string) {
       setErrorMsg('Please pick at least one activity to begin.')
       return
     }
-    if (step < 6) {
+    if (step < 4) {
       setStep((prev) => prev + 1)
     }
   }

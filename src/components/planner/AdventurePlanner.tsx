@@ -4,9 +4,7 @@ import { useAdventurePlanner } from '@/hooks/useAdventurePlanner'
 import { StepProgressBar } from './common/StepProgressBar'
 import { StepNavigation } from './common/StepNavigation'
 import { StepActivity } from './steps/StepActivity'
-import { StepDate } from './steps/StepDate'
-import { StepTimePeriod } from './steps/StepTimePeriod'
-import { StepDuration } from './steps/StepDuration'
+import { StepWhen } from './steps/StepWhen'
 import { StepLocation } from './steps/StepLocation'
 import { StepPreview } from './steps/StepPreview'
 import styles from './AdventurePlanner.module.css'
@@ -67,35 +65,21 @@ export function AdventurePlanner({ initialActivity }: AdventurePlannerProps) {
         )}
 
         {step === 2 && (
-          <StepDate
+          <StepWhen
             datePreset={datePreset}
             customDate={customDate}
-            derivedDateDisplay={derivedDateDisplay}
-            onSelectPreset={setDatePreset}
+            onSelectDatePreset={setDatePreset}
             onChangeCustomDate={setCustomDate}
-          />
-        )}
-
-        {step === 3 && (
-          <StepTimePeriod
             timePeriod={timePeriod}
             customStartTime={customStartTime}
-            onSelectPeriod={setTimePeriod}
-            onChangeCustomTime={setCustomStartTime}
-          />
-        )}
-
-        {step === 4 && (
-          <StepDuration
+            onSelectTimePeriod={setTimePeriod}
+            onChangeCustomStartTime={setCustomStartTime}
             duration={duration}
-            derivedStartTime={derivedStartTime}
-            derivedEndTime={derivedEndTime}
-            durationLabel={durationLabel}
             onSelectDuration={setDuration}
           />
         )}
 
-        {step === 5 && (
+        {step === 3 && (
           <StepLocation
             locationPreset={locationPreset}
             customLocation={customLocation}
@@ -108,7 +92,7 @@ export function AdventurePlanner({ initialActivity }: AdventurePlannerProps) {
           />
         )}
 
-        {step === 6 && (
+        {step === 4 && (
           <StepPreview
             activityIds={activityIds}
             derivedDateDisplay={derivedDateDisplay}
@@ -126,12 +110,12 @@ export function AdventurePlanner({ initialActivity }: AdventurePlannerProps) {
           />
         )}
 
-        {/* ── Step Navigation Footer (Steps 1 - 5) ── */}
-        {step < 6 && (
+        {/* ── Step Navigation Footer (Steps 1 - 3) ── */}
+        {step < 4 && (
           <StepNavigation
             currentStep={step}
             isNextDisabled={step === 1 && activityIds.length === 0}
-            nextLabel={step === 5 ? 'Review Plan' : 'Continue'}
+            nextLabel={step === 3 ? 'Review Plan' : 'Continue'}
             onNext={goNext}
             onBack={goBack}
             isSubmitting={isSubmitting}

@@ -10,10 +10,10 @@ interface StepProgressBarProps {
 
 export function StepProgressBar({
   currentStep,
-  totalSteps = 6,
+  totalSteps = 4,
   onStepClick,
 }: StepProgressBarProps) {
-  const stepLabels = ['Activity', 'Date', 'Time', 'Duration', 'Location', 'Preview']
+  const stepLabels = ['What', 'When', 'Where', 'Confirm']
 
   return (
     <div className={styles.progressWrapper} aria-label={`Step ${currentStep} of ${totalSteps}`}>
