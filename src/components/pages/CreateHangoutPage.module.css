@@ -3,9 +3,10 @@
   flex-direction: column;
   gap: var(--space-6);
   padding: var(--space-6) var(--space-4);
-  max-width: 540px;
+  max-width: 640px;
   margin-inline: auto;
 }
+
 
 .headerTitle {
   font-family: var(--font-heading);

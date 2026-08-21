@@ -15,7 +15,7 @@ export function MobileHeader({ title, userName = 'A' }: MobileHeaderProps) {
   const pathname = usePathname()
 
   const isRootTab = pathname === '/home' || pathname === '/memories' || pathname === '/hangouts'
-  const displayTitle = title || (pathname === '/home' ? "Let's Go" : 'Plan')
+  const displayTitle = title || (pathname === '/home' ? 'AVA' : 'Plan')
 
   return (
     <header className={styles.mobileHeader}>
@@ -28,8 +28,9 @@ export function MobileHeader({ title, userName = 'A' }: MobileHeaderProps) {
           ←
         </button>
       ) : (
-        <Link href="/home" className={styles.logoLink} style={{ fontSize: '1.1rem' }}>
+        <Link href="/home" className={styles.logoLink}>
           <FishOutlineIcon size={20} color="var(--accent-cyan)" />
+          <span>AVA</span>
         </Link>
       )}
 

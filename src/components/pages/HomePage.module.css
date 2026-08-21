@@ -1,18 +1,26 @@
-.homeRoot {
+/* ── Container Layout ─────────────────────────────────────── */
+.container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-8);
   padding: var(--space-6) var(--space-4);
-  max-width: 640px;
+  max-width: 860px;
   margin-inline: auto;
+  animation: fade-in-up 250ms var(--transition-page) both;
 }
 
-/* ── Hero Greeting ────────────────────────────────────────── */
-.greetingSection {
+@media (min-width: 900px) {
+  .container {
+    padding: var(--space-8) var(--space-6);
+    gap: var(--space-10);
+  }
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.header {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  animation: fade-in-up 300ms var(--transition-page) both;
 }
 
 .greetingTitle {
@@ -20,194 +28,316 @@
   font-size: var(--text-h1);
   font-weight: 700;
   color: var(--text-primary);
-  background: linear-gradient(135deg, #FFFFFF 0%, #80DEEA 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.01em;
 }
 
-.greetingSub {
+.greetingSubtitle {
+  font-size: var(--text-body-sm);
   color: var(--text-secondary);
+  line-height: 1.5;
 }
 
-/* ── Next Hangout Glass Card ──────────────────────────────── */
-.nextCard {
-  padding: var(--space-6);
+/* ── Section Headings ─────────────────────────────────────── */
+.sectionHeading {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-3);
+}
+
+/* ── PRIMARY HIERARCHY: Next Hangout Hero Card ────────────── */
+.primarySection {
+  width: 100%;
+}
+
+.heroPlanCard {
+  background: rgba(6, 24, 52, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-8);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  border-radius: var(--radius-xl);
+  gap: var(--space-5);
+  box-shadow: 0 12px 36px rgba(0, 8, 24, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   position: relative;
   overflow: hidden;
-  animation: fade-in-up 350ms 50ms var(--transition-page) both;
 }
 
-.cardHeader {
+.heroPlanCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  opacity: 0.8;
+}
+
+.planCardHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
 }
 
-.cardBadge {
+.statusBadge {
   font-size: var(--text-caption);
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: rgba(0, 188, 212, 0.15);
+  background: rgba(0, 188, 212, 0.14);
   color: var(--accent-cyan);
-  border: 1px solid rgba(77, 208, 225, 0.35);
-  letter-spacing: 0.04em;
+  border: 1px solid rgba(77, 208, 225, 0.3);
+  letter-spacing: 0.05em;
 }
 
-.cardBadgeToday {
-  background: rgba(76, 175, 80, 0.25);
+.statusBadgeToday {
+  background: rgba(76, 175, 80, 0.2);
   color: #A5D6A7;
   border-color: rgba(76, 175, 80, 0.4);
-  box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.25);
 }
 
-.detailsList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding-block: var(--space-2);
-}
-
-.detailItem {
+.planDateText {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: 6px;
   font-size: var(--text-body-sm);
   color: var(--text-secondary);
 }
 
-.emptyPlan {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-3);
-  padding-block: var(--space-4);
+.destinationTitle {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
-.emptyIconWrapper {
-  width: 64px;
-  height: 64px;
+.planMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-body-sm);
+  color: var(--text-secondary);
+}
+
+.planActionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-1);
+}
+
+/* ── Hero Empty State ─────────────────────────────────────── */
+.heroEmptyState {
+  background: rgba(6, 24, 52, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+@media (min-width: 600px) {
+  .heroEmptyState {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.emptyContent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: 520px;
+}
+
+.emptyIcon {
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-full);
-  background: rgba(0, 188, 212, 0.15);
-  border: 1px solid rgba(77, 208, 225, 0.3);
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(77, 208, 225, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-cyan);
-  box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+  flex-shrink: 0;
 }
 
-/* ── Quick Plan Row ───────────────────────────────────────── */
-.sectionTitle {
-  font-family: var(--font-heading);
-  font-size: var(--text-h3);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-3);
-}
-
-.quickPlanGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-3);
-  animation: fade-in-up 400ms 100ms var(--transition-page) both;
-}
-
-.quickChip {
+.emptyTextGroup {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+}
+
+.emptyTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.emptySubtitle {
+  font-size: var(--text-body-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── SECONDARY HIERARCHY: Quick Activities Grid ───────────── */
+.secondarySection {
+  width: 100%;
+}
+
+.activityGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .activityGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 800px) {
+  .activityGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.activityPill {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-4) var(--space-2);
-  border-radius: var(--radius-lg);
-  background: rgba(10, 36, 74, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 6px 20px rgba(0, 8, 24, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  transition: all var(--transition-base);
+  padding: 12px 16px;
+  background: rgba(6, 24, 52, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
   text-decoration: none;
+  transition: all var(--transition-fast);
 }
 
-.quickChip:hover {
-  background: rgba(15, 50, 98, 0.7);
-  border-color: rgba(77, 208, 225, 0.45);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(0, 188, 212, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+.activityPill:hover {
+  background: rgba(0, 188, 212, 0.14);
+  border-color: rgba(77, 208, 225, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.2);
 }
 
-.chipIcon {
-  color: var(--accent-cyan);
+.pillIcon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.chipLabel {
+.pillLabel {
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+}
+
+/* ── TERTIARY HIERARCHY: Recent Adventures List ───────────── */
+.tertiarySection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.recentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.viewAllLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: var(--text-caption);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.viewAllLink:hover {
+  opacity: 0.8;
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.recentRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background var(--transition-fast);
+}
+
+.recentRow:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.recentMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.recentIndex {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.recentArea {
+  font-size: var(--text-body);
   font-weight: 600;
   color: var(--text-primary);
 }
 
-/* ── Explore Row ──────────────────────────────────────────── */
-.exploreCard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-5) var(--space-6);
-  border-radius: var(--radius-xl);
-  background: rgba(10, 36, 74, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 6px 20px rgba(0, 8, 24, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  text-decoration: none;
-  transition: all var(--transition-base);
-  animation: fade-in-up 450ms 150ms var(--transition-page) both;
+.recentDate {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
 }
 
-.exploreCard:hover {
-  background: rgba(15, 50, 98, 0.7);
-  border-color: rgba(77, 208, 225, 0.45);
-  transform: translateX(4px);
-  box-shadow: 0 10px 28px rgba(0, 188, 212, 0.2);
-}
-
-.exploreArrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
+.recentStatus {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 4px 10px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 2px 10px rgba(0, 188, 212, 0.4);
-}
-
-/* ── Recent Adventures ────────────────────────────────────── */
-.recentList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  animation: fade-in-up 500ms 200ms var(--transition-page) both;
-}
-
-.recentItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius-lg);
-  background: rgba(10, 36, 74, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

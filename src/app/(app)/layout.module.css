@@ -1,0 +1,27 @@
+.appRoot {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 900px) {
+  .appRoot {
+    flex-direction: row;
+  }
+}
+
+.mainContent {
+  flex: 1;
+  width: 100%;
+  padding-bottom: 84px;
+}
+
+@media (min-width: 900px) {
+  .mainContent {
+    margin-left: 260px;
+    padding-bottom: var(--space-10);
+    min-height: 100vh;
+  }
+}

@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
+  HomeIcon,
+  ExploreIcon,
   CalendarIcon,
   SparklesIcon,
-  FishOutlineIcon,
-  PlusIcon,
 } from '@/components/ui/OceanIcons'
 import styles from './Nav.module.css'
 
@@ -14,9 +14,9 @@ export function MobileNav() {
   const pathname = usePathname()
 
   const tabs = [
-    { href: '/home', label: 'Home', icon: <FishOutlineIcon size={20} /> },
+    { href: '/home', label: 'Home', icon: <HomeIcon size={20} /> },
+    { href: '/hangouts/new', label: 'Explore', icon: <ExploreIcon size={20} /> },
     { href: '/hangouts', label: 'Plans', icon: <CalendarIcon size={20} /> },
-    { href: '/hangouts/new', label: 'New', icon: <PlusIcon size={22} />, isAction: true },
     { href: '/memories', label: 'Memories', icon: <SparklesIcon size={20} /> },
   ]
 
@@ -27,19 +27,6 @@ export function MobileNav() {
           tab.href === '/home'
             ? pathname === '/home'
             : pathname.startsWith(tab.href)
-
-        if (tab.isAction) {
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={styles.createTabBtn}
-              aria-label="Create new hangout plan"
-            >
-              <span>+</span>
-            </Link>
-          )
-        }
 
         return (
           <Link

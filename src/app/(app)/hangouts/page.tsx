@@ -6,26 +6,32 @@ import { CalendarIcon, PlusIcon, SparklesIcon, ArrowRightIcon } from '@/componen
 import type { Hangout } from '@/db/schema'
 
 export const metadata: Metadata = {
-  title: "Let's Go — Plans",
+  title: "AVA — Plans",
   description: "View all your upcoming and past hangout plans.",
 }
 
 export default async function Page() {
   let hangoutsList: Hangout[] = []
   try {
-    hangoutsList = await hangoutsRepository.getRecentHangouts(10)
+    hangoutsList = await hangoutsRepository.getRecentHangouts(15)
   } catch (err) {
     console.warn('DB queries in Hangouts Page failed, using fallback empty state:', err)
   }
 
   return (
-    <div style={{ maxWidth: '640px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)' }}>
-      <h1 className="text-h2" style={{ marginBottom: 'var(--space-6)' }}>
-        Your Plans
-      </h1>
+    <div style={{ maxWidth: '860px', marginInline: 'auto', padding: 'var(--space-6) var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 className="text-h1">Plans</h1>
+          <p className="text-body-sm text-secondary">All your upcoming and past adventures together</p>
+        </div>
+        <Link href="/hangouts/new" className="btn-primary">
+          <PlusIcon size={18} /> New Plan
+        </Link>
+      </header>
 
       {hangoutsList.length === 0 ? (
-        <div className="glass-card-strong" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)', borderRadius: 'var(--radius-xl)' }}>
+        <div className="glass-card" style={{ padding: 'var(--space-8)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)', borderRadius: 'var(--radius-xl)' }}>
           <SparklesIcon size={36} color="var(--accent-cyan)" />
           <h2 className="text-h3">No plans yet</h2>
           <p className="text-body-sm text-secondary">Start by creating your first hangout together!</p>
@@ -34,37 +40,38 @@ export default async function Page() {
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           {hangoutsList.map((h) => (
             <Link
               key={h.id}
               href={getHangoutRoute(h)}
               className="glass-card"
               style={{
-                padding: 'var(--space-4) var(--space-5)',
+                padding: 'var(--space-5) var(--space-6)',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 textDecoration: 'none',
-                borderRadius: 'var(--radius-xl)',
+                borderRadius: 'var(--radius-lg)',
+                transition: 'all var(--transition-fast)',
               }}
             >
               <div>
                 <h3 className="text-body" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{h.area}</h3>
-                <p className="text-caption text-muted" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                <p className="text-caption text-muted" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                   <CalendarIcon size={14} color="var(--accent-cyan)" />
                   {h.date} · {h.startTime} – {h.endTime}
                 </p>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <span
                   className="text-caption"
                   style={{
-                    padding: '4px 10px',
+                    padding: '4px 12px',
                     borderRadius: 'var(--radius-full)',
-                    background: 'rgba(0, 188, 212, 0.15)',
+                    background: 'rgba(0, 188, 212, 0.14)',
                     color: 'var(--accent-cyan)',
-                    border: '1px solid rgba(77, 208, 225, 0.3)',
+                    border: '1px solid rgba(77, 208, 225, 0.25)',
                     fontWeight: 600,
                   }}
                 >

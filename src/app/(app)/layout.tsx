@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { DesktopNav } from '@/components/nav/DesktopNav'
 import { MobileNav } from '@/components/nav/MobileNav'
 import { MobileHeader } from '@/components/nav/MobileHeader'
+import styles from './layout.module.css'
 
 export default async function AppLayout({
   children,
@@ -18,11 +19,11 @@ export default async function AppLayout({
   const userName = session.name || 'Friend'
 
   return (
-    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+    <div className={styles.appRoot}>
       <DesktopNav userName={userName} />
       <MobileHeader userName={userName} />
 
-      <main style={{ flex: 1, paddingBottom: '80px' }}>
+      <main className={styles.mainContent}>
         {children}
       </main>
 
